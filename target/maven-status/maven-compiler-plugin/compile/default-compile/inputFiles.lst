@@ -1,14 +1,10 @@
 /Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/dao/ScheduleDao.java
 /Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/dao/TicketDao.java
 /Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/dao/TrainDao.java
-/Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/entities/PassengerEntity.java
-/Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/example/PassengerExample.java
-/Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/entities/TicketEntity.java
-/Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/dao/StationDao.java
-/Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/example/PassengerCrudExample.java
-/Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/example/PassengerEntityExample.java
 /Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/entities/StationEntity.java
 /Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/dao/PassengerDao.java
-/Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/example/PassengerDaoExample.java
+/Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/entities/PassengerEntity.java
 /Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/entities/ScheduleEntity.java
 /Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/entities/TrainEntity.java
+/Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/entities/TicketEntity.java
+/Users/NikitaVoronin/IdeaProjects/SBB/src/main/java/dao/StationDao.java

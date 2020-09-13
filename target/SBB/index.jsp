@@ -15,8 +15,8 @@
 
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav">
-            <a href="/index.jsp" class="nav-item nav-link active" style="color: white">Home</a>
-            <a href="/timetable.jsp" class="nav-item nav-link" style="color: white">Timetable</a>
+            <a href="#" class="nav-item nav-link active" style="color: white">Home</a>
+            <a href="#" class="nav-item nav-link" style="color: white">Timetable</a>
             <a href="#" class="nav-item nav-link" style="color: white">Tickets</a>
         </div>
         <div class="navbar-nav ml-auto">

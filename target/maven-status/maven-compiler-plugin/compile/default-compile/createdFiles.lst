@@ -1,14 +1,10 @@
+entities/PassengerEntity.class
 entities/StationEntity.class
 dao/PassengerDao.class
-example/PassengerCrudExample.class
+dao/TrainDao.class
 entities/TrainEntity.class
 dao/StationDao.class
-example/PassengerDaoExample.class
+entities/TicketEntity.class
 dao/TicketDao.class
-example/PassengerExample.class
 dao/ScheduleDao.class
 entities/ScheduleEntity.class
-entities/PassengerEntity.class
-dao/TrainDao.class
-entities/TicketEntity.class
-example/PassengerEntityExample.class
