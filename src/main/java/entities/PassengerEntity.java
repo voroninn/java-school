@@ -1,5 +1,7 @@
 package entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,6 +10,7 @@ import java.util.Date;
 public class PassengerEntity {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -18,14 +21,12 @@ public class PassengerEntity {
     private String lastName;
 
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "MM-dd-yyyy")
     @Column(name = "birth_date")
     private Date birthDate;
 
     @Column(name = "passport_number")
     private int passportNumber;
-
-    @Column(name = "ticket_id")
-    private Integer ticketId;
 
     public PassengerEntity() {
     }
@@ -68,13 +69,5 @@ public class PassengerEntity {
 
     public void setPassportNumber(int passportNumber) {
         this.passportNumber = passportNumber;
-    }
-
-    public Integer getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(Integer ticketId) {
-        this.ticketId = ticketId;
     }
 }

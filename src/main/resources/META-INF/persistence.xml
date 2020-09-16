@@ -3,16 +3,13 @@
 
     <persistence-unit name="sbb-pu">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>example.PassengerEntityExample</class>
         <class>entities.PassengerEntity</class>
         <class>entities.ScheduleEntity</class>
         <class>entities.StationEntity</class>
         <class>entities.TicketEntity</class>
         <class>entities.TrainEntity</class>
         <properties>
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/sbb
-                ?useSSL=false&amp;useUnicode=true&amp;useJDBCCompliantTimezoneShift=true
-                &amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Moscow"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
             <property name="hibernate.connection.username" value="root"/>
             <property name="hibernate.connection.password" value="iamRooT911"/>

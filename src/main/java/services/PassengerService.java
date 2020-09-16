@@ -1,10 +1,10 @@
-package dao;
+package services;
 
 import entities.PassengerEntity;
 
 import java.util.List;
 
-public interface PassengerDao {
+public interface PassengerService {
     PassengerEntity getPassenger(int id);
 
     List<PassengerEntity> getAllPassengers();

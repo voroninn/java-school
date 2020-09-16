@@ -1,0 +1,45 @@
+package services;
+
+import dao.PassengerDao;
+import dao.PassengerDaoImpl;
+import entities.PassengerEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class PassengerServiceImpl implements PassengerService {
+
+    private final PassengerDao passengerDao = new PassengerDaoImpl();
+
+    @Override
+    @Transactional
+    public PassengerEntity getPassenger(int id) {
+        return passengerDao.getPassenger(id);
+    }
+
+    @Override
+    @Transactional
+    public List<PassengerEntity> getAllPassengers() {
+        return passengerDao.getAllPassengers();
+    }
+
+    @Override
+    @Transactional
+    public void addPassenger(PassengerEntity passenger) {
+        passengerDao.addPassenger(passenger);
+    }
+
+    @Override
+    @Transactional
+    public void updatePassenger(PassengerEntity passenger) {
+        passengerDao.updatePassenger(passenger);
+    }
+
+    @Override
+    @Transactional
+    public void deletePassenger(PassengerEntity passenger) {
+        passengerDao.deletePassenger(passenger);
+    }
+}
