@@ -18,6 +18,7 @@
             <a href="#" class="nav-item nav-link active" style="color: white">Home</a>
             <a href="#" class="nav-item nav-link" style="color: white">Timetable</a>
             <a href="#" class="nav-item nav-link" style="color: white">Tickets</a>
+            <a href="#" class="nav-item nav-link" style="color: white">Passengers</a>
         </div>
         <div class="navbar-nav ml-auto">
             <a href="#" class="nav-item nav-link" style="color: white">Login</a>
