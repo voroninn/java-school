@@ -1,8 +1,9 @@
-package services;
+package org.javaschool.services;
 
-import dao.PassengerDao;
-import dao.PassengerDaoImpl;
-import entities.PassengerEntity;
+import org.javaschool.dao.PassengerDao;
+import org.javaschool.dao.PassengerDaoImpl;
+import org.javaschool.entities.PassengerEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +12,8 @@ import java.util.List;
 @Service
 public class PassengerServiceImpl implements PassengerService {
 
-    private final PassengerDao passengerDao = new PassengerDaoImpl();
+    @Autowired
+    private PassengerDao passengerDao;
 
     @Override
     @Transactional

@@ -1,6 +1,6 @@
-package dao;
+package org.javaschool.dao;
 
-import entities.PassengerEntity;
+import org.javaschool.entities.PassengerEntity;
 
 import java.util.List;
 

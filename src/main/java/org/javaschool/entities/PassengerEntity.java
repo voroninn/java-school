@@ -1,4 +1,4 @@
-package entities;
+package org.javaschool.entities;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,7 +20,7 @@ public class PassengerEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     @Column(name = "birth_date")
     private Date birthDate;

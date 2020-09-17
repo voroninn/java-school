@@ -1,37 +1,36 @@
-package dao;
+package org.javaschool.dao;
 
-import entities.StationEntity;
+import org.javaschool.entities.TrainEntity;
 
 import javax.persistence.*;
 import java.util.List;
 
-public class StationDao {
+public class TrainDao {
     private static final EntityManagerFactory emFactoryObj =
             Persistence.createEntityManagerFactory("sbb-pu");
 
     private final EntityManager entityManager = emFactoryObj.createEntityManager();
 
-    public StationEntity get(int id) {
-        return entityManager.find(StationEntity.class, id);
+    public TrainEntity get(int id) {
+        return entityManager.find(TrainEntity.class, id);
     }
 
-    public List<StationEntity> getAll() {
-        Query query = entityManager.createQuery("SELECT e FROM StationEntity e");
+    public List<TrainEntity> getAll() {
+        Query query = entityManager.createQuery("SELECT e FROM TrainEntity e");
         return query.getResultList();
     }
 
-    public void save(StationEntity station) {
+    public void save(TrainEntity train) {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
-        entityManager.persist(station);
+        entityManager.persist(train);
         transaction.commit();
     }
 
-    public void delete(StationEntity station) {
+    public void delete(TrainEntity train) {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
-        entityManager.remove(station);
+        entityManager.remove(train);
         transaction.commit();
     }
 }
-

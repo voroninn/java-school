@@ -1,6 +1,6 @@
-package services;
+package org.javaschool.services;
 
-import entities.PassengerEntity;
+import org.javaschool.entities.PassengerEntity;
 
 import java.util.List;
 

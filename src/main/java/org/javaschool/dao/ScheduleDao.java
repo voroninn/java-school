@@ -1,36 +1,36 @@
-package dao;
+package org.javaschool.dao;
 
-import entities.TicketEntity;
+import org.javaschool.entities.ScheduleEntity;
 
 import javax.persistence.*;
 import java.util.List;
 
-public class TicketDao {
+public class ScheduleDao {
     private static final EntityManagerFactory emFactoryObj =
             Persistence.createEntityManagerFactory("sbb-pu");
 
     private final EntityManager entityManager = emFactoryObj.createEntityManager();
 
-    public TicketEntity get(int id) {
-        return entityManager.find(TicketEntity.class, id);
+    public ScheduleEntity get(int id) {
+        return entityManager.find(ScheduleEntity.class, id);
     }
 
-    public List<TicketEntity> getAll() {
-        Query query = entityManager.createQuery("SELECT e FROM TicketEntity e");
+    public List<ScheduleEntity> getAll() {
+        Query query = entityManager.createQuery("SELECT e FROM ScheduleEntity e");
         return query.getResultList();
     }
 
-    public void save(TicketEntity ticket) {
+    public void save(ScheduleEntity schedule) {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
-        entityManager.persist(ticket);
+        entityManager.persist(schedule);
         transaction.commit();
     }
 
-    public void delete(TicketEntity ticket) {
+    public void delete(ScheduleEntity schedule) {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
-        entityManager.remove(ticket);
+        entityManager.remove(schedule);
         transaction.commit();
     }
 }
