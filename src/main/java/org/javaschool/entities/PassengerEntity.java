@@ -20,8 +20,8 @@ public class PassengerEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    //@Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "MM-dd-yyyy")
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     @Column(name = "birth_date")
     private Date birthDate;
 

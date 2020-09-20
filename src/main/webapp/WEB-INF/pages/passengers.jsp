@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-light sticky-top" style="background-color: #b22222">
+<nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #b22222">
     <a href="#" class="navbar-brand" style="color: white">SBB</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -36,6 +37,7 @@
         <th>Last Name</th>
         <th>Birth Date</th>
         <th>Passport Number</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -44,13 +46,17 @@
             <td>${passenger.id}</td>
             <td>${passenger.firstName}</td>
             <td>${passenger.lastName}</td>
-            <td>${passenger.birthDate}</td>
+            <td><fmt:formatDate value="${passenger.birthDate}" pattern = "dd.MM.yyyy"/></td>
             <td>${passenger.passportNumber}</td>
+            <td>
+                <a href="/edit/${passenger.id}" class="btn btn-secondary" role="button">Edit</a>
+                <a href="/delete/${passenger.id}" class="btn btn-danger" role="button">Delete</a>
+            </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<div style="height: 100px"></div>
+<a href="/add" class="col-sm-10 offset-1 btn btn-outline-info btn-block" role="button">+</a>
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">JavaSchool</a>

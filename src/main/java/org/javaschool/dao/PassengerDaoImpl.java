@@ -10,9 +10,8 @@ import java.util.List;
 @Repository
 public class PassengerDaoImpl implements PassengerDao {
 
-//    private static final EntityManagerFactory emFactoryObj =
-//                Persistence.createEntityManagerFactory("sbb-pu");
     @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
     public PassengerEntity getPassenger(int id) {
@@ -27,19 +26,18 @@ public class PassengerDaoImpl implements PassengerDao {
 
     @Override
     public void addPassenger(PassengerEntity passenger) {
-        EntityTransaction transaction = entityManager.getTransaction();
+        //EntityTransaction transaction = entityManager.getTransaction();
         entityManager.persist(passenger);
     }
 
     @Override
     public void updatePassenger(PassengerEntity passenger) {
-        EntityTransaction transaction = entityManager.getTransaction();
+        //EntityTransaction transaction = entityManager.getTransaction();
         entityManager.merge(passenger);
     }
 
     @Override
     public void deletePassenger(PassengerEntity passenger) {
-            EntityTransaction transaction = entityManager.getTransaction();
-            entityManager.remove(passenger);
+            entityManager.remove(entityManager.merge(passenger));
     }
 }

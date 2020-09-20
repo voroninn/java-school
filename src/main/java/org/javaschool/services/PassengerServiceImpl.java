@@ -1,7 +1,6 @@
 package org.javaschool.services;
 
 import org.javaschool.dao.PassengerDao;
-import org.javaschool.dao.PassengerDaoImpl;
 import org.javaschool.entities.PassengerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
