@@ -1,12 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Passengers</title>
+    <c:if test="${empty train.name}">
+        <title>Add Train</title>
+    </c:if>
+    <c:if test="${!empty train.name}">
+        <title>Edit Train</title>
+    </c:if>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
@@ -29,34 +35,38 @@
     </div>
 </nav>
 <div style="height: 100px"></div>
-<table class="col-sm-10 offset-1 table table-striped">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Birth Date</th>
-        <th>Passport Number</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="passenger" items="${passengersList}">
-        <tr>
-            <td>${passenger.id}</td>
-            <td>${passenger.firstName}</td>
-            <td>${passenger.lastName}</td>
-            <td><fmt:formatDate value="${passenger.birthDate}" pattern = "dd.MM.yyyy"/></td>
-            <td>${passenger.passportNumber}</td>
-            <td>
-                <a href="/edit/passenger/${passenger.id}" class="btn btn-secondary" role="button">Edit</a>
-                <a href="/delete/passenger/${passenger.id}" class="btn btn-danger" role="button">Delete</a>
-            </td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
-<a href="<c:url value="/add/passenger"/>" class="col-sm-10 offset-1 btn btn-outline-info btn-block" role="button">+</a>
+<c:if test="${empty train.name}">
+    <c:url value="/add/train" var="var"/>
+</c:if>
+<c:if test="${!empty train.name}">
+    <c:url value="/edit/train" var="var"/>
+</c:if>
+<form:form action="${var}" modelAttribute="train" method="POST" class="col-sm-10 offset-1">
+    <c:if test="${!empty train.name}">
+        <input type="hidden" name="id" value="${train.id}">
+    </c:if>
+    <div style="height: 100px">
+        <label for="name">Name</label>
+        <c:if test="${empty train.name}">
+            <form:input path="name" type="text" class="form-control" id="name"/>
+        </c:if>
+        <c:if test="${!empty train.name}">
+            <form:input path="name" type="text" class="form-control" id="name" placeholder="${train.name}"/>
+        </c:if>
+    </div>
+    <div style="height: 100px">
+        <label for="seats">Seats</label>
+        <c:if test="${empty train.seats}">
+            <form:input path="seats" type="text" class="form-control" id="seats"/>
+        </c:if>
+        <c:if test="${!empty train.seats}">
+            <form:input path="seats" type="text" class="form-control" id="seats" placeholder="${train.seats}"/>
+        </c:if>
+    </div>
+
+    <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
+            type="submit">Submit</button>
+</form:form>
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">JavaSchool</a>

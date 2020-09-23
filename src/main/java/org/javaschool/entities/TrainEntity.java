@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class TrainEntity {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "name")
@@ -14,15 +15,6 @@ public class TrainEntity {
 
     @Column(name = "seats")
     private int seats;
-
-    @Column(name = "coaches")
-    private int coaches;
-
-    @Column(name = "departure_station")
-    private String departureStation;
-
-    @Column(name = "arrival_station")
-    private String arrivalStation;
 
     public int getId() {
         return id;
@@ -46,29 +38,5 @@ public class TrainEntity {
 
     public void setSeats(int seats) {
         this.seats = seats;
-    }
-
-    public int getCoaches() {
-        return coaches;
-    }
-
-    public void setCoaches(int coaches) {
-        this.coaches = coaches;
-    }
-
-    public String getDepartureStation() {
-        return departureStation;
-    }
-
-    public void setDepartureStation(String departureStation) {
-        this.departureStation = departureStation;
-    }
-
-    public String getArrivalStation() {
-        return arrivalStation;
-    }
-
-    public void setArrivalStation(String arrivalStation) {
-        this.arrivalStation = arrivalStation;
     }
 }

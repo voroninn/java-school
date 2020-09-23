@@ -8,13 +8,11 @@ public class StationEntity {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "schedule_id")
-    private Integer scheduleId;
 
     public int getId() {
         return id;
@@ -30,13 +28,5 @@ public class StationEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getScheduleId() {
-        return scheduleId;
-    }
-
-    public void setScheduleId(Integer scheduleId) {
-        this.scheduleId = scheduleId;
     }
 }

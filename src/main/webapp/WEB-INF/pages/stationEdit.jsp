@@ -1,15 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SBB Home</title>
+    <c:if test="${empty station.name}">
+        <title>Add Station</title>
+    </c:if>
+    <c:if test="${!empty station.name}">
+        <title>Edit Station</title>
+    </c:if>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-light sticky-top" style="background-color: #b22222">
+<nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #b22222">
     <a href="#" class="navbar-brand" style="color: white">SBB</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -22,34 +29,33 @@
             <a href="<c:url value="/passengers"/>" class="nav-item nav-link" style="color: white">Passengers</a>
         </div>
         <div class="navbar-nav ml-auto">
-            <a href="<c:url value="/registration"/>" class="nav-item nav-link" style="color: white">Registration</a>
-            <a href="<c:url value="/login"/>" class="nav-item nav-link" style="color: white">Login</a>
+            <a href="#" class="nav-item nav-link" style="color: white">Login</a>
         </div>
     </div>
 </nav>
 <div style="height: 100px"></div>
-<form>
-    <div class="form-group row">
-        <div class="col-sm-4 offset-sm-4">
-            <input type="from" class="form-control" id="inputFrom" placeholder="From">
-        </div>
+<c:if test="${empty station.name}">
+    <c:url value="/add/station" var="var"/>
+</c:if>
+<c:if test="${!empty station.name}">
+    <c:url value="/edit/station" var="var"/>
+</c:if>
+<form:form action="${var}" modelAttribute="station" method="POST" class="col-sm-10 offset-1">
+    <c:if test="${!empty station.name}">
+        <input type="hidden" name="id" value="${station.id}">
+    </c:if>
+    <div style="height: 100px">
+        <label for="name">Name</label>
+        <c:if test="${empty station.name}">
+            <form:input path="name" type="text" class="form-control" id="name"/>
+        </c:if>
+        <c:if test="${!empty station.name}">
+            <form:input path="name" type="text" class="form-control" id="name" placeholder="${station.name}"/>
+        </c:if>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-4 offset-sm-4">
-            <input type="to" class="form-control" id="inputTo" placeholder="To">
-        </div>
-    </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-10 offset-sm-4">
-            <button type="submit" class="btn btn-danger">Search</button>
-        </div>
-    </div>
-</form>
-<div style="height: 100px"></div>
-<div class="">
-    <img src="https://sbb.imgix.net/content/dam/internet/sharedimages/zug/Eurocity-Im-Lavaux.jpg?crop=focalpoint&fp-x=0.5128125&fp-y=0.53828126&fp-z=1&w=2656&h=960&auto=format,compress,cs=tinysrgb&q=45" class="img-fluid" alt="Train">
-</div>
+    <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
+            type="submit">Submit</button>
+</form:form>
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">JavaSchool</a>

@@ -3,14 +3,10 @@ package org.javaschool.controllers;
 import org.javaschool.entities.PassengerEntity;
 import org.javaschool.services.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -35,17 +31,17 @@ public class PassengerController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/edit/{id}")
-    public ModelAndView editPage(@PathVariable("id") int id) {
+    @GetMapping(value = "/edit/passenger/{id}")
+    public ModelAndView passengerEdit(@PathVariable("id") int id) {
         PassengerEntity passenger = passengerService.getPassenger(id);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("editPage");
+        modelAndView.setViewName("passengerEdit");
         modelAndView.addObject("passenger", passenger);
         //modelAndView.addObject("localDateTimeFormat", new SimpleDateFormat("dd.MM.yyyy"));
         return modelAndView;
     }
 
-    @PostMapping(value = "/edit")
+    @PostMapping(value = "/edit/passenger")
     public ModelAndView editPassenger(@ModelAttribute("passenger") PassengerEntity passenger) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");
@@ -53,14 +49,15 @@ public class PassengerController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/add")
-    public ModelAndView addPage() {
+    @GetMapping(value = "/add/passenger")
+    public ModelAndView passengerAdd() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("editPage");
+        modelAndView.setViewName("passengerEdit");
+        modelAndView.addObject("passenger", new PassengerEntity());
         return modelAndView;
     }
 
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/add/passenger")
     public ModelAndView addPassenger(@ModelAttribute("passenger") PassengerEntity passenger) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");
@@ -68,7 +65,7 @@ public class PassengerController {
         return modelAndView;
     }
 
-    @GetMapping(value="/delete/{id}")
+    @GetMapping(value="/delete/passenger/{id}")
     public ModelAndView deletePassenger(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");

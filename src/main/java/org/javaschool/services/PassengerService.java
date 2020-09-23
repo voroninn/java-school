@@ -5,6 +5,7 @@ import org.javaschool.entities.PassengerEntity;
 import java.util.List;
 
 public interface PassengerService {
+
     PassengerEntity getPassenger(int id);
 
     List<PassengerEntity> getAllPassengers();

@@ -1,11 +1,10 @@
-package org.javaschool.dao;
+package org.javaschool.services;
 
 import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrainEntity;
 
 import java.util.List;
 
-public interface StationDao {
+public interface StationService {
 
     StationEntity getStation(int id);
 

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,8 +25,8 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav">
             <a href="<c:url value="/"/>" class="nav-item nav-link active" style="color: white">Home</a>
-            <a href="#" class="nav-item nav-link" style="color: white">Timetable</a>
-            <a href="#" class="nav-item nav-link" style="color: white">Tickets</a>
+            <a href="<c:url value="/stations"/>" class="nav-item nav-link" style="color: white">Stations</a>
+            <a href="<c:url value="/trains"/>" class="nav-item nav-link" style="color: white">Trains</a>
             <a href="<c:url value="/passengers"/>" class="nav-item nav-link" style="color: white">Passengers</a>
         </div>
         <div class="navbar-nav ml-auto">
@@ -35,42 +36,42 @@
 </nav>
 <div style="height: 100px"></div>
 <c:if test="${empty passenger.firstName}">
-    <c:url value="/add" var="var"/>
+    <c:url value="/add/passenger" var="var"/>
 </c:if>
 <c:if test="${!empty passenger.firstName}">
-    <c:url value="/edit" var="var"/>
+    <c:url value="/edit/passenger" var="var"/>
 </c:if>
-<form action="${var}" method="POST" class="col-sm-10 offset-1">
+<form:form action="${var}" modelAttribute="passenger" method="POST" class="col-sm-10 offset-1">
     <c:if test="${!empty passenger.firstName}">
         <input type="hidden" name="id" value="${passenger.id}">
     </c:if>
     <div style="height: 100px">
         <label for="firstName">First Name</label>
         <c:if test="${empty passenger.firstName}">
-            <input type="text" class="form-control" id="firstName">
+            <form:input path="firstName" type="text" class="form-control" id="firstName"/>
         </c:if>
         <c:if test="${!empty passenger.firstName}">
-            <input type="text" class="form-control" id="firstName" placeholder="${passenger.firstName}">
+            <form:input path="firstName" type="text" class="form-control" id="firstName" placeholder="${passenger.firstName}"/>
         </c:if>
     </div>
     <div style="height: 100px">
         <label for="lastName">Last Name</label>
         <c:if test="${empty passenger.lastName}">
-            <input type="text" class="form-control" id="lastName">
+            <form:input path="lastName" type="text" class="form-control" id="lastName"/>
         </c:if>
         <c:if test="${!empty passenger.lastName}">
-            <input type="text" class="form-control" id="lastName" placeholder="${passenger.lastName}">
+            <form:input path="lastName" type="text" class="form-control" id="lastName" placeholder="${passenger.lastName}"/>
         </c:if>
     </div>
     <div style="height: 100px">
         <label for="birthDate">Birth Date</label>
         <c:if test="${empty passenger.birthDate}">
-            <input type="text" class="form-control"
+            <input path="birthDate" type="text" class="form-control"
                    id="birthDate" placeholder="DD.MM.YYYY"
                    value = "<fmt:formatDate value="${passenger.birthDate}" pattern="dd.MM.yyyy"/>"/>
         </c:if>
         <c:if test="${!empty passenger.birthDate}">
-                        <input type="text" class="form-control"
+                        <input path="birthDate" type="text" class="form-control"
                    id="birthDate" placeholder="${passenger.birthDate}"
                    value = "<fmt:formatDate value="${passenger.birthDate}" pattern="dd.MM.yyyy"/>"/>
         </c:if>
@@ -78,15 +79,15 @@
     <div style="height: 100px">
         <label for="passportNumber">Passport Number</label>
         <c:if test="${empty passenger.passportNumber}">
-            <input type="text" class="form-control" id="passportNumber">
+            <form:input path="passportNumber" type="text" class="form-control" id="passportNumber"/>
         </c:if>
         <c:if test="${!empty passenger.passportNumber}">
-            <input type="text" class="form-control" id="passportNumber" placeholder="${passenger.passportNumber}">
+            <form:input path="passportNumber" type="text" class="form-control" id="passportNumber" placeholder="${passenger.passportNumber}"/>
         </c:if>
     </div>
     <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
             type="submit">Submit</button>
-</form>
+</form:form>
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">JavaSchool</a>
