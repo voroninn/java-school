@@ -66,14 +66,12 @@
     <div style="height: 100px">
         <label for="birthDate">Birth Date</label>
         <c:if test="${empty passenger.birthDate}">
-            <input path="birthDate" type="text" class="form-control"
-                   id="birthDate" placeholder="DD.MM.YYYY"
-                   value = "<fmt:formatDate value="${passenger.birthDate}" pattern="dd.MM.yyyy"/>"/>
+            <form:input path="birthDate" type="text" class="form-control"
+                   id="birthDate" placeholder="DD.MM.YYYY"/>
         </c:if>
         <c:if test="${!empty passenger.birthDate}">
-                        <input path="birthDate" type="text" class="form-control"
-                   id="birthDate" placeholder="${passenger.birthDate}"
-                   value = "<fmt:formatDate value="${passenger.birthDate}" pattern="dd.MM.yyyy"/>"/>
+            <form:input path="birthDate" type="text" class="form-control"
+                   id="birthDate" placeholder="<${passenger.birthDate}"/>
         </c:if>
     </div>
     <div style="height: 100px">

@@ -26,13 +26,11 @@ public class PassengerDaoImpl implements PassengerDao {
 
     @Override
     public void addPassenger(PassengerEntity passenger) {
-        //EntityTransaction transaction = entityManager.getTransaction();
         entityManager.persist(passenger);
     }
 
     @Override
     public void updatePassenger(PassengerEntity passenger) {
-        //EntityTransaction transaction = entityManager.getTransaction();
         entityManager.merge(passenger);
     }
 

@@ -44,6 +44,10 @@
             <span>${error}</span>
 <%--            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
             <div>
+                Remember me
+                <input name="remember-me" type="checkbox" class="form-control"/>
+            </div>
+            <div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
             </div>
             <h4 class="text-center"><a href="<c:url value="/registration"/>">Create an account</a></h4>

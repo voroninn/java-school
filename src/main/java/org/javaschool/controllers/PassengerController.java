@@ -37,7 +37,6 @@ public class PassengerController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengerEdit");
         modelAndView.addObject("passenger", passenger);
-        //modelAndView.addObject("localDateTimeFormat", new SimpleDateFormat("dd.MM.yyyy"));
         return modelAndView;
     }
 
@@ -73,11 +72,4 @@ public class PassengerController {
         passengerService.deletePassenger(passenger);
         return modelAndView;
     }
-
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-//        sdf.setLenient(true);
-//        binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
-//    }
 }

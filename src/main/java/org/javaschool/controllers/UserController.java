@@ -3,7 +3,7 @@ package org.javaschool.controllers;
 import org.javaschool.entities.UserEntity;
 import org.javaschool.services.SecurityService;
 import org.javaschool.services.UserService;
-import org.javaschool.validator.UserValidator;
+import org.javaschool.utils.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
