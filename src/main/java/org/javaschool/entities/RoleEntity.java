@@ -33,6 +33,10 @@ public class RoleEntity implements GrantedAuthority {
         this.name = name;
     }
 
+    public RoleEntity(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

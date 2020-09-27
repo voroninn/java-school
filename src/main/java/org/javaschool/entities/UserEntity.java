@@ -18,7 +18,7 @@ public class UserEntity implements UserDetails {
     private int id;
 
     @Size(min=5, message = "Username should be at least 5 characters long")
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Size(min=5, message = "Password should be at least 5 characters long")
@@ -32,7 +32,6 @@ public class UserEntity implements UserDetails {
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-
     private Set<RoleEntity> roles;
 
     public UserEntity() {

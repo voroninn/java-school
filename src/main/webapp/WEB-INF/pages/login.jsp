@@ -17,7 +17,6 @@
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav">
             <a href="<c:url value="/"/>" class="nav-item nav-link active" style="color: white">Home</a>
@@ -30,25 +29,28 @@
 <div style="height: 100px"></div>
 <div class="container">
     <form method="POST" action="<c:url value="/login"/>" class="form-signin">
-        <h2 class="form-heading">Log in</h2>
-
+        <h2 class="form-heading text-center">Log in</h2>
         <div class="form-group ${error != null ? 'has-error' : ''}">
             <span>${message}</span>
-            <div>
-                <input name="username" type="text" class="form-control" placeholder="Username"
-                       autofocus="true"/>
-            </div>
-            <div>
-                <input name="password" type="password" class="form-control" placeholder="Password"/>
-            </div>
-            <span>${error}</span>
-<%--            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
-            <div>
-                Remember me
-                <input name="remember-me" type="checkbox" class="form-control"/>
-            </div>
-            <div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+            <div class="jumbotron">
+                <div class="form-group col-sm-4 offset-sm-4">
+                    <input name="username" type="text" class="form-control" placeholder="Username"
+                           autofocus="true"/>
+                </div>
+                <div class="form-group col-sm-4 offset-sm-4">
+                    <input name="password" type="password" class="form-control" placeholder="Password"/>
+                </div>
+                <span>${error}</span>
+    <%--            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
+                <div class="form-group text-center">
+                    <div class="form-check">
+                        <input name="remember-me" id="remember-me" type="checkbox" class="form-check-input"/>
+                        <label class="form-check-label" for="remember-me">Remember me</label>
+                    </div>
+                </div>
+                    <div class="text-center">
+                        <button class="btn btn-lg btn-primary btn-center" type="submit">Log in</button>
+                    </div>
             </div>
             <h4 class="text-center"><a href="<c:url value="/registration"/>">Create an account</a></h4>
         </div>

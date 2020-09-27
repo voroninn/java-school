@@ -48,10 +48,11 @@
     <div style="height: 100px">
         <label for="firstName">First Name</label>
         <c:if test="${empty passenger.firstName}">
-            <form:input path="firstName" type="text" class="form-control" id="firstName"/>
+            <form:input path="firstName" type="text" class="form-control" id="firstName" autofocus="true"/>
         </c:if>
         <c:if test="${!empty passenger.firstName}">
-            <form:input path="firstName" type="text" class="form-control" id="firstName" placeholder="${passenger.firstName}"/>
+            <form:input path="firstName" type="text" class="form-control"
+                        id="firstName" placeholder="${passenger.firstName}" autofocus="true"/>
         </c:if>
     </div>
     <div style="height: 100px">

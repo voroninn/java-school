@@ -47,10 +47,11 @@
     <div style="height: 100px">
         <label for="name">Name</label>
         <c:if test="${empty station.name}">
-            <form:input path="name" type="text" class="form-control" id="name"/>
+            <form:input path="name" type="text" class="form-control" id="name" autofocus="true"/>
         </c:if>
         <c:if test="${!empty station.name}">
-            <form:input path="name" type="text" class="form-control" id="name" placeholder="${station.name}"/>
+            <form:input path="name" type="text" class="form-control"
+                        id="name" placeholder="${station.name}" autofocus="true"/>
         </c:if>
     </div>
     <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
