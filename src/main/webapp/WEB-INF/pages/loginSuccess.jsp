@@ -38,6 +38,10 @@
     </div>
 </nav>
 <div style="height: 100px"></div>
+<div class="alert alert-success alert-dismissible fade show col-sm-6 offset-sm-3">
+    You have been successfully logged in as <strong>${pageContext.request.userPrincipal.name}</strong>.
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+</div>
 <form>
     <div class="form-group row">
         <div class="col-sm-4 offset-sm-4">

@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void save(UserEntity user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(new RoleEntity("ROLE_USER")));
+        user.setRoles(Collections.singleton(roleDao.findRoleByName("ROLE_USER")));
         userDao.addUser(user);
     }
 

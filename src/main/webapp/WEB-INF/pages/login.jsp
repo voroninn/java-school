@@ -13,16 +13,13 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #b22222">
-    <a href="#" class="navbar-brand" style="color: white">SBB</a>
+    <a href="<c:url value="/"/>" class="navbar-brand" style="color: white">SBB</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav">
             <a href="<c:url value="/"/>" class="nav-item nav-link active" style="color: white">Home</a>
-            <a href="<c:url value="/stations"/>" class="nav-item nav-link" style="color: white">Stations</a>
-            <a href="<c:url value="/trains"/>" class="nav-item nav-link" style="color: white">Trains</a>
-            <a href="<c:url value="/passengers"/>" class="nav-item nav-link" style="color: white">Passengers</a>
         </div>
     </div>
 </nav>
@@ -41,7 +38,6 @@
                     <input name="password" type="password" class="form-control" placeholder="Password"/>
                 </div>
                 <span>${error}</span>
-    <%--            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>--%>
                 <div class="form-group text-center">
                     <div class="form-check">
                         <input name="remember-me" id="remember-me" type="checkbox" class="form-check-input"/>

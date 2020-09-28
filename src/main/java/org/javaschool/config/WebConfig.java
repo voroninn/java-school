@@ -1,28 +1,51 @@
 package org.javaschool.config;
 
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.filter.DelegatingFilterProxy;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.javaschool.utils.StringToDateConverter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
+@EnableWebMvc
+@Configuration
+@ComponentScan(basePackages = "org.javaschool")
+public class WebConfig implements WebMvcConfigurer {
 
-public class WebConfig implements WebApplicationInitializer {
+    @Bean
+    public ViewResolver viewResolver() {
+    InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setViewClass(JstlView.class);
+        viewResolver.setPrefix("/WEB-INF/pages/");
+        viewResolver.setSuffix(".jsp");
+    return viewResolver;
+    }
 
-    public void onStartup(ServletContext servletContext) {
-        AnnotationConfigWebApplicationContext webCtx = new AnnotationConfigWebApplicationContext();
-        webCtx.register(MvcConfig.class);
-        webCtx.register(PersistenceJPAConfig.class);
-        webCtx.register(WebSecurityConfig.class);
-        webCtx.setServletContext(servletContext);
-        ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(webCtx));
-        servlet.setLoadOnStartup(1);
-        servlet.addMapping("/");
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+    }
 
-        servletContext.addListener(new ContextLoaderListener(webCtx));
-        servletContext.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"))
-                .addMappingForUrlPatterns(null, false, "/*");
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
+
+    @Bean(name = "messageSource")
+    public ReloadableResourceBundleMessageSource getMessageSource() {
+        ReloadableResourceBundleMessageSource resource = new ReloadableResourceBundleMessageSource();
+        resource.setBasename("validation");
+        resource.setCacheSeconds(1);
+        resource.setDefaultEncoding("UTF-8");
+        return resource;
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new StringToDateConverter());
     }
 }

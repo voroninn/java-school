@@ -17,19 +17,22 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #b22222">
-    <a href="#" class="navbar-brand" style="color: white">SBB</a>
+    <a href="<c:url value="/"/>" class="navbar-brand" style="color: white">SBB</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav">
             <a href="<c:url value="/"/>" class="nav-item nav-link active" style="color: white">Home</a>
-            <a href="<c:url value="/stations"/>" class="nav-item nav-link" style="color: white">Stations</a>
-            <a href="<c:url value="/trains"/>" class="nav-item nav-link" style="color: white">Trains</a>
-            <a href="<c:url value="/passengers"/>" class="nav-item nav-link" style="color: white">Passengers</a>
+            <div class="btn-group">
+                <a href="<c:url value="/stations"/>" class="btn btn-outline-light">Stations</a>
+                <a href="<c:url value="/trains"/>" class="btn btn-outline-light">Trains</a>
+                <a href="<c:url value="/passengers"/>" class="btn btn-outline-light">Passengers</a>
+            </div>
         </div>
         <div class="navbar-nav ml-auto">
-            <a href="#" class="nav-item nav-link" style="color: white">Login</a>
+            <a href="<c:url value="/logout"/>" class="nav-item nav-link" style="color: white">Logout</a>
         </div>
     </div>
 </nav>

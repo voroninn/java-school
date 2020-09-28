@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -32,19 +31,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/registration").permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/", "/registration").permitAll()
+                        .antMatchers("/passengers/**", "/trains/**", "/stations/**").hasRole("ADMIN")
+                            .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                //.loginProcessingUrl("/appLogin")
-                .permitAll()
-                .defaultSuccessUrl("/", true)
+                    .formLogin()
+                        .loginPage("/login")
+                            .permitAll()
+                                .defaultSuccessUrl("/loginSuccess", true)
                 .and()
-                .rememberMe()
+                    .rememberMe()
+                        .key("uniqueAndSecret")
+                            .userDetailsService(userDetailsService)
                 .and()
-                .logout()
-                .permitAll();
+                    .logout()
+                        .permitAll();
     }
 
     @Bean
@@ -59,9 +60,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager customAuthenticationManager() throws Exception {
         return authenticationManager();
     }
-
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//    }
 }
