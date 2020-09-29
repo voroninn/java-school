@@ -1,11 +1,9 @@
 package org.javaschool.config;
 
-import org.javaschool.utils.StringToDateConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -42,10 +40,5 @@ public class WebConfig implements WebMvcConfigurer {
         resource.setCacheSeconds(1);
         resource.setDefaultEncoding("UTF-8");
         return resource;
-    }
-
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new StringToDateConverter());
     }
 }

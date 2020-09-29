@@ -20,6 +20,7 @@ public class TrainDaoImpl implements TrainDao {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<TrainEntity> getAllTrains() {
         Query query = entityManager.createQuery("SELECT e FROM TrainEntity e");
         return query.getResultList();
@@ -31,7 +32,7 @@ public class TrainDaoImpl implements TrainDao {
     }
 
     @Override
-    public void updateTrain(TrainEntity train) {
+    public void editTrain(TrainEntity train) {
         entityManager.merge(train);
     }
 

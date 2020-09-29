@@ -34,8 +34,8 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public void updatePassenger(PassengerEntity passenger) {
-        passengerDao.updatePassenger(passenger);
+    public void editPassenger(PassengerEntity passenger) {
+        passengerDao.editPassenger(passenger);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package org.javaschool.dao;
 
 import org.javaschool.entities.RoleEntity;
-import org.javaschool.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

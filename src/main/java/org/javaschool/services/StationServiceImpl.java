@@ -34,8 +34,8 @@ public class StationServiceImpl  implements StationService {
 
     @Override
     @Transactional
-    public void updateStation(StationEntity station) {
-        stationDao.updateStation(station);
+    public void editStation(StationEntity station) {
+        stationDao.editStation(station);
     }
 
     @Override

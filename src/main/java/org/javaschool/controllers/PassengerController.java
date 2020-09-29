@@ -4,7 +4,10 @@ import org.javaschool.entities.PassengerEntity;
 import org.javaschool.services.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -14,13 +17,6 @@ public class PassengerController {
 
     @Autowired
     private PassengerService passengerService;
-
-    @GetMapping(value = "/")
-    public ModelAndView homePage() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("index");
-        return modelAndView;
-    }
 
     @GetMapping(value = "/passengers")
     public ModelAndView allPassengers() {
@@ -32,7 +28,7 @@ public class PassengerController {
     }
 
     @GetMapping(value = "/edit/passenger/{id}")
-    public ModelAndView passengerEdit(@PathVariable("id") int id) {
+    public ModelAndView editPassenger(@PathVariable("id") int id) {
         PassengerEntity passenger = passengerService.getPassenger(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengerEdit");
@@ -44,12 +40,12 @@ public class PassengerController {
     public ModelAndView editPassenger(@ModelAttribute("passenger") PassengerEntity passenger) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");
-        passengerService.updatePassenger(passenger);
+        passengerService.editPassenger(passenger);
         return modelAndView;
     }
 
     @GetMapping(value = "/add/passenger")
-    public ModelAndView passengerAdd() {
+    public ModelAndView addPassenger() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengerEdit");
         modelAndView.addObject("passenger", new PassengerEntity());

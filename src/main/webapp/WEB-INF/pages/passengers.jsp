@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -48,7 +48,7 @@
             <td>${passenger.id}</td>
             <td>${passenger.firstName}</td>
             <td>${passenger.lastName}</td>
-            <td><fmt:formatDate value="${passenger.birthDate}" pattern = "dd.MM.yyyy"/></td>
+            <td><fmt:formatDate value="${passenger.birthDate}" pattern="dd.MM.yyyy"/></td>
             <td>${passenger.passportNumber}</td>
             <td>
                 <a href="/edit/passenger/${passenger.id}" class="btn btn-secondary" role="button">Edit</a>

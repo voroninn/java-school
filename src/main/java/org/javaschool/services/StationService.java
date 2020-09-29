@@ -12,7 +12,7 @@ public interface StationService {
 
     void addStation(StationEntity station);
 
-    void updateStation(StationEntity station);
+    void editStation(StationEntity station);
 
     void deleteStation(StationEntity station);
 }

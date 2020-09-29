@@ -1,9 +1,7 @@
 package org.javaschool.controllers;
 
 import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrainEntity;
 import org.javaschool.services.StationService;
-import org.javaschool.services.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +18,24 @@ public class StationController {
     @Autowired
     private StationService stationService;
 
+    @GetMapping(value = "/")
+    public ModelAndView homePage() {
+        List<StationEntity> stations = stationService.getAllStations();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("index");
+        modelAndView.addObject("stationsList", stations);
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/loginSuccess")
+    public ModelAndView loginSuccess() {
+        List<StationEntity> stations = stationService.getAllStations();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("loginSuccess");
+        modelAndView.addObject("stationsList", stations);
+        return modelAndView;
+    }
+
     @GetMapping(value = "/stations")
     public ModelAndView allStations() {
         List<StationEntity> stations = stationService.getAllStations();
@@ -30,7 +46,7 @@ public class StationController {
     }
 
     @GetMapping(value = "/edit/station/{id}")
-    public ModelAndView stationEdit(@PathVariable("id") int id) {
+    public ModelAndView editStation(@PathVariable("id") int id) {
         StationEntity station = stationService.getStation(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("stationEdit");
@@ -42,12 +58,12 @@ public class StationController {
     public ModelAndView editStation(@ModelAttribute("station") StationEntity station) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/stations");
-        stationService.updateStation(station);
+        stationService.editStation(station);
         return modelAndView;
     }
 
     @GetMapping(value = "/add/station")
-    public ModelAndView stationAdd() {
+    public ModelAndView addStation() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("stationEdit");
         modelAndView.addObject("station", new StationEntity());
@@ -55,7 +71,7 @@ public class StationController {
     }
 
     @PostMapping(value = "/add/station")
-    public ModelAndView addTrain(@ModelAttribute("station") StationEntity station) {
+    public ModelAndView addStation(@ModelAttribute("station") StationEntity station) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/stations");
         stationService.addStation(station);

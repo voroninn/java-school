@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
@@ -44,15 +44,30 @@
 </div>
 <form>
     <div class="form-group row">
-        <div class="col-sm-4 offset-sm-4">
-            <input type="from" class="form-control" id="inputFrom" placeholder="From">
+        <div class="input-group col-sm-4 offset-sm-4">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelectFrom">From</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelectFrom">
+                <option selected>Select Station</option>
+                <c:forEach var="station" items="${stationsList}">
+                    <option value="${station.id}">${station.name}</option>
+                </c:forEach>
+            </select>
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-sm-4 offset-sm-4">
-            <input type="to" class="form-control" id="inputTo" placeholder="To">
+        <div class="input-group col-sm-4 offset-sm-4">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelectTo">To</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelectTo">
+                <option selected>Select Station</option>
+                <c:forEach var="station" items="${stationsList}">
+                    <option value="${station.id}">${station.name}</option>
+                </c:forEach>
+            </select>
         </div>
-    </div>
     </div>
     <div class="form-group row">
         <div class="col-sm-10 offset-sm-4">

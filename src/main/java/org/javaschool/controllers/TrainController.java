@@ -1,6 +1,5 @@
 package org.javaschool.controllers;
 
-import org.javaschool.entities.PassengerEntity;
 import org.javaschool.entities.TrainEntity;
 import org.javaschool.services.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class TrainController {
     }
 
     @GetMapping(value = "/edit/train/{id}")
-    public ModelAndView trainEdit(@PathVariable("id") int id) {
+    public ModelAndView editTrain(@PathVariable("id") int id) {
         TrainEntity train = trainService.getTrain(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trainEdit");
@@ -41,12 +40,12 @@ public class TrainController {
     public ModelAndView editTrain(@ModelAttribute("train") TrainEntity train) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/trains");
-        trainService.updateTrain(train);
+        trainService.editTrain(train);
         return modelAndView;
     }
 
     @GetMapping(value = "/add/train")
-    public ModelAndView trainAdd() {
+    public ModelAndView addTrain() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trainEdit");
         modelAndView.addObject("train", new TrainEntity());

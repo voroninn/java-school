@@ -13,15 +13,16 @@ public class WebAppInit implements WebApplicationInitializer {
 
     public void onStartup(ServletContext servletContext) {
         AnnotationConfigWebApplicationContext webCtx = new AnnotationConfigWebApplicationContext();
-        webCtx.register(WebSecurityConfig.class);
         webCtx.register(WebConfig.class);
         webCtx.register(PersistenceJPAConfig.class);
+        webCtx.register(WebSecurityConfig.class);
         webCtx.setServletContext(servletContext);
         ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(webCtx));
         servlet.setLoadOnStartup(1);
         servlet.addMapping("/");
         servletContext.addListener(new ContextLoaderListener(webCtx));
-        servletContext.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"))
-                .addMappingForUrlPatterns(null, false, "/*");
+        servletContext.addFilter("securityFilter",
+                new DelegatingFilterProxy("springSecurityFilterChain"))
+                        .addMappingForUrlPatterns(null, false, "/*");
     }
 }

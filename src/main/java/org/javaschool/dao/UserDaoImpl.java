@@ -1,9 +1,7 @@
 package org.javaschool.dao;
 
-import org.javaschool.entities.PassengerEntity;
 import org.javaschool.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

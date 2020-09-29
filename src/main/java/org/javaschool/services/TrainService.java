@@ -12,7 +12,7 @@ public interface TrainService {
 
     void addTrain(TrainEntity train);
 
-    void updateTrain(TrainEntity train);
+    void editTrain(TrainEntity train);
 
     void deleteTrain(TrainEntity train);
 }

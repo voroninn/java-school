@@ -12,7 +12,7 @@ public interface PassengerService {
 
     void addPassenger(PassengerEntity passenger);
 
-    void updatePassenger(PassengerEntity passenger);
+    void editPassenger(PassengerEntity passenger);
 
     void deletePassenger(PassengerEntity passenger);
 }

@@ -19,6 +19,7 @@ public class PassengerDaoImpl implements PassengerDao {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<PassengerEntity> getAllPassengers() {
         Query query = entityManager.createQuery("SELECT e FROM PassengerEntity e", PassengerEntity.class);
         return query.getResultList();
@@ -30,7 +31,7 @@ public class PassengerDaoImpl implements PassengerDao {
     }
 
     @Override
-    public void updatePassenger(PassengerEntity passenger) {
+    public void editPassenger(PassengerEntity passenger) {
         entityManager.merge(passenger);
     }
 

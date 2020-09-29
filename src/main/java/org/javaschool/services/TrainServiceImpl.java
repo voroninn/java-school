@@ -34,8 +34,8 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     @Transactional
-    public void updateTrain(TrainEntity train) {
-        trainDao.updateTrain(train);
+    public void editTrain(TrainEntity train) {
+        trainDao.editTrain(train);
     }
 
     @Override
