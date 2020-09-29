@@ -1,9 +1,16 @@
 package org.javaschool.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "stations", schema = "sbb")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class StationEntity {
 
     @Id
@@ -13,20 +20,4 @@ public class StationEntity {
 
     @Column(name = "name")
     private String name;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

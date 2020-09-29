@@ -1,9 +1,16 @@
 package org.javaschool.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "trains", schema = "sbb")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TrainEntity {
     @Id
     @Column(name = "id")
@@ -15,28 +22,4 @@ public class TrainEntity {
 
     @Column(name = "seats")
     private int seats;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getSeats() {
-        return seats;
-    }
-
-    public void setSeats(int seats) {
-        this.seats = seats;
-    }
 }
