@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,16 +47,17 @@
     You have been successfully logged in as <strong>${pageContext.request.userPrincipal.name}</strong>.
     <button type="button" class="close" data-dismiss="alert">&times;</button>
 </div>
-<form>
+
+<form:form action="/searchResult" method="POST">
     <div class="form-group row">
         <div class="input-group col-sm-4 offset-sm-4">
             <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelectFrom">From</label>
+                <label class="input-group-text" for="stationFrom">From</label>
             </div>
-            <select class="custom-select" id="inputGroupSelectFrom">
+            <select class="custom-select" name="stationFrom" id="stationFrom">
                 <option selected>Select Station</option>
                 <c:forEach var="station" items="${stationsList}">
-                    <option value="${station.id}">${station.name}</option>
+                    <option value="${station.name}">${station.name}</option>
                 </c:forEach>
             </select>
         </div>
@@ -63,12 +65,12 @@
     <div class="form-group row">
         <div class="input-group col-sm-4 offset-sm-4">
             <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelectTo">To</label>
+                <label class="input-group-text" for="stationTo">To</label>
             </div>
-            <select class="custom-select" id="inputGroupSelectTo">
+            <select class="custom-select" name="stationTo" id="stationTo">
                 <option selected>Select Station</option>
                 <c:forEach var="station" items="${stationsList}">
-                    <option value="${station.id}">${station.name}</option>
+                    <option value="${station.name}">${station.name}</option>
                 </c:forEach>
             </select>
         </div>
@@ -78,7 +80,7 @@
             <button type="submit" class="btn btn-danger">Search</button>
         </div>
     </div>
-</form>
+</form:form>
 
 <div style="height: 100px"></div>
 

@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
@@ -17,11 +18,13 @@ public class UserEntity implements UserDetails {
     @Column(name = "id")
     private int id;
 
-    @Size(min=5, message = "Username should be at least 5 characters long")
+//    @NotNull
+//    @Size(min = 6, max=32)
     @Column(name = "username", unique = true)
     private String username;
 
-    @Size(min=5, message = "Password should be at least 5 characters long")
+//    @NotNull
+//    @Size(min = 8, max = 32)
     @Column(name = "password")
     private String password;
 
