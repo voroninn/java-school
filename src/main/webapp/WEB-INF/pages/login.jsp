@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,7 @@
     <title>Log in with your account</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
+
 <body>
 <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #b22222">
     <a href="<c:url value="/"/>" class="navbar-brand" style="color: white">SBB</a>
@@ -24,6 +26,7 @@
     </div>
 </nav>
 <div style="height: 100px"></div>
+
 <div class="container">
     <form method="POST" action="<c:url value="/login"/>" class="form-signin">
         <h2 class="form-heading text-center">Log in</h2>
@@ -52,11 +55,13 @@
         </div>
     </form>
 </div>
+
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">JavaSchool</a>
     </div>
 </footer>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>

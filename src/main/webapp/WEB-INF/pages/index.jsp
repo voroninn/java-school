@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>SBB Home</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-</head>
+</head
+>
 <body>
 <nav class="navbar navbar-expand-md navbar-light sticky-top" style="background-color: #b22222">
     <a href="<c:url value="/"/>" class="navbar-brand" style="color: white">SBB</a>
@@ -37,17 +40,19 @@
         </div>
     </div>
 </nav>
+
 <div style="height: 100px"></div>
-<form>
+
+<form:form action="/searchResult" method="POST">
     <div class="form-group row">
         <div class="input-group col-sm-4 offset-sm-4">
             <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelectFrom">From</label>
+                <label class="input-group-text" for="stationFrom">From</label>
             </div>
-            <select class="custom-select" id="inputGroupSelectFrom">
+            <select class="custom-select" name="stationFrom" id="stationFrom">
                 <option selected>Select Station</option>
                 <c:forEach var="station" items="${stationsList}">
-                <option value="${station.id}">${station.name}</option>
+                <option value="${station.name}">${station.name}</option>
                 </c:forEach>
             </select>
         </div>
@@ -55,12 +60,12 @@
     <div class="form-group row">
         <div class="input-group col-sm-4 offset-sm-4">
             <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelectTo">To</label>
+                <label class="input-group-text" for="stationTo">To</label>
             </div>
-            <select class="custom-select" id="inputGroupSelectTo">
+            <select class="custom-select" name="stationTo" id="stationTo">
                 <option selected>Select Station</option>
                 <c:forEach var="station" items="${stationsList}">
-                    <option value="${station.id}">${station.name}</option>
+                    <option value="${station.name}">${station.name}</option>
                 </c:forEach>
             </select>
         </div>
@@ -70,16 +75,20 @@
             <button type="submit" class="btn btn-danger">Search</button>
         </div>
     </div>
-</form>
+</form:form>
+
 <div style="height: 100px"></div>
+
 <div class="">
     <img src="https://sbb.imgix.net/content/dam/internet/sharedimages/zug/Eurocity-Im-Lavaux.jpg?crop=focalpoint&fp-x=0.5128125&fp-y=0.53828126&fp-z=1&w=2656&h=960&auto=format,compress,cs=tinysrgb&q=45" class="img-fluid" alt="Train">
 </div>
+
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
         <a href="#">JavaSchool</a>
     </div>
 </footer>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>

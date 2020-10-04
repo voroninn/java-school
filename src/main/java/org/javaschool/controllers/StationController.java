@@ -1,6 +1,8 @@
 package org.javaschool.controllers;
 
+import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
+import org.javaschool.services.PathFinderService;
 import org.javaschool.services.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -18,12 +22,31 @@ public class StationController {
     @Autowired
     private StationService stationService;
 
+    @Autowired
+    private PathFinderService pathFinder;
+
     @GetMapping(value = "/")
     public ModelAndView homePage() {
         List<StationEntity> stations = stationService.getAllStations();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
         modelAndView.addObject("stationsList", stations);
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/searchResult")
+    public ModelAndView searchResult(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("searchResult");
+        System.out.println("From: " + request.getParameter("stationFrom")
+                + " To: " + request.getParameter("stationTo"));
+        pathFinder.initialize(stationService.getStationByName(request.getParameter("stationFrom")));
+        LinkedList<StationEntity> route =
+                pathFinder.createRoute(stationService.getStationByName(request.getParameter("stationTo")));
+        for (StationEntity station : route) {
+            System.out.println(station);
+        }
+        modelAndView.addObject("route", route);
         return modelAndView;
     }
 

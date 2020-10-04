@@ -20,9 +20,16 @@ public class StationDaoImpl implements StationDao {
     }
 
     @Override
+    public StationEntity getStationByName(String name) {
+        Query query = entityManager.createQuery("SELECT s FROM StationEntity s WHERE s.name = :name");
+        query.setParameter("name", name);
+        return (StationEntity) query.getSingleResult();
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public List<StationEntity> getAllStations() {
-        Query query = entityManager.createQuery("SELECT e FROM StationEntity e");
+        Query query = entityManager.createQuery("SELECT s FROM StationEntity s");
         return query.getResultList();
     }
 

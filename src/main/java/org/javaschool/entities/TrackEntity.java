@@ -5,24 +5,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name = "schedule", schema = "sbb")
+@Table(name = "tracks", schema = "sbb")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleEntity {
+public class TrackEntity {
 
     @Id
     @Column(name = "id")
     private int id;
 
-    @Column(name = "station_id")
-    private Integer stationId;
-
-    @Column(name = "train_id")
-    private Integer trainId;
-
-    @Column(name = "time")
-    private String time;
+    @Transient
+    @ManyToMany(mappedBy = "tracks")
+    private Set<StationEntity> stations;
 }

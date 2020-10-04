@@ -22,6 +22,12 @@ public class StationServiceImpl  implements StationService {
 
     @Override
     @Transactional
+    public StationEntity getStationByName(String username) {
+        return stationDao.getStationByName(username);
+    }
+
+    @Override
+    @Transactional
     public List<StationEntity> getAllStations() {
         return stationDao.getAllStations();
     }
