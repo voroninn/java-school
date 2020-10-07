@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,14 +49,55 @@
     <c:forEach var="station" items="${route}">
         - ${station.name} -
     </c:forEach>
-    <br>
-    <br>
-    <p>Number of changes: ${numberOfChanges}</p>
+    <div style="height: 30px">
+        <p>Number of changes: ${numberOfChanges}</p>
+    </div>
+    <h2>Schedule for ${schedulesList[0].train.name}:</h2>
+    <h3>Option 1</h3>
+    <table class="col-sm-10 offset-1 table table-sm table-striped">
+        <thead>
+        <tr>
+            <th>Station</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>${schedulesList[0].station.name}</td>
+                <td><fmt:formatDate value="${schedulesList[0].departure}" pattern="HH:mm:ss"/></td>
+            </tr>
+            <c:forEach var="schedule" items="${schedulesList}" begin="2" step="2">
+                <tr>
+                    <td>${schedule.station.name}</td>
+                    <td><fmt:formatDate value="${schedule.arrival}" pattern="HH:mm:ss"/></td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+    <h3>Option 2</h3>
+    <table class="col-sm-10 offset-1 table table-sm table-striped">
+        <thead>
+        <tr>
+            <th>Station</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>${schedulesList[1].station.name}</td>
+            <td><fmt:formatDate value="${schedulesList[1].departure}" pattern="HH:mm:ss"/></td>
+        </tr>
+        <c:forEach var="schedule" items="${schedulesList}" begin="3" step="2">
+            <tr>
+                <td>${schedule.station.name}</td>
+                <td><fmt:formatDate value="${schedule.arrival}" pattern="HH:mm:ss"/></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 </div>
+
 <div style="height: 100px"></div>
-<div class="">
-    <img src="https://sbb.imgix.net/content/dam/internet/sharedimages/zug/Eurocity-Im-Lavaux.jpg?crop=focalpoint&fp-x=0.5128125&fp-y=0.53828126&fp-z=1&w=2656&h=960&auto=format,compress,cs=tinysrgb&q=45" class="img-fluid" alt="Train">
-</div>
 
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:

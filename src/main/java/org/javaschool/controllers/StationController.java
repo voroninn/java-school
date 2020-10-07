@@ -1,6 +1,8 @@
 package org.javaschool.controllers;
 
+import org.javaschool.entities.ScheduleEntity;
 import org.javaschool.entities.StationEntity;
+import org.javaschool.services.ScheduleService;
 import org.javaschool.services.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,9 @@ public class StationController {
 
     @Autowired
     private StationService stationService;
+
+    @Autowired
+    private ScheduleService scheduleService;
 
     @GetMapping(value = "/")
     public ModelAndView homePage() {
@@ -38,6 +43,8 @@ public class StationController {
             numberOfChanges = stationService.countTrackChanges(route);
         }
         modelAndView.addObject("numberOfChanges", numberOfChanges);
+        List<ScheduleEntity> schedules = scheduleService.getSchedulesByRoute(route);
+        modelAndView.addObject("schedulesList", schedules);
         return modelAndView;
     }
 

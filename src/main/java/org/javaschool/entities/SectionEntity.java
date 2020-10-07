@@ -30,4 +30,7 @@ public class SectionEntity {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "track_id")
     private TrackEntity track;
+
+    @Column(name = "direction")
+    private boolean direction;
 }

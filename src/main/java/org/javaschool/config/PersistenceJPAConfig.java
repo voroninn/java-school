@@ -43,7 +43,7 @@ public class PersistenceJPAConfig {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/sbb?useUnicode=true" +
                 "&useJDBCCompliantTimezoneShift=true" +
-                "&useLegacyDatetimeCode=false&serverTimezone=UTC");
+                "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow");
         dataSource.setUsername( "root" );
         dataSource.setPassword( "iamRooT911" );
         return dataSource;

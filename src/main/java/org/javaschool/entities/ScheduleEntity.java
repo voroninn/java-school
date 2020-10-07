@@ -37,4 +37,7 @@ public class ScheduleEntity {
     @DateTimeFormat(pattern = "HH:mm:ss")
     @Column(name = "departure")
     private Date departure;
+
+    @Column(name = "direction")
+    private boolean direction;
 }

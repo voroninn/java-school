@@ -1,7 +1,7 @@
 package org.javaschool.dao;
 
 import org.javaschool.entities.ScheduleEntity;
-import org.javaschool.entities.SectionEntity;
+import org.javaschool.entities.StationEntity;
 
 import java.util.List;
 
@@ -16,4 +16,8 @@ public interface ScheduleDao {
     void editSchedule(ScheduleEntity schedule);
 
     void deleteSchedule(ScheduleEntity schedule);
+
+    List<ScheduleEntity> getSchedulesByStationAndDirection(StationEntity station, boolean direction);
+
+    List<ScheduleEntity> getSchedulesByRoute(List<StationEntity> route);
 }

@@ -18,4 +18,6 @@ public interface SectionDao {
     void deleteSection(SectionEntity section);
 
     SectionEntity getSectionBetweenStations(StationEntity stationFrom, StationEntity stationTo);
+
+    List<SectionEntity> getSectionsByRoute(List<StationEntity> route);
 }

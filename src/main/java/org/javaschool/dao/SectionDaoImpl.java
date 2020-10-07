@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -55,5 +56,14 @@ public class SectionDaoImpl implements SectionDao {
         query.setParameter("stationFrom", stationFrom);
         query.setParameter("stationTo", stationTo);
         return (SectionEntity) query.getSingleResult();
+    }
+
+    @Override
+    public List<SectionEntity> getSectionsByRoute(List<StationEntity> route) {
+        List<SectionEntity> sectionsByRoute = new ArrayList<>();
+        for (int i = 0; i < route.size() - 1; i++) {
+            sectionsByRoute.add(getSectionBetweenStations(route.get(i), route.get(i + 1)));
+        }
+        return sectionsByRoute;
     }
 }

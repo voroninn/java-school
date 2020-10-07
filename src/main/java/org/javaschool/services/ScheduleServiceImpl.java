@@ -2,6 +2,7 @@ package org.javaschool.services;
 
 import org.javaschool.dao.ScheduleDao;
 import org.javaschool.entities.ScheduleEntity;
+import org.javaschool.entities.StationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,5 +43,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public void deleteSchedule(ScheduleEntity schedule) {
         scheduleDao.deleteSchedule(schedule);
+    }
+
+    @Override
+    @Transactional
+    public List<ScheduleEntity> getSchedulesByStationAndDirection(StationEntity station, boolean direction) {
+        return scheduleDao.getSchedulesByStationAndDirection(station, direction);
+    }
+
+    @Override
+    public List<ScheduleEntity> getSchedulesByRoute(List<StationEntity> route) {
+        return scheduleDao.getSchedulesByRoute(route);
     }
 }

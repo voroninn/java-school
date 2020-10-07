@@ -50,4 +50,10 @@ public class SectionServiceImpl implements SectionService {
     public SectionEntity getSectionBetweenStations(StationEntity stationFrom, StationEntity stationTo) {
         return sectionDao.getSectionBetweenStations(stationFrom, stationTo);
     }
+
+    @Override
+    @Transactional
+    public List<SectionEntity> getSectionsByRoute(List<StationEntity> route) {
+        return sectionDao.getSectionsByRoute(route);
+    }
 }
