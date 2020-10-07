@@ -48,6 +48,9 @@
     <c:forEach var="station" items="${route}">
         - ${station.name} -
     </c:forEach>
+    <br>
+    <br>
+    <p>Number of changes: ${numberOfChanges}</p>
 </div>
 <div style="height: 100px"></div>
 <div class="">

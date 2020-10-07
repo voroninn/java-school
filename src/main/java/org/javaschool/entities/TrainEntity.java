@@ -1,10 +1,9 @@
 package org.javaschool.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "trains", schema = "sbb")
@@ -12,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrainEntity {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,10 @@ public class TrainEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "seats")
-    private int seats;
+    @Column(name = "capacity")
+    private int capacity;
+
+    @Transient
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "train")
+    private Set<ScheduleEntity> schedules;
 }

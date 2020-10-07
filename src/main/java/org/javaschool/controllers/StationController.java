@@ -1,29 +1,21 @@
 package org.javaschool.controllers;
 
-import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
-import org.javaschool.services.PathFinderService;
 import org.javaschool.services.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedList;
 import java.util.List;
 
 @Controller
+@SessionAttributes("ticketForm")
 public class StationController {
 
     @Autowired
     private StationService stationService;
-
-    @Autowired
-    private PathFinderService pathFinder;
 
     @GetMapping(value = "/")
     public ModelAndView homePage() {
@@ -35,18 +27,17 @@ public class StationController {
     }
 
     @PostMapping(value = "/searchResult")
-    public ModelAndView searchResult(HttpServletRequest request) {
+    public ModelAndView searchResult(@RequestParam("stationFrom") String stationFrom,
+                                     @RequestParam("stationTo") String stationTo) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("searchResult");
-        System.out.println("From: " + request.getParameter("stationFrom")
-                + " To: " + request.getParameter("stationTo"));
-        pathFinder.initialize(stationService.getStationByName(request.getParameter("stationFrom")));
-        LinkedList<StationEntity> route =
-                pathFinder.createRoute(stationService.getStationByName(request.getParameter("stationTo")));
-        for (StationEntity station : route) {
-            System.out.println(station);
-        }
+        LinkedList<StationEntity> route = stationService.getRoute(stationFrom, stationTo);
         modelAndView.addObject("route", route);
+        int numberOfChanges = 0;
+        if (route.size() > 2) {
+            numberOfChanges = stationService.countTrackChanges(route);
+        }
+        modelAndView.addObject("numberOfChanges", numberOfChanges);
         return modelAndView;
     }
 

@@ -25,9 +25,6 @@ public class TicketEntity {
     @Column(name = "train_id")
     private Integer trainId;
 
-    @Column(name = "coach_number")
-    private Integer coachNumber;
-
     @Column(name = "seat_number")
     private Integer seatNumber;
 

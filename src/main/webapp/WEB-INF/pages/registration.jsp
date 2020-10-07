@@ -38,22 +38,22 @@
         <spring:bind path="username">
             <div class="form-group">
                 <form:input type="text" path="username" class="form-control ${status.error ? 'is-invalid' : ''}"
-                            placeholder="Username" autofocus="true"></form:input>
-                <div class="invalid-feedback"><form:errors path="username"></form:errors></div>
+                            placeholder="Username" autofocus="true"/>
+                <div class="invalid-feedback"><form:errors path="username"/></div>
             </div>
         </spring:bind>
         <spring:bind path="password">
             <div class="form-group">
                 <form:input type="password" path="password" class="form-control ${status.error ? 'is-invalid' : ''}"
-                            placeholder="Password"></form:input>
-                <div class="invalid-feedback"><form:errors path="password"></form:errors></div>
+                            placeholder="Password"/>
+                <div class="invalid-feedback"><form:errors path="password"/></div>
             </div>
         </spring:bind>
         <spring:bind path="passwordConfirm">
             <div class="form-group">
                 <form:input type="password" path="passwordConfirm" class="form-control ${status.error ? 'is-invalid' : ''}"
-                            placeholder="Confirm your password"></form:input>
-                <div class="invalid-feedback"><form:errors path="passwordConfirm"></form:errors></div>
+                            placeholder="Confirm your password"/>
+                <div class="invalid-feedback"><form:errors path="passwordConfirm"/></div>
             </div>
         </spring:bind>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>

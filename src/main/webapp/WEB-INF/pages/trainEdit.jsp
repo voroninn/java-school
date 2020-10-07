@@ -62,11 +62,11 @@
     </div>
     <div style="height: 100px">
         <label for="seats">Seats</label>
-        <c:if test="${empty train.seats}">
-            <form:input path="seats" type="text" class="form-control" id="seats"/>
+        <c:if test="${empty train.capacity}">
+            <form:input path="capacity" type="text" class="form-control" id="capacity"/>
         </c:if>
-        <c:if test="${!empty train.seats}">
-            <form:input path="seats" type="text" class="form-control" id="seats" placeholder="${train.seats}"/>
+        <c:if test="${!empty train.capacity}">
+            <form:input path="capacity" type="text" class="form-control" id="capacity" placeholder="${train.capacity}"/>
         </c:if>
     </div>
 

@@ -1,8 +1,6 @@
 package org.javaschool.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -28,4 +26,8 @@ public class SectionEntity {
 
     @Column(name = "length")
     private double length;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "track_id")
+    private TrackEntity track;
 }

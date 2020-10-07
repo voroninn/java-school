@@ -47,7 +47,7 @@
         <tr>
             <td>${train.id}</td>
             <td>${train.name}</td>
-            <td>${train.seats}</td>
+            <td>${train.capacity}</td>
             <td>
                 <a href="/edit/train/${train.id}" class="btn btn-secondary" role="button">Edit</a>
                 <a href="/delete/train/${train.id}" class="btn btn-danger" role="button">Delete</a>

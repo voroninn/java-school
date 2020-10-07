@@ -1,6 +1,7 @@
 package org.javaschool.dao;
 
 import org.javaschool.entities.SectionEntity;
+import org.javaschool.entities.StationEntity;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface SectionDao {
     void editSection(SectionEntity section);
 
     void deleteSection(SectionEntity section);
+
+    SectionEntity getSectionBetweenStations(StationEntity stationFrom, StationEntity stationTo);
 }

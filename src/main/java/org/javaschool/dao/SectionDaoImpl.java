@@ -1,6 +1,8 @@
 package org.javaschool.dao;
 
 import org.javaschool.entities.SectionEntity;
+import org.javaschool.entities.StationEntity;
+import org.javaschool.services.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +17,9 @@ public class SectionDaoImpl implements SectionDao {
     @Autowired
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    private StationService stationService;
 
     @Override
     public SectionEntity getSection(int id) {
@@ -41,5 +46,14 @@ public class SectionDaoImpl implements SectionDao {
     @Override
     public void deleteSection(SectionEntity section) {
         entityManager.remove(entityManager.merge(section));
+    }
+
+    @Override
+    public SectionEntity getSectionBetweenStations(StationEntity stationFrom, StationEntity stationTo) {
+        Query query = entityManager.createQuery("SELECT s FROM SectionEntity s " +
+                "WHERE s.stationFrom = :stationFrom AND s.stationTo = :stationTo");
+        query.setParameter("stationFrom", stationFrom);
+        query.setParameter("stationTo", stationTo);
+        return (SectionEntity) query.getSingleResult();
     }
 }

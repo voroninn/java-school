@@ -31,7 +31,8 @@
     <form method="POST" action="<c:url value="/login"/>" class="form-signin">
         <h2 class="form-heading text-center">Log in</h2>
         <div class="form-group ${error != null ? 'has-error' : ''}">
-            <span>${message}</span>
+            <span style="color: green">${message}</span>
+            <span style="color: red">${error}</span>
             <div class="jumbotron">
                 <div class="form-group col-sm-4 offset-sm-4">
                     <input name="username" type="text" class="form-control" placeholder="Username"
@@ -40,7 +41,6 @@
                 <div class="form-group col-sm-4 offset-sm-4">
                     <input name="password" type="password" class="form-control" placeholder="Password"/>
                 </div>
-                <span>${error}</span>
                 <div class="form-group text-center">
                     <div class="form-check">
                         <input name="remember-me" id="remember-me" type="checkbox" class="form-check-input"/>

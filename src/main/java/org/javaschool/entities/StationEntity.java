@@ -1,8 +1,6 @@
 package org.javaschool.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -27,4 +25,8 @@ public class StationEntity {
             joinColumns = @JoinColumn(name = "station_id"),
             inverseJoinColumns = @JoinColumn(name = "track_id"))
     private Set<TrackEntity> tracks;
+
+    @Transient
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "station")
+    private Set<ScheduleEntity> schedules;
 }

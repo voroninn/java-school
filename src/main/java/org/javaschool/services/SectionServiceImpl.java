@@ -2,6 +2,7 @@ package org.javaschool.services;
 
 import org.javaschool.dao.SectionDao;
 import org.javaschool.entities.SectionEntity;
+import org.javaschool.entities.StationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,5 +43,11 @@ public class SectionServiceImpl implements SectionService {
     @Transactional
     public void deleteSection(SectionEntity section) {
         sectionDao.deleteSection(section);
+    }
+
+    @Override
+    @Transactional
+    public SectionEntity getSectionBetweenStations(StationEntity stationFrom, StationEntity stationTo) {
+        return sectionDao.getSectionBetweenStations(stationFrom, stationTo);
     }
 }

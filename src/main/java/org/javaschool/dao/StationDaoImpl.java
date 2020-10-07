@@ -29,7 +29,7 @@ public class StationDaoImpl implements StationDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<StationEntity> getAllStations() {
-        Query query = entityManager.createQuery("SELECT s FROM StationEntity s");
+        Query query = entityManager.createQuery("SELECT s FROM StationEntity s ORDER BY s.name");
         return query.getResultList();
     }
 

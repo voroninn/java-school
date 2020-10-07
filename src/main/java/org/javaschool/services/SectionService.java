@@ -1,6 +1,7 @@
 package org.javaschool.services;
 
 import org.javaschool.entities.SectionEntity;
+import org.javaschool.entities.StationEntity;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface SectionService {
     void editSection(SectionEntity section);
 
     void deleteSection(SectionEntity section);
+
+    SectionEntity getSectionBetweenStations(StationEntity stationFrom, StationEntity stationTo);
 }
