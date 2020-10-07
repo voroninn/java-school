@@ -14,7 +14,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-light sticky-top" style="background-color: #b22222">
+<nav class="navbar navbar-expand-md navbar-light sticky-top" style="background-color: #491262">
     <a href="<c:url value="/"/>" class="navbar-brand" style="color: white">SBB</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -36,7 +36,7 @@
                 <a href="<c:url value="/login"/>" class="nav-item nav-link" style="color: white">Login</a>
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
-                <a href="<c:url value="/logout"/>" class="nav-item nav-link" style="color: white">Logout</a>
+                <a href="<c:url value="/logout"/>" class="btn btn-outline-light">Logout</a>
             </sec:authorize>
         </div>
     </div>
@@ -74,6 +74,9 @@
             </c:forEach>
         </tbody>
     </table>
+    <div class="col-sm-10 offset-1">
+        <button type="submit" class="btn btn-primary">Select This Option</button>
+    </div>
     <h3>Option 2</h3>
     <table class="col-sm-10 offset-1 table table-sm table-striped">
         <thead>
@@ -95,6 +98,9 @@
         </c:forEach>
         </tbody>
     </table>
+    <div class="col-sm-10 offset-1">
+        <button type="submit" class="btn btn-primary">Select This Option</button>
+    </div>
 </div>
 
 <div style="height: 100px"></div>

@@ -1,7 +1,7 @@
 package org.javaschool.controllers;
 
 import org.javaschool.entities.TrainEntity;
-import org.javaschool.services.TrainService;
+import org.javaschool.services.interfaces.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

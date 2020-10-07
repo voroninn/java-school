@@ -1,7 +1,7 @@
 package org.javaschool.utils;
 
 import org.javaschool.entities.UserEntity;
-import org.javaschool.services.UserService;
+import org.javaschool.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

@@ -1,8 +1,10 @@
 package org.javaschool.controllers;
 
+import org.javaschool.entities.StationEntity;
 import org.javaschool.entities.UserEntity;
-import org.javaschool.services.SecurityService;
-import org.javaschool.services.UserService;
+import org.javaschool.services.interfaces.SecurityService;
+import org.javaschool.services.interfaces.StationService;
+import org.javaschool.services.interfaces.UserService;
 import org.javaschool.utils.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -20,6 +25,9 @@ public class UserController {
 
     @Autowired
     private SecurityService securityService;
+
+    @Autowired
+    private StationService stationService;
 
     @Autowired
     private UserValidator userValidator;
@@ -48,5 +56,14 @@ public class UserController {
         if (logout != null)
             model.addAttribute("message", "You have been logged out successfully.");
         return "login";
+    }
+
+    @GetMapping(value = "/loginSuccess")
+    public ModelAndView loginSuccess() {
+        List<StationEntity> stations = stationService.getAllStations();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("loginSuccess");
+        modelAndView.addObject("stationsList", stations);
+        return modelAndView;
     }
 }

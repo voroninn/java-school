@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-light sticky-top" style="background-color: #b22222">
+<nav class="navbar navbar-expand-md navbar-light sticky-top" style="background-color: #491262">
     <a href="<c:url value="/"/>" class="navbar-brand" style="color: white">SBB</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -32,10 +32,10 @@
         <div class="navbar-nav ml-auto">
             <sec:authorize access="!isAuthenticated()">
                 <a href="<c:url value="/registration"/>" class="nav-item nav-link" style="color: white">Registration</a>
-                <a href="<c:url value="/login"/>" class="nav-item nav-link" style="color: white">Login</a>
+                <a href="<c:url value="/login"/>" class="btn btn-outline-light">Login</a>
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
-                <a href="<c:url value="/logout"/>" class="nav-item nav-link" style="color: white">Logout</a>
+                <a href="<c:url value="/logout"/>" class="btn btn-outline-light">Logout</a>
             </sec:authorize>
         </div>
     </div>
@@ -85,7 +85,7 @@
 <div style="height: 100px"></div>
 
 <div class="">
-    <img src="https://sbb.imgix.net/content/dam/internet/sharedimages/zug/Eurocity-Im-Lavaux.jpg?crop=focalpoint&fp-x=0.5128125&fp-y=0.53828126&fp-z=1&w=2656&h=960&auto=format,compress,cs=tinysrgb&q=45" class="img-fluid" alt="Train">
+    <img src="${pageContext.request.contextPath}/assets/spacetrain.jpg" class="img-fluid" alt="Train">
 </div>
 
 <footer class="page-footer font-small">

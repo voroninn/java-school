@@ -1,7 +1,7 @@
 package org.javaschool.controllers;
 
 import org.javaschool.entities.PassengerEntity;
-import org.javaschool.services.PassengerService;
+import org.javaschool.services.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

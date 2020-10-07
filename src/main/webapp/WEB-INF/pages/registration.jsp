@@ -14,7 +14,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #b22222">
+<nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #491262">
     <a href="<c:url value="/"/>" class="navbar-brand" style="color: white">SBB</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -25,7 +25,7 @@
             <a href="<c:url value="/"/>" class="nav-item nav-link active" style="color: white">Home</a>
         </div>
         <div class="navbar-nav ml-auto">
-            <a href="<c:url value="/login"/>" class="nav-item nav-link" style="color: white">Login</a>
+            <a href="<c:url value="/login"/>" class="btn btn-outline-light">Login</a>
         </div>
     </div>
 </nav>
