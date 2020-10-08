@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -53,7 +55,26 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional
     public List<ScheduleEntity> getSchedulesByRoute(List<StationEntity> route) {
         return scheduleDao.getSchedulesByRoute(route);
+    }
+
+    @Override
+    public List<ScheduleEntity> putSchedulesInCorrectOrder(List<ScheduleEntity> schedules) {
+        for (int i = 2; i < schedules.size(); i += 2) {
+            for (int j = 1; j <= i / 2; j++)
+                Collections.swap(schedules, i - j + 1, i - j);
+        }
+        return schedules;
+    }
+
+    @Override
+    public List<List<ScheduleEntity>> separateSchedules(List<ScheduleEntity> schedules, int itemsPerSchedule) {
+        List<List<ScheduleEntity>> separatedSchedules = new ArrayList<>();
+        for (int i = 0; i <= itemsPerSchedule; i += itemsPerSchedule) {
+            separatedSchedules.add(schedules.subList(i, i + itemsPerSchedule));
+        }
+        return separatedSchedules;
     }
 }

@@ -20,4 +20,8 @@ public interface ScheduleService {
     List<ScheduleEntity> getSchedulesByStationAndDirection(StationEntity station, boolean direction);
 
     List<ScheduleEntity> getSchedulesByRoute(List<StationEntity> route);
+
+    List<ScheduleEntity> putSchedulesInCorrectOrder(List<ScheduleEntity> schedules);
+
+    List<List<ScheduleEntity>> separateSchedules(List<ScheduleEntity> schedules, int itemsPerSchedule);
 }

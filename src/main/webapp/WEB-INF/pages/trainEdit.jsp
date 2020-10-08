@@ -15,6 +15,7 @@
         <title>Edit Train</title>
     </c:if>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon" />
 </head>
 
 <body>
@@ -33,6 +34,8 @@
             </div>
         </div>
         <div class="navbar-nav ml-auto">
+            <a href="#" class="nav-item nav-link disabled" style="color: white">
+                Logged in as <strong>${pageContext.request.userPrincipal.name}</strong></a>
             <a href="<c:url value="/logout"/>" class="btn btn-outline-light">Logout</a>
         </div>
     </div>

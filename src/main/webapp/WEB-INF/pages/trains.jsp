@@ -9,8 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Trains</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-</head
->
+    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon" />
+</head>
+
 <body>
 <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #491262">
     <a href="<c:url value="/"/>" class="navbar-brand" style="color: white">SBB</a>
@@ -28,6 +29,8 @@
                 </div>
         </div>
         <div class="navbar-nav ml-auto">
+            <a href="#" class="nav-item nav-link disabled" style="color: white">
+                Logged in as <strong>${pageContext.request.userPrincipal.name}</strong></a>
             <a href="<c:url value="/logout"/>" class="btn btn-outline-light">Logout</a>
         </div>
     </div>

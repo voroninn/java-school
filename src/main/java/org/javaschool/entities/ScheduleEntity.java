@@ -29,12 +29,12 @@ public class ScheduleEntity {
     private TrainEntity train;
 
     @Temporal(TemporalType.TIME)
-    @DateTimeFormat(pattern = "HH:mm:ss")
+    @DateTimeFormat(pattern = "HH:mm")
     @Column(name = "arrival")
     private Date arrival;
 
     @Temporal(TemporalType.TIME)
-    @DateTimeFormat(pattern = "HH:mm:ss")
+    @DateTimeFormat(pattern = "HH:mm")
     @Column(name = "departure")
     private Date departure;
 
