@@ -4,8 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
 
@@ -18,13 +16,12 @@ public class UserEntity implements UserDetails {
     @Column(name = "id")
     private int id;
 
-//    @NotNull
-//    @Size(min = 6, max=32)
     @Column(name = "username", unique = true)
     private String username;
 
-//    @NotNull
-//    @Size(min = 8, max = 32)
+    @Column(name = "email", unique = true)
+    private String email;
+
     @Column(name = "password")
     private String password;
 
@@ -53,6 +50,10 @@ public class UserEntity implements UserDetails {
         return username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -75,6 +76,10 @@ public class UserEntity implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

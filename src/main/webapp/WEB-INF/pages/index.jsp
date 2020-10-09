@@ -11,8 +11,8 @@
     <title>SBB Home</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon" />
-</head
->
+</head>
+
 <body>
 <nav class="navbar navbar-expand-md navbar-light sticky-top" style="background-color: #491262">
     <a href="<c:url value="/"/>" class="navbar-brand" style="color: white">SBB</a>
@@ -28,6 +28,10 @@
                     <a href="<c:url value="/trains"/>" class="btn btn-outline-light">Trains</a>
                     <a href="<c:url value="/passengers"/>" class="btn btn-outline-light">Passengers</a>
                 </div>
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_USER')">
+                <a href="/myaccount/${pageContext.request.userPrincipal.name}"
+                   class="nav-item nav-link active" style="color: white">My Account</a>
             </sec:authorize>
         </div>
         <div class="navbar-nav ml-auto">
@@ -46,7 +50,7 @@
 
 <div style="height: 100px"></div>
 
-<form:form action="/searchResult" modelAttribute="ticketForm" method="POST">
+<form:form action="/schedule" modelAttribute="ticketForm" method="POST">
     <div class="form-group row">
         <div class="input-group col-sm-4 offset-sm-4">
             <div class="input-group-prepend">
@@ -71,6 +75,11 @@
                     <option value="${station.name}">${station.name}</option>
                 </c:forEach>
             </form:select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-10 offset-sm-4">
+            <form:input path="date" name="date" id="date" placeholder="DD.MM.YYYY"/>
         </div>
     </div>
     <div class="form-group row">

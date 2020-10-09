@@ -3,8 +3,11 @@ package org.javaschool.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "tickets", schema = "sbb")
@@ -17,16 +20,14 @@ public class TicketEntity {
     private int id;
 
     @Column(name = "number")
-    private int number;
+    private String number;
 
     @Column(name = "passenger_id")
-    private Integer passengerId;
+    private int passengerId;
 
-    @Column(name = "train_id")
-    private Integer trainId;
-
-    @Column(name = "seat_number")
-    private Integer seatNumber;
+    @Transient
+    @ManyToMany(mappedBy = "tickets")
+    private Set<TrainEntity> trains;
 
     @Column(name = "departure_station")
     private String departureStation;
@@ -34,9 +35,21 @@ public class TicketEntity {
     @Column(name = "arrival_station")
     private String arrivalStation;
 
+    @Temporal(TemporalType.TIME)
+    @DateTimeFormat(pattern = "HH:mm")
     @Column(name = "departure_time")
-    private String departureTime;
+    private Date departureTime;
 
+    @Temporal(TemporalType.TIME)
+    @DateTimeFormat(pattern = "HH:mm")
     @Column(name = "arrival_time")
-    private String arrivalTime;
+    private Date arrivalTime;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @Column(name = "date")
+    private Date date;
+
+    @Column(name = "price")
+    private double price;
 }

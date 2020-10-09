@@ -20,6 +20,9 @@ public class StationEntity {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "code")
+    private String code;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "station_tracks",
             joinColumns = @JoinColumn(name = "station_id"),

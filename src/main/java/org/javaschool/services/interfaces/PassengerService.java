@@ -1,6 +1,7 @@
 package org.javaschool.services.interfaces;
 
 import org.javaschool.entities.PassengerEntity;
+import org.javaschool.entities.UserEntity;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface PassengerService {
     void editPassenger(PassengerEntity passenger);
 
     void deletePassenger(PassengerEntity passenger);
+
+    PassengerEntity getPassengerByUser(UserEntity user);
 }

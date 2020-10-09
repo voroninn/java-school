@@ -15,4 +15,6 @@ public interface TicketDao {
     void editTicket(TicketEntity ticket);
 
     void deleteTicket(TicketEntity ticket);
+
+    long getTicketCount();
 }

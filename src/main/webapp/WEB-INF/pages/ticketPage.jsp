@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SBB Home</title>
+    <title>Ticket Info</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon" />
 </head>
@@ -30,6 +30,10 @@
                     <a href="<c:url value="/passengers"/>" class="btn btn-outline-light">Passengers</a>
                 </div>
             </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_USER')">
+                <a href="/myaccount/${pageContext.request.userPrincipal.name}"
+                   class="nav-item nav-link active" style="color: white">My Account</a>
+            </sec:authorize>
         </div>
         <div class="navbar-nav ml-auto">
             <sec:authorize access="!isAuthenticated()">
@@ -47,11 +51,24 @@
 
 <div style="height: 100px"></div>
 
-<div class="jumbotron">
-    <h1>Please check your travel details:</h1>
-    <p>Train: ${ticketForm.trainId}</p>
-    <p>From: ${ticketForm.departureStation} at ${ticketForm.departureTime}</p>
-    <p>To: ${ticketForm.arrivalStation} at ${ticketForm.arrivalTime}</p>
+<div class="container">
+    <h2 class="text-center">Please check your travel details</h2>
+    <div class="jumbotron">
+        <p>Date: <fmt:formatDate value="${ticketForm.date}" pattern="dd.MM.yyyy"/></p>
+        <p>From ${ticketForm.departureStation} at <fmt:formatDate value="${ticketForm.departureTime}" pattern="HH:mm"/></p>
+        <p>To ${ticketForm.arrivalStation} at <fmt:formatDate value="${ticketForm.arrivalTime}" pattern="HH:mm"/></p>
+        <c:if test="${!empty passenger.id}">
+            <p>Passenger Info: ${passenger.firstName} ${passenger.lastName}
+                <fmt:formatDate value="${passenger.birthDate}" pattern="dd.MM.yyyy"/> ${passenger.passportNumber}</p>
+        </c:if>
+                <span style="color: red">${message}</span>
+                <a href="/myaccount/${pageContext.request.userPrincipal.name}"
+                   class="btn btn-secondary" role="button">Edit</a>
+        <div class="text-center">
+            <a href="${pageContext.request.contextPath}/ticket/buy"
+               class="btn btn-success" role="button">Confirm and Buy</a>
+        </div>
+    </div>
 </div>
 
 <div style="height: 100px"></div>

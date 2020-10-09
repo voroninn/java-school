@@ -7,4 +7,8 @@ public interface UserService {
     void save(UserEntity user);
 
     UserEntity findUserByUsername(String username);
+
+    UserEntity findUserByEmail(String email);
+
+    String getCurrentUserName();
 }

@@ -1,9 +1,9 @@
 package org.javaschool.controllers;
 
-import org.javaschool.entities.StationEntity;
+import org.javaschool.entities.PassengerEntity;
 import org.javaschool.entities.UserEntity;
+import org.javaschool.services.interfaces.PassengerService;
 import org.javaschool.services.interfaces.SecurityService;
-import org.javaschool.services.interfaces.StationService;
 import org.javaschool.services.interfaces.UserService;
 import org.javaschool.utils.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -27,10 +26,10 @@ public class UserController {
     private SecurityService securityService;
 
     @Autowired
-    private StationService stationService;
+    private UserValidator userValidator;
 
     @Autowired
-    private UserValidator userValidator;
+    private PassengerService passengerService;
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -46,7 +45,7 @@ public class UserController {
         }
         userService.save(userForm);
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-        return "redirect:/loginSuccess";
+        return "redirect:/";
     }
 
     @GetMapping("/login")
@@ -58,12 +57,33 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping(value = "/loginSuccess")
-    public ModelAndView loginSuccess() {
-        List<StationEntity> stations = stationService.getAllStations();
+    @GetMapping(value = "/myaccount/{username}")
+    public ModelAndView editPassenger(@PathVariable("username") String username) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("loginSuccess");
-        modelAndView.addObject("stationsList", stations);
+        modelAndView.setViewName("personalEdit");
+        UserEntity user = userService.findUserByUsername(username);
+        modelAndView.addObject("user", user);
+        PassengerEntity passenger = passengerService.getPassengerByUser(user);
+        if (passenger != null) {
+            modelAndView.addObject("passengerForm", passenger);
+        } else {
+            modelAndView.addObject("passengerForm", new PassengerEntity());
+        }
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/myaccount")
+    public ModelAndView editPassenger(@ModelAttribute("passenger") PassengerEntity passenger) {
+        ModelAndView modelAndView = new ModelAndView();
+        UserEntity user = userService.findUserByUsername(userService.getCurrentUserName());
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("redirect:/myaccount/" + user.getUsername());
+        passenger.setUserId(user.getId());
+        if (passengerService.getPassenger(passenger.getId()) != null) {
+            passengerService.editPassenger(passenger);
+        } else {
+            passengerService.addPassenger(passenger);
+        }
         return modelAndView;
     }
 }

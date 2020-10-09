@@ -2,6 +2,7 @@ package org.javaschool.dao.impl;
 
 import org.javaschool.dao.interfaces.PassengerDao;
 import org.javaschool.entities.PassengerEntity;
+import org.javaschool.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -39,5 +40,18 @@ public class PassengerDaoImpl implements PassengerDao {
     @Override
     public void deletePassenger(PassengerEntity passenger) {
             entityManager.remove(entityManager.merge(passenger));
+    }
+
+    @Override
+    public PassengerEntity getPassengerByUser(UserEntity user) {
+        PassengerEntity passenger = null;
+        try {
+            Query query = entityManager.createQuery("SELECT p FROM PassengerEntity p where p.userId = :userId");
+            query.setParameter("userId", user.getId());
+            passenger = (PassengerEntity) query.getSingleResult();
+        } catch (NoResultException e) {
+            e.printStackTrace();
+        }
+        return passenger;
     }
 }

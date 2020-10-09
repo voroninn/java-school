@@ -30,13 +30,13 @@ public class ScheduleEntity {
 
     @Temporal(TemporalType.TIME)
     @DateTimeFormat(pattern = "HH:mm")
-    @Column(name = "arrival")
-    private Date arrival;
+    @Column(name = "arrival_time")
+    private Date arrivalTime;
 
     @Temporal(TemporalType.TIME)
     @DateTimeFormat(pattern = "HH:mm")
-    @Column(name = "departure")
-    private Date departure;
+    @Column(name = "departure_time")
+    private Date departureTime;
 
     @Column(name = "direction")
     private boolean direction;

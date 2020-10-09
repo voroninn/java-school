@@ -2,6 +2,7 @@ package org.javaschool.services.impl;
 
 import org.javaschool.dao.interfaces.PassengerDao;
 import org.javaschool.entities.PassengerEntity;
+import org.javaschool.entities.UserEntity;
 import org.javaschool.services.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,5 +44,11 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public void deletePassenger(PassengerEntity passenger) {
         passengerDao.deletePassenger(passenger);
+    }
+
+    @Override
+    @Transactional
+    public PassengerEntity getPassengerByUser(UserEntity user) {
+        return passengerDao.getPassengerByUser(user);
     }
 }

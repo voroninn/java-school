@@ -16,7 +16,7 @@ import java.util.Date;
 public class PassengerEntity {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -33,4 +33,7 @@ public class PassengerEntity {
 
     @Column(name = "passport_number")
     private int passportNumber;
+
+    @Column(name = "user_id")
+    private int userId;
 }

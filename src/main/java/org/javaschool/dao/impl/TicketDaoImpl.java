@@ -44,4 +44,10 @@ public class TicketDaoImpl implements TicketDao {
     public void deleteTicket(TicketEntity ticket) {
         entityManager.remove(entityManager.merge(ticket));
     }
+
+    @Override
+    public long getTicketCount() {
+        Query query = entityManager.createQuery("SELECT count(t) FROM TicketEntity t");
+        return (Long) query.getSingleResult();
+    }
 }

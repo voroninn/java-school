@@ -26,4 +26,10 @@ public class TrainEntity {
     @Transient
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "train")
     private Set<ScheduleEntity> schedules;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "train_tickets",
+            joinColumns = @JoinColumn(name = "train_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id"))
+    private Set<TicketEntity> tickets;
 }

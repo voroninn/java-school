@@ -1,28 +1,37 @@
 package org.javaschool.controllers;
 
-import org.javaschool.entities.ScheduleEntity;
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TicketEntity;
-import org.javaschool.services.interfaces.ScheduleService;
-import org.javaschool.services.interfaces.StationService;
+import org.javaschool.entities.*;
+import org.javaschool.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @SessionAttributes("ticketForm")
 public class TicketController {
 
     @Autowired
+    private TicketService ticketService;
+
+    @Autowired
     private StationService stationService;
 
     @Autowired
     private ScheduleService scheduleService;
+
+    @Autowired
+    private TrainService trainService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private PassengerService passengerService;
 
     @GetMapping(value = "/")
     public ModelAndView homePage(@ModelAttribute("ticketForm") TicketEntity ticket) {
@@ -39,7 +48,7 @@ public class TicketController {
         return new TicketEntity();
     }
 
-    @PostMapping(value = "/searchResult")
+    @PostMapping(value = "/schedule")
     public ModelAndView searchResult(@ModelAttribute("ticketForm") TicketEntity ticket) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("searchResult");
@@ -61,14 +70,36 @@ public class TicketController {
         } else {
             modelAndView.addObject("schedulesList", schedules);
         }
-        modelAndView.addObject("ticketForm", ticket);
+        Set<TrainEntity> trains = trainService.getTrainsBySchedules(schedules);
+        ticket.setPrice(ticketService.calculateTicketPrice(route));
+        ticket.setTrains(trains);
         return modelAndView;
     }
 
-    @PostMapping(value = "/ticketPage")
+    @PostMapping(value = "/ticket/verify")
     public ModelAndView ticketPage(@ModelAttribute("ticketForm") TicketEntity ticket) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("ticketPage");
+        UserEntity user = userService.findUserByUsername(userService.getCurrentUserName());
+        PassengerEntity passenger = passengerService.getPassengerByUser(user);
+        if (passenger != null) {
+            if (passenger.getFirstName() != null && passenger.getLastName() != null
+                    && passenger.getBirthDate() != null && passenger.getPassportNumber() != 0)
+            modelAndView.addObject("passenger", passenger);
+            ticket.setPassengerId(passenger.getId());
+        } else {
+            modelAndView.addObject("message", "Please enter your personal data");
+        }
+        modelAndView.addObject("trainsList", ticket.getTrains());
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/ticket/buy")
+    public ModelAndView ticketBuy(@ModelAttribute("ticketForm") TicketEntity ticket) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("ticketBuy");
+        ticket.setNumber(ticketService.generateTicketNumber(ticket));
+        ticketService.addTicket(ticket);
         return modelAndView;
     }
 }

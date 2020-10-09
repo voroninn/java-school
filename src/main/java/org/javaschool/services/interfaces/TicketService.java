@@ -1,7 +1,9 @@
 package org.javaschool.services.interfaces;
 
+import org.javaschool.entities.StationEntity;
 import org.javaschool.entities.TicketEntity;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public interface TicketService {
@@ -15,4 +17,10 @@ public interface TicketService {
     void editTicket(TicketEntity ticket);
 
     void deleteTicket(TicketEntity ticket);
+
+    long getTicketCount();
+
+    String generateTicketNumber(TicketEntity ticket);
+
+    double calculateTicketPrice(List<StationEntity> route);
 }
