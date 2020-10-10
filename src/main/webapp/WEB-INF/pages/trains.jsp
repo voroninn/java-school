@@ -39,18 +39,24 @@
 <table class="col-sm-10 offset-1 table table-striped">
     <thead>
     <tr>
-        <th>ID</th>
+        <th>Track</th>
         <th>Name</th>
         <th>Capacity</th>
+        <th>Route</th>
         <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach var="train" items="${trainsList}">
         <tr>
-            <td>${train.id}</td>
+            <td>${train.track.id}</td>
             <td>${train.name}</td>
             <td>${train.capacity}</td>
+            <td>
+            <c:forEach var="endpoint" items="${endpointsList}">
+            - ${endpoint.name} -
+            </c:forEach>
+            </td>
             <td>
                 <a href="/trains/edit/${train.id}" class="btn btn-secondary" role="button">Edit</a>
                 <a href="/trains/delete/${train.id}" class="btn btn-danger" role="button">Delete</a>

@@ -32,4 +32,9 @@ public class TrainEntity {
             joinColumns = @JoinColumn(name = "train_id"),
             inverseJoinColumns = @JoinColumn(name = "ticket_id"))
     private Set<TicketEntity> tickets;
+
+    @ToString.Exclude
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "track_id")
+    private TrackEntity track;
 }

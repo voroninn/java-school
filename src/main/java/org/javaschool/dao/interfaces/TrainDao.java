@@ -1,6 +1,5 @@
 package org.javaschool.dao.interfaces;
 
-import org.javaschool.entities.StationEntity;
 import org.javaschool.entities.TrainEntity;
 
 import java.util.List;

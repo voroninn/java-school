@@ -3,6 +3,7 @@ package org.javaschool.services.impl;
 import org.javaschool.dao.interfaces.ScheduleDao;
 import org.javaschool.entities.ScheduleEntity;
 import org.javaschool.entities.StationEntity;
+import org.javaschool.entities.TrainEntity;
 import org.javaschool.services.interfaces.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

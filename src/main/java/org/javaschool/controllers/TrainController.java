@@ -1,6 +1,8 @@
 package org.javaschool.controllers;
 
+import org.javaschool.entities.StationEntity;
 import org.javaschool.entities.TrainEntity;
+import org.javaschool.services.interfaces.StationService;
 import org.javaschool.services.interfaces.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -18,11 +21,21 @@ public class TrainController {
     @Autowired
     private TrainService trainService;
 
+    @Autowired
+    private StationService stationService;
+
     @GetMapping(value = "/trains")
     public ModelAndView allTrains() {
-        List<TrainEntity> trains = trainService.getAllTrains();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trains");
+        List<TrainEntity> trains = trainService.getAllTrains();
+        List<StationEntity> endpointsList = new ArrayList<>();
+        for (TrainEntity train : trains) {
+            List<StationEntity> stations = stationService.getStationsByTrain(train);
+            List<StationEntity> endpoints = stationService.selectEndpoints(stations);
+            endpointsList.addAll(endpoints);
+        }
+        modelAndView.addObject("endpointsList", endpointsList);
         modelAndView.addObject("trainsList", trains);
         return modelAndView;
     }

@@ -2,6 +2,7 @@ package org.javaschool.services.interfaces;
 
 import org.javaschool.entities.ScheduleEntity;
 import org.javaschool.entities.StationEntity;
+import org.javaschool.entities.TrainEntity;
 
 import java.util.List;
 

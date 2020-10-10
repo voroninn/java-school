@@ -1,7 +1,9 @@
 package org.javaschool.dao.impl;
 
 import org.javaschool.dao.interfaces.StationDao;
+import org.javaschool.entities.ScheduleEntity;
 import org.javaschool.entities.StationEntity;
+import org.javaschool.entities.TrainEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -47,6 +49,14 @@ public class StationDaoImpl implements StationDao {
     @Override
     public void deleteStation(StationEntity station) {
         entityManager.remove(entityManager.merge(station));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<StationEntity> getStationsByTrain(TrainEntity train) {
+        Query query = entityManager.createQuery("SELECT DISTINCT s.station FROM ScheduleEntity s WHERE s.train = :train");
+        query.setParameter("train", train);
+        return query.getResultList();
     }
 }
 

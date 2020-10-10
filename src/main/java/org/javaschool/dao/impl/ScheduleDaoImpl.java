@@ -4,6 +4,7 @@ import org.javaschool.dao.interfaces.ScheduleDao;
 import org.javaschool.entities.ScheduleEntity;
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
+import org.javaschool.entities.TrainEntity;
 import org.javaschool.services.interfaces.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
