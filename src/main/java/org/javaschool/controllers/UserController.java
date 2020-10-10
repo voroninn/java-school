@@ -1,9 +1,11 @@
 package org.javaschool.controllers;
 
 import org.javaschool.entities.PassengerEntity;
+import org.javaschool.entities.TicketEntity;
 import org.javaschool.entities.UserEntity;
 import org.javaschool.services.interfaces.PassengerService;
 import org.javaschool.services.interfaces.SecurityService;
+import org.javaschool.services.interfaces.TicketService;
 import org.javaschool.services.interfaces.UserService;
 import org.javaschool.utils.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -30,6 +34,9 @@ public class UserController {
 
     @Autowired
     private PassengerService passengerService;
+
+    @Autowired
+    private TicketService ticketService;
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -58,7 +65,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/myaccount/{username}")
-    public ModelAndView editPassenger(@PathVariable("username") String username) {
+    public ModelAndView editPersonalData(@PathVariable("username") String username) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("personalEdit");
         UserEntity user = userService.findUserByUsername(username);
@@ -73,17 +80,28 @@ public class UserController {
     }
 
     @PostMapping(value = "/myaccount")
-    public ModelAndView editPassenger(@ModelAttribute("passenger") PassengerEntity passenger) {
+    public ModelAndView editPersonalData(@ModelAttribute("passenger") PassengerEntity passenger) {
         ModelAndView modelAndView = new ModelAndView();
         UserEntity user = userService.findUserByUsername(userService.getCurrentUserName());
         modelAndView.addObject("user", user);
         modelAndView.setViewName("redirect:/myaccount/" + user.getUsername());
-        passenger.setUserId(user.getId());
+        passenger.setUser(user);
         if (passengerService.getPassenger(passenger.getId()) != null) {
             passengerService.editPassenger(passenger);
         } else {
             passengerService.addPassenger(passenger);
         }
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/myaccount/{username}/tickets")
+    public ModelAndView viewTickets(@PathVariable("username") String username) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("tickets");
+        UserEntity user = userService.findUserByUsername(username);
+        PassengerEntity passenger = passengerService.getPassengerByUser(user);
+        List<TicketEntity> tickets = ticketService.getTicketsByPassenger(passenger);
+        modelAndView.addObject("ticketsList", tickets);
         return modelAndView;
     }
 }

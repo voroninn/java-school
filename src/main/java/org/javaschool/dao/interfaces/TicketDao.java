@@ -1,5 +1,6 @@
 package org.javaschool.dao.interfaces;
 
+import org.javaschool.entities.PassengerEntity;
 import org.javaschool.entities.TicketEntity;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface TicketDao {
     void deleteTicket(TicketEntity ticket);
 
     long getTicketCount();
+
+    List<TicketEntity> getTicketsByPassenger(PassengerEntity passenger);
 }

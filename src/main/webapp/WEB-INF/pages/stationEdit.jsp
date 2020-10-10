@@ -45,10 +45,10 @@
 <div style="height: 100px"></div>
 
 <c:if test="${empty station.name}">
-    <c:url value="/add/station" var="var"/>
+    <c:url value="/stations/add" var="var"/>
 </c:if>
 <c:if test="${!empty station.name}">
-    <c:url value="/edit/station" var="var"/>
+    <c:url value="/stations/edit" var="var"/>
 </c:if>
 <form:form action="${var}" modelAttribute="station" method="POST" class="col-sm-10 offset-1">
     <c:if test="${!empty station.name}">

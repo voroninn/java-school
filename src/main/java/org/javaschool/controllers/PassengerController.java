@@ -27,7 +27,7 @@ public class PassengerController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/edit/passenger/{id}")
+    @GetMapping(value = "/passengers/edit/{id}")
     public ModelAndView editPassenger(@PathVariable("id") int id) {
         PassengerEntity passenger = passengerService.getPassenger(id);
         ModelAndView modelAndView = new ModelAndView();
@@ -36,7 +36,7 @@ public class PassengerController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/edit/passenger")
+    @PostMapping(value = "/passengers/edit")
     public ModelAndView editPassenger(@ModelAttribute("passenger") PassengerEntity passenger) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");
@@ -44,7 +44,7 @@ public class PassengerController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/add/passenger")
+    @GetMapping(value = "/passengers/add")
     public ModelAndView addPassenger() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengerEdit");
@@ -52,7 +52,7 @@ public class PassengerController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/add/passenger")
+    @PostMapping(value = "/passengers/add")
     public ModelAndView addPassenger(@ModelAttribute("passenger") PassengerEntity passenger) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");
@@ -60,7 +60,7 @@ public class PassengerController {
         return modelAndView;
     }
 
-    @GetMapping(value="/delete/passenger/{id}")
+    @GetMapping(value="/passengers/delete/{id}")
     public ModelAndView deletePassenger(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");

@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "passengers", schema = "sbb")
@@ -34,6 +35,11 @@ public class PassengerEntity {
     @Column(name = "passport_number")
     private int passportNumber;
 
-    @Column(name = "user_id")
-    private int userId;
+    @OneToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
+    @Transient
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "passenger")
+    private Set<TicketEntity> tickets;
 }

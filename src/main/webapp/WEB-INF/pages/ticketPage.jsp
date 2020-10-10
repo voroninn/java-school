@@ -23,28 +23,17 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav">
             <a href="<c:url value="/"/>" class="nav-item nav-link active" style="color: white">Home</a>
-            <sec:authorize access="hasRole('ROLE_ADMIN')">
-                <div class="btn-group">
-                    <a href="<c:url value="/stations"/>" class="btn btn-outline-light">Stations</a>
-                    <a href="<c:url value="/trains"/>" class="btn btn-outline-light">Trains</a>
-                    <a href="<c:url value="/passengers"/>" class="btn btn-outline-light">Passengers</a>
-                </div>
-            </sec:authorize>
-            <sec:authorize access="hasRole('ROLE_USER')">
+            <div class="btn-group">
                 <a href="/myaccount/${pageContext.request.userPrincipal.name}"
-                   class="nav-item nav-link active" style="color: white">My Account</a>
-            </sec:authorize>
+                   class="btn btn-outline-light">My Account</a>
+                <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets" class="btn btn-outline-light">My Tickets</a>
+                <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
+            </div>
         </div>
         <div class="navbar-nav ml-auto">
-            <sec:authorize access="!isAuthenticated()">
-                <a href="<c:url value="/registration"/>" class="nav-item nav-link" style="color: white">Registration</a>
-                <a href="<c:url value="/login"/>" class="nav-item nav-link" style="color: white">Login</a>
-            </sec:authorize>
-            <sec:authorize access="isAuthenticated()">
-                <a href="#" class="nav-item nav-link disabled" style="color: white">
-                    Logged in as <strong>${pageContext.request.userPrincipal.name}</strong></a>
-                <a href="<c:url value="/logout"/>" class="btn btn-outline-light">Logout</a>
-            </sec:authorize>
+            <a href="#" class="nav-item nav-link disabled" style="color: white">
+                Logged in as <strong>${pageContext.request.userPrincipal.name}</strong></a>
+            <a href="<c:url value="/logout"/>" class="btn btn-outline-light">Logout</a>
         </div>
     </div>
 </nav>

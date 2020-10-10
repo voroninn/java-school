@@ -31,8 +31,12 @@
                 </div>
             </sec:authorize>
             <sec:authorize access="hasRole('ROLE_USER')">
-                <a href="/myaccount/${pageContext.request.userPrincipal.name}"
-                   class="nav-item nav-link active" style="color: white">My Account</a>
+                <div class="btn-group">
+                    <a href="/myaccount/${pageContext.request.userPrincipal.name}"
+                       class="btn btn-outline-light">My Account</a>
+                    <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets" class="btn btn-outline-light">My Tickets</a>
+                    <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
+                </div>
             </sec:authorize>
         </div>
         <div class="navbar-nav ml-auto">

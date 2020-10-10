@@ -29,7 +29,7 @@ public class PassengerDaoImpl implements PassengerDao {
 
     @Override
     public void addPassenger(PassengerEntity passenger) {
-        entityManager.persist(passenger);
+        entityManager.persist(entityManager.merge(passenger));
     }
 
     @Override
@@ -46,8 +46,8 @@ public class PassengerDaoImpl implements PassengerDao {
     public PassengerEntity getPassengerByUser(UserEntity user) {
         PassengerEntity passenger = null;
         try {
-            Query query = entityManager.createQuery("SELECT p FROM PassengerEntity p where p.userId = :userId");
-            query.setParameter("userId", user.getId());
+            Query query = entityManager.createQuery("SELECT p FROM PassengerEntity p where p.user = :user");
+            query.setParameter("user", user);
             passenger = (PassengerEntity) query.getSingleResult();
         } catch (NoResultException e) {
             e.printStackTrace();

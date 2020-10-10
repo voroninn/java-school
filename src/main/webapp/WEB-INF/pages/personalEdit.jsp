@@ -22,8 +22,12 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav">
             <a href="<c:url value="/"/>" class="nav-item nav-link active" style="color: white">Home</a>
+            <div class="btn-group">
                 <a href="/myaccount/${pageContext.request.userPrincipal.name}"
-                   class="nav-item nav-link active" style="color: white">My Account</a>
+                   class="btn btn-outline-light">My Account</a>
+                <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets" class="btn btn-outline-light">My Tickets</a>
+                <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
+            </div>
         </div>
         <div class="navbar-nav ml-auto">
             <a href="#" class="nav-item nav-link disabled" style="color: white">

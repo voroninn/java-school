@@ -86,7 +86,7 @@ public class TicketController {
             if (passenger.getFirstName() != null && passenger.getLastName() != null
                     && passenger.getBirthDate() != null && passenger.getPassportNumber() != 0)
             modelAndView.addObject("passenger", passenger);
-            ticket.setPassengerId(passenger.getId());
+            ticket.setPassenger(passenger);
         } else {
             modelAndView.addObject("message", "Please enter your personal data");
         }
@@ -100,6 +100,16 @@ public class TicketController {
         modelAndView.setViewName("ticketBuy");
         ticket.setNumber(ticketService.generateTicketNumber(ticket));
         ticketService.addTicket(ticket);
+        return modelAndView;
+    }
+
+    @GetMapping(value="/ticket/delete/{id}")
+    public ModelAndView deleteTicket(@PathVariable("id") int id) {
+        ModelAndView modelAndView = new ModelAndView();
+        UserEntity user = userService.findUserByUsername(userService.getCurrentUserName());
+        modelAndView.setViewName("redirect:/myaccount/" + user.getUsername() + "/tickets");
+        TicketEntity ticket = ticketService.getTicket(id);
+        ticketService.deleteTicket(ticket);
         return modelAndView;
     }
 }

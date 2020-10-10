@@ -22,6 +22,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "email", unique = true)
     private String email;
 
+    @OneToOne(mappedBy = "user")
+    private PassengerEntity passenger;
+
     @Column(name = "password")
     private String password;
 

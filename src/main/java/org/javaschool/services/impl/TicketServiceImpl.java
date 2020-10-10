@@ -1,6 +1,7 @@
 package org.javaschool.services.impl;
 
 import org.javaschool.dao.interfaces.TicketDao;
+import org.javaschool.entities.PassengerEntity;
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
 import org.javaschool.entities.TicketEntity;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -61,7 +61,7 @@ public class TicketServiceImpl implements TicketService {
     public String generateTicketNumber(TicketEntity ticket) {
         return String.valueOf(ticket.getDepartureStation().charAt(0)) +
                 ticket.getArrivalStation().charAt(0) +
-                ticket.getPassengerId() +
+                ticket.getPassenger().getId() +
                 getTicketCount();
     }
 
@@ -73,5 +73,10 @@ public class TicketServiceImpl implements TicketService {
             ticketPrice += section.getLength() * 3;
         }
         return ticketPrice;
+    }
+
+    @Override
+    public List<TicketEntity> getTicketsByPassenger(PassengerEntity passenger) {
+        return ticketDao.getTicketsByPassenger(passenger);
     }
 }

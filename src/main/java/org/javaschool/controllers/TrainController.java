@@ -27,7 +27,7 @@ public class TrainController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/edit/train/{id}")
+    @GetMapping(value = "/trains/edit/{id}")
     public ModelAndView editTrain(@PathVariable("id") int id) {
         TrainEntity train = trainService.getTrain(id);
         ModelAndView modelAndView = new ModelAndView();
@@ -36,7 +36,7 @@ public class TrainController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/edit/train")
+    @PostMapping(value = "/trains/edit")
     public ModelAndView editTrain(@ModelAttribute("train") TrainEntity train) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/trains");
@@ -44,7 +44,7 @@ public class TrainController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/add/train")
+    @GetMapping(value = "/trains/add")
     public ModelAndView addTrain() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trainEdit");
@@ -52,7 +52,7 @@ public class TrainController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/add/train")
+    @PostMapping(value = "/trains/add")
     public ModelAndView addTrain(@ModelAttribute("train") TrainEntity train) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/trains");
@@ -60,7 +60,7 @@ public class TrainController {
         return modelAndView;
     }
 
-    @GetMapping(value="/delete/train/{id}")
+    @GetMapping(value="/trains/delete/{id}")
     public ModelAndView deleteTrain(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/trains");

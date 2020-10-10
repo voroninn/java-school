@@ -1,6 +1,7 @@
 package org.javaschool.dao.impl;
 
 import org.javaschool.dao.interfaces.TicketDao;
+import org.javaschool.entities.PassengerEntity;
 import org.javaschool.entities.TicketEntity;
 import org.javaschool.entities.TrainEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     public void addTicket(TicketEntity ticket) {
-        entityManager.persist(ticket);
+        entityManager.persist(entityManager.merge(ticket));
     }
 
     @Override
@@ -49,5 +50,13 @@ public class TicketDaoImpl implements TicketDao {
     public long getTicketCount() {
         Query query = entityManager.createQuery("SELECT count(t) FROM TicketEntity t");
         return (Long) query.getSingleResult();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<TicketEntity> getTicketsByPassenger(PassengerEntity passenger) {
+        Query query = entityManager.createQuery("SELECT t FROM TicketEntity t WHERE t.passenger = :passenger");
+        query.setParameter("passenger", passenger);
+        return query.getResultList();
     }
 }

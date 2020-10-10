@@ -24,7 +24,7 @@ public class StationController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/edit/station/{id}")
+    @GetMapping(value = "/stations/edit/{id}")
     public ModelAndView editStation(@PathVariable("id") int id) {
         StationEntity station = stationService.getStation(id);
         ModelAndView modelAndView = new ModelAndView();
@@ -33,7 +33,7 @@ public class StationController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/edit/station")
+    @PostMapping(value = "/stations/edit")
     public ModelAndView editStation(@ModelAttribute("station") StationEntity station) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/stations");
@@ -41,7 +41,7 @@ public class StationController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/add/station")
+    @GetMapping(value = "/stations/add")
     public ModelAndView addStation() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("stationEdit");
@@ -49,7 +49,7 @@ public class StationController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/add/station")
+    @PostMapping(value = "/stations/add")
     public ModelAndView addStation(@ModelAttribute("station") StationEntity station) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/stations");
@@ -57,7 +57,7 @@ public class StationController {
         return modelAndView;
     }
 
-    @GetMapping(value="/delete/station/{id}")
+    @GetMapping(value="/stations/delete/{id}")
     public ModelAndView deleteStation(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/stations");

@@ -50,14 +50,14 @@
             <td>${station.id}</td>
             <td>${station.name}</td>
             <td>
-                <a href="/edit/station/${station.id}" class="btn btn-secondary" role="button">Edit</a>
-                <a href="/delete/station/${station.id}" class="btn btn-danger" role="button">Delete</a>
+                <a href="/stations/edit/${station.id}" class="btn btn-secondary" role="button">Edit</a>
+                <a href="/stations/delete/${station.id}" class="btn btn-danger" role="button">Delete</a>
             </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<a href="<c:url value="/add/station"/>" class="col-sm-10 offset-1 btn btn-outline-info btn-block" role="button">+</a>
+<a href="<c:url value="/stations/add"/>" class="col-sm-10 offset-1 btn btn-outline-info btn-block" role="button">+</a>
 
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:

@@ -3,6 +3,7 @@ package org.javaschool.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -22,8 +23,10 @@ public class TicketEntity {
     @Column(name = "number")
     private String number;
 
-    @Column(name = "passenger_id")
-    private int passengerId;
+    @ToString.Exclude
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinColumn(name = "passenger_id")
+    private PassengerEntity passenger;
 
     @Transient
     @ManyToMany(mappedBy = "tickets")
