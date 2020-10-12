@@ -83,7 +83,7 @@
         </c:if>
     </div>
     <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
-            type="submit">Proceed to Schedule</button>
+            type="submit">Submit and proceed to Schedule</button>
 </form:form>
 
 <footer class="page-footer font-small">

@@ -13,10 +13,9 @@ import java.util.Date;
 @AllArgsConstructor
 public class ScheduleEntity {
 
-    public ScheduleEntity(StationEntity station, TrainEntity train, boolean direction) {
+    public ScheduleEntity(StationEntity station, TrainEntity train) {
         this.station = station;
         this.train = train;
-        this.direction = direction;
     }
 
     @Id

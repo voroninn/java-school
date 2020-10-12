@@ -93,11 +93,8 @@ public class StationServiceImpl implements StationService {
     @Override
     public List<StationEntity> selectEndpoints(List<StationEntity> stations) {
         List<StationEntity> endpoints = new ArrayList<>();
-        for (StationEntity station : stations) {
-            if (station.isEndpoint()) {
-                endpoints.add(station);
-            }
-        }
+        endpoints.add(stations.get(0));
+        endpoints.add(stations.get(stations.size() - 1));
         return endpoints;
     }
 }

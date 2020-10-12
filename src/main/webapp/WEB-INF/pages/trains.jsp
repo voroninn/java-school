@@ -36,7 +36,7 @@
     </div>
 </nav>
 <div style="height: 100px"></div>
-<table class="col-sm-10 offset-1 table table-striped">
+<table class="col-sm-10 offset-1 table table-sm table-striped">
     <thead>
     <tr>
         <th>Track</th>
@@ -53,7 +53,10 @@
             <td>${train.name}</td>
             <td>${train.capacity}</td>
             <td>
-            ${endpointsList[0].name} &LongRightArrow; ${endpointsList[endpointsList.size() - 1].name}
+                <c:if test="${!empty endpointsList.get(trainsList.indexOf(train))}">
+                    ${endpointsList.get(trainsList.indexOf(train)).get(0).name} &LongRightArrow;
+                    ${endpointsList.get(trainsList.indexOf(train)).get(1).name}
+                </c:if>
             </td>
             <td>
                 <a href="/trains/edit/${train.id}" class="btn btn-secondary" role="button">Edit</a>

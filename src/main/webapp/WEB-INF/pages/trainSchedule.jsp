@@ -38,7 +38,14 @@
 
 <div style="height: 100px"></div>
 
+<form action="/trains/edit/${train.id}/schedule" method="GET" class="col-sm-10 offset-1">
+    <input type="hidden" name="reverse" value="true">
+    <button class="col-sm-10 offset-1 btn btn-outline-warning btn-block"
+            type="submit">Reverse Schedule</button>
+</form>
+
 <form action="/trains/edit/schedule" method="POST" class="col-sm-10 offset-1">
+    <input type="hidden" name="isReversed" value="${isReversed}">
     <table class="col-sm-10 offset-1 table table-striped">
         <thead>
         <tr>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +38,15 @@ public class TrainController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trains");
         List<TrainEntity> trains = trainService.getAllTrains();
-        List<StationEntity> endpointsList = new ArrayList<>();
+        List<List<StationEntity>> endpointsList = new ArrayList<>();
         for (TrainEntity train : trains) {
             List<StationEntity> stations = stationService.getStationsByTrain(train);
-            List<StationEntity> endpoints = stationService.selectEndpoints(stations);
-            endpointsList.addAll(endpoints);
+            if (!stations.isEmpty()) {
+                List<StationEntity> endpoints = stationService.selectEndpoints(stations);
+                endpointsList.add(endpoints);
+            } else {
+                endpointsList.add(stations);
+            }
         }
         modelAndView.addObject("endpointsList", endpointsList);
         modelAndView.addObject("trainsList", trains);
@@ -67,7 +72,8 @@ public class TrainController {
     }
 
     @GetMapping(value = "/trains/edit/{id}/schedule")
-    public ModelAndView editTrainSchedule(@ModelAttribute("train") TrainEntity train) {
+    public ModelAndView editTrainSchedule(@ModelAttribute("train") TrainEntity train,
+                                          @RequestParam(required = false) String reverse) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trainSchedule");
         modelAndView.addObject("train", train);
@@ -77,9 +83,15 @@ public class TrainController {
             schedules = scheduleService.getSchedulesByTrain(train);
         } else {
             for (StationEntity station : stations) {
-                schedules.add(new ScheduleEntity(station, train, true));
+                schedules.add(new ScheduleEntity(station, train));
             }
         }
+        boolean isReversed = false;
+        if (reverse != null && reverse.equals("true")) {
+            Collections.reverse(schedules);
+            isReversed = true;
+        }
+        modelAndView.addObject("isReversed", isReversed);
         modelAndView.addObject("schedulesList", schedules);
         return modelAndView;
     }
@@ -95,7 +107,7 @@ public class TrainController {
             schedule.setTrain(train);
             schedule.setArrivalTime(scheduleService.convertStringtoDate(requestParams.get("arrivalTime" + i)));
             schedule.setDepartureTime(scheduleService.convertStringtoDate(requestParams.get("departureTime" + i)));
-            schedule.setDirection(true);
+            schedule.setDirection(!Boolean.parseBoolean(requestParams.get("isReversed")));
             scheduleService.editSchedule(schedule);
         }
         modelAndView.setViewName("redirect:/trains");

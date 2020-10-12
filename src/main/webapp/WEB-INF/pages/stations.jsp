@@ -36,7 +36,7 @@
     </div>
 </nav>
 <div style="height: 100px"></div>
-<table class="col-sm-10 offset-1 table table-striped">
+<table class="col-sm-10 offset-1 table table-sm table-striped">
     <thead>
     <tr>
         <th>ID</th>
