@@ -13,18 +13,24 @@ import java.util.Date;
 @AllArgsConstructor
 public class ScheduleEntity {
 
+    public ScheduleEntity(StationEntity station, TrainEntity train, boolean direction) {
+        this.station = station;
+        this.train = train;
+        this.direction = direction;
+    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST } )
     @JoinColumn(name = "station_id")
     private StationEntity station;
 
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST } )
     @JoinColumn(name = "train_id")
     private TrainEntity train;
 

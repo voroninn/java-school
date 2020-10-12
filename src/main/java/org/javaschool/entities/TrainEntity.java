@@ -24,7 +24,7 @@ public class TrainEntity {
     private int capacity;
 
     @Transient
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "train")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "train")
     private Set<ScheduleEntity> schedules;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -34,7 +34,7 @@ public class TrainEntity {
     private Set<TicketEntity> tickets;
 
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "track_id")
     private TrackEntity track;
 }

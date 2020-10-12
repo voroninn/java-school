@@ -53,9 +53,7 @@
             <td>${train.name}</td>
             <td>${train.capacity}</td>
             <td>
-            <c:forEach var="endpoint" items="${endpointsList}">
-            - ${endpoint.name} -
-            </c:forEach>
+            ${endpointsList[0].name} &LongRightArrow; ${endpointsList[endpointsList.size() - 1].name}
             </td>
             <td>
                 <a href="/trains/edit/${train.id}" class="btn btn-secondary" role="button">Edit</a>

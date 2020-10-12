@@ -54,13 +54,23 @@
         <input type="hidden" name="id" value="${train.id}">
     </c:if>
     <div style="height: 100px">
+        <label for="track">Track</label>
+        <c:if test="${empty train.name}">
+            <form:input path="track.id" type="text" class="form-control" id="track" autofocus="true"/>
+        </c:if>
+        <c:if test="${!empty train.name}">
+            <form:input path="track.id" type="text" class="form-control"
+                        id="track" value="${train.track.id}" autofocus="true"/>
+        </c:if>
+    </div>
+    <div style="height: 100px">
         <label for="name">Name</label>
         <c:if test="${empty train.name}">
-            <form:input path="name" type="text" class="form-control" id="name" autofocus="true"/>
+            <form:input path="name" type="text" class="form-control" id="name"/>
         </c:if>
         <c:if test="${!empty train.name}">
             <form:input path="name" type="text" class="form-control"
-                        id="name" placeholder="${train.name}" autofocus="true"/>
+                        id="name" value="${train.name}"/>
         </c:if>
     </div>
     <div style="height: 100px">
@@ -69,12 +79,11 @@
             <form:input path="capacity" type="text" class="form-control" id="capacity"/>
         </c:if>
         <c:if test="${!empty train.capacity}">
-            <form:input path="capacity" type="text" class="form-control" id="capacity" placeholder="${train.capacity}"/>
+            <form:input path="capacity" type="text" class="form-control" id="capacity" value="${train.capacity}"/>
         </c:if>
     </div>
-
     <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
-            type="submit">Submit</button>
+            type="submit">Proceed to Schedule</button>
 </form:form>
 
 <footer class="page-footer font-small">

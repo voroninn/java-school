@@ -21,4 +21,6 @@ public interface ScheduleDao {
     List<ScheduleEntity> getSchedulesByStationAndDirection(StationEntity station, boolean direction);
 
     List<ScheduleEntity> getSchedulesByRoute(List<StationEntity> route);
+
+    List<ScheduleEntity> getSchedulesByTrain(TrainEntity train);
 }

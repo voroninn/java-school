@@ -23,8 +23,8 @@ public class StationEntity {
     @Column(name = "is_endpoint")
     private boolean isEndpoint;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "station_tracks",
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST } )
+    @JoinTable(name = "mappings",
             joinColumns = @JoinColumn(name = "station_id"),
             inverseJoinColumns = @JoinColumn(name = "track_id"))
     private Set<TrackEntity> tracks;
@@ -32,4 +32,8 @@ public class StationEntity {
     @Transient
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "station")
     private Set<ScheduleEntity> schedules;
+
+    @Transient
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "station")
+    private Set<MappingEntity> mappings;
 }

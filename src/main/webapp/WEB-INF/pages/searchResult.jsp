@@ -15,7 +15,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-light sticky-top" style="background-color: #491262">
+<nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #491262">
     <a href="<c:url value="/"/>" class="navbar-brand" style="color: white">SBB</a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -65,41 +65,77 @@
         <div style="height: 100px">
             <p>Number of changes: ${numberOfChanges}</p>
         </div>
-        <c:forEach var="schedule" items="${separatedSchedulesList}">
-        <h3>Option ${separatedSchedulesList.indexOf(schedule) + 1}</h3>
-        <table class="col-sm-10 offset-1 table table-sm table-striped">
-            <thead>
-            <tr>
-                <th>Station</th>
-                <th>Time</th>
-            </tr>
-            </thead>
-            <tbody>
+        <c:if test="${!empty separatedSchedulesList}">
+            <c:forEach var="schedule" items="${separatedSchedulesList}">
+            <h3>Option ${separatedSchedulesList.indexOf(schedule) + 1}</h3>
+            <table class="col-sm-10 offset-1 table table-sm table-striped">
+                <thead>
                 <tr>
-                    <td>${schedule.get(0).station.name}</td>
-                    <td><fmt:formatDate value="${schedule.get(0).departureTime}" pattern="HH:mm"/></td>
+                    <th>Station</th>
+                    <th>Time</th>
                 </tr>
-                <c:forEach var="scheduleItem" items="${schedule}" begin="1">
+                </thead>
+                <tbody>
                     <tr>
-                        <td>${scheduleItem.station.name}</td>
-                        <td><fmt:formatDate value="${scheduleItem.arrivalTime}" pattern="HH:mm"/></td>
+                        <td>${schedule.get(0).station.name}</td>
+                        <td><fmt:formatDate value="${schedule.get(0).departureTime}" pattern="HH:mm"/></td>
+                    </tr>
+                    <c:forEach var="scheduleItem" items="${schedule}" begin="1">
+                        <tr>
+                            <td>${scheduleItem.station.name}</td>
+                            <td><fmt:formatDate value="${scheduleItem.arrivalTime}" pattern="HH:mm"/></td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+                <div class="col-sm-10 offset-1">
+                    <p>Price: ${ticketForm.price}</p>
+                </div>
+            <form:form action="/ticket/verify" modelAttribute="ticketForm" method="POST">
+                <form:hidden path="departureTime" name="departureTime" value="${schedule.get(0).departureTime}"/>
+                <form:hidden path="arrivalTime" name="arrivalTime" value="${schedule.get(schedule.size() - 1).arrivalTime}"/>
+                <div class="col-sm-10 offset-1">
+                    <button type="submit" class="btn btn-primary">Select This Option</button>
+                </div>
+            </form:form>
+            </c:forEach>
+        </c:if>
+
+        <c:if test="${!empty schedulesList}">
+            <table class="col-sm-10 offset-1 table table-sm table-striped">
+                <thead>
+                <tr>
+                    <th>Station</th>
+                    <th>Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>${schedulesList[0].station.name}</td>
+                    <td><fmt:formatDate value="${schedulesList[0].departureTime}" pattern="HH:mm"/></td>
+                </tr>
+                <c:forEach var="schedule" items="${schedulesList}" begin="1">
+                    <tr>
+                        <td>${schedule.station.name}</td>
+                        <td><fmt:formatDate value="${schedule.arrivalTime}" pattern="HH:mm"/></td>
                     </tr>
                 </c:forEach>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
             <div class="col-sm-10 offset-1">
                 <p>Price: ${ticketForm.price}</p>
             </div>
-        <form:form action="/ticket/verify" modelAttribute="ticketForm" method="POST">
-            <form:hidden path="departureTime" name="departureTime" value="${schedule.get(0).departureTime}"/>
-            <form:hidden path="arrivalTime" name="arrivalTime" value="${schedule.get(schedule.size() - 1).arrivalTime}"/>
-            <div class="col-sm-10 offset-1">
-                <button type="submit" class="btn btn-primary">Select This Option</button>
-            </div>
-        </form:form>
-        </c:forEach>
+            <form:form action="/ticket/verify" modelAttribute="ticketForm" method="POST">
+                <form:hidden path="departureTime" name="departureTime" value="${schedulesList[0].departureTime}"/>
+                <form:hidden path="arrivalTime" name="arrivalTime" value="${schedulesList[schedulesList.size() - 1].arrivalTime}"/>
+                <div class="col-sm-10 offset-1">
+                    <button type="submit" class="btn btn-primary">Select This Option</button>
+                </div>
+            </form:form>
+        </c:if>
     </div>
 </div>
+
 <div style="height: 100px"></div>
 
 <footer class="page-footer font-small">
@@ -111,6 +147,5 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 </body>
 </html>

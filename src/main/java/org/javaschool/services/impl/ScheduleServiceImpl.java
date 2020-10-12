@@ -1,23 +1,29 @@
 package org.javaschool.services.impl;
 
 import org.javaschool.dao.interfaces.ScheduleDao;
-import org.javaschool.entities.ScheduleEntity;
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrainEntity;
+import org.javaschool.entities.*;
 import org.javaschool.services.interfaces.ScheduleService;
+import org.javaschool.services.interfaces.SectionService;
+import org.javaschool.services.interfaces.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
     @Autowired
     private ScheduleDao scheduleDao;
+
+    @Autowired
+    private SectionService sectionService;
+
+    @Autowired
+    private StationService stationService;
 
     @Override
     @Transactional
@@ -77,5 +83,24 @@ public class ScheduleServiceImpl implements ScheduleService {
             separatedSchedules.add(schedules.subList(i, i + itemsPerSchedule));
         }
         return separatedSchedules;
+    }
+
+    @Override
+    public List<ScheduleEntity> getSchedulesByTrain(TrainEntity train) {
+        return scheduleDao.getSchedulesByTrain(train);
+    }
+
+    @Override
+    public Date convertStringtoDate(String date) {
+        Date parsedDate = null;
+        if (date != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+            try {
+                parsedDate = formatter.parse(date);
+            } catch (ParseException pE) {
+                pE.getStackTrace();
+            }
+        }
+        return parsedDate;
     }
 }

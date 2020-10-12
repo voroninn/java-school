@@ -73,4 +73,12 @@ public class ScheduleDaoImpl implements ScheduleDao {
         schedulesByRoute.addAll(getSchedulesByStationAndDirection(lastSection.getStationTo(), lastSection.isDirection()));
         return schedulesByRoute;
     }
+
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public List<ScheduleEntity> getSchedulesByTrain(TrainEntity train) {
+        Query query = entityManager.createQuery("SELECT s FROM ScheduleEntity s WHERE s.train = :train");
+        query.setParameter("train", train);
+        return query.getResultList();
+    }
 }

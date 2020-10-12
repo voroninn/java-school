@@ -1,7 +1,6 @@
 package org.javaschool.dao.impl;
 
 import org.javaschool.dao.interfaces.StationDao;
-import org.javaschool.entities.ScheduleEntity;
 import org.javaschool.entities.StationEntity;
 import org.javaschool.entities.TrainEntity;
 import org.springframework.beans.factory.annotation.Autowired;

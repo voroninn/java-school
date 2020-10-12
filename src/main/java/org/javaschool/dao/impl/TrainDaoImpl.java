@@ -23,7 +23,7 @@ public class TrainDaoImpl implements TrainDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<TrainEntity> getAllTrains() {
-        Query query = entityManager.createQuery("SELECT t FROM TrainEntity t");
+        Query query = entityManager.createQuery("SELECT t FROM TrainEntity t ORDER BY t.track.id, t.name");
         return query.getResultList();
     }
 

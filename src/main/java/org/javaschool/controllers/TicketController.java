@@ -63,8 +63,8 @@ public class TicketController {
         modelAndView.addObject("numberOfChanges", numberOfChanges);
 
         List<ScheduleEntity> schedules = scheduleService.getSchedulesByRoute(route);
-        scheduleService.putSchedulesInCorrectOrder(schedules);
         if (schedules.size() > route.size()) {
+            scheduleService.putSchedulesInCorrectOrder(schedules);
             List<List<ScheduleEntity>> separatedSchedules = scheduleService.separateSchedules(schedules, route.size());
             modelAndView.addObject("separatedSchedulesList", separatedSchedules);
         } else {
