@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -15,7 +15,7 @@
         <title>Edit Station</title>
     </c:if>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon"/>
 </head>
 
 <body>
@@ -44,29 +44,47 @@
 
 <div style="height: 100px"></div>
 
-<c:if test="${empty station.name}">
-    <c:url value="/stations/add" var="var"/>
-</c:if>
-<c:if test="${!empty station.name}">
-    <c:url value="/stations/edit" var="var"/>
-</c:if>
-<form:form action="${var}" modelAttribute="station" method="POST" class="col-sm-10 offset-1">
-    <c:if test="${!empty station.name}">
-        <input type="hidden" name="id" value="${station.id}">
+<div class="container">
+    <c:if test="${empty station.name}">
+        <c:url value="/stations/add" var="var"/>
     </c:if>
-    <div style="height: 100px">
-        <label for="name">Name</label>
-        <c:if test="${empty station.name}">
-            <form:input path="name" type="text" class="form-control" id="name" autofocus="true"/>
-        </c:if>
-        <c:if test="${!empty station.name}">
-            <form:input path="name" type="text" class="form-control"
-                        id="name" placeholder="${station.name}" autofocus="true"/>
-        </c:if>
+    <c:if test="${!empty station.name}">
+        <c:url value="/stations/edit" var="var"/>
+    </c:if>
+    <h2 class="form-heading text-center">Edit station data:</h2>
+    <div class="jumbotron">
+        <form action="${var}" method="POST" class="col-sm-10 offset-1">
+            <c:if test="${!empty station.name}">
+                <input type="hidden" name="id" value="${station.id}">
+            </c:if>
+            <div style="height: 100px">
+                <label for="name">Name</label>
+                <c:if test="${empty station.name}">
+                    <input type="text" class="form-control" name="name" id="name" autofocus="true"/>
+                </c:if>
+                <c:if test="${!empty station.name}">
+                    <input type="text" class="form-control" name="name" id="name" value="${station.name}"
+                           autofocus="true"/>
+                </c:if>
+            </div>
+            <div style="height: 100px">
+                <c:if test="${empty station.name}">
+                    <label for="track">Track</label>
+                    <input type="text" class="form-control" name="track" id="track"/>
+                </c:if>
+            </div>
+            <div style="height: 100px">
+                <c:if test="${empty station.name}">
+                    <label for="length">Distance from nearest station</label>
+                    <input type="text" class="form-control" name="length" id="length"/>
+                </c:if>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-lg btn-outline-info btn-center" type="submit">Submit</button>
+            </div>
+        </form>
     </div>
-    <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
-            type="submit">Submit</button>
-</form:form>
+</div>
 
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:

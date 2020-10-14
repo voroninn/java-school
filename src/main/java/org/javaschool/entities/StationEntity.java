@@ -23,11 +23,8 @@ public class StationEntity {
     @Column(name = "is_endpoint")
     private boolean isEndpoint;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST } )
-    @JoinTable(name = "mappings",
-            joinColumns = @JoinColumn(name = "station_id"),
-            inverseJoinColumns = @JoinColumn(name = "track_id"))
-    private Set<TrackEntity> tracks;
+    @Column(name = "is_breakpoint")
+    private boolean isBreakpoint;
 
     @Transient
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "station")

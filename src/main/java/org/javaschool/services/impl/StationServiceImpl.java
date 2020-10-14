@@ -1,11 +1,9 @@
 package org.javaschool.services.impl;
 
 import org.javaschool.dao.interfaces.StationDao;
-import org.javaschool.entities.ScheduleEntity;
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
 import org.javaschool.entities.TrainEntity;
-import org.javaschool.services.interfaces.ScheduleService;
 import org.javaschool.services.interfaces.SectionService;
 import org.javaschool.services.interfaces.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +25,6 @@ public class StationServiceImpl implements StationService {
 
     @Autowired
     private SectionService sectionService;
-
-    @Autowired
-    private ScheduleService scheduleService;
 
     @Override
     @Transactional
@@ -77,17 +72,18 @@ public class StationServiceImpl implements StationService {
         for (int i = 0; i < route.size() - 2; i++) {
             SectionEntity section1 = sectionService.getSectionBetweenStations(route.get(i), route.get(i + 1));
             SectionEntity section2 = sectionService.getSectionBetweenStations(route.get(i + 1), route.get(i + 2));
-            if (section1.getTrack().equals(section2.getTrack())) {
-                continue;
+            if (!section1.getTrack().equals(section2.getTrack())) {
+                route.get(i + 1).setBreakpoint(true);
+                route.get(i + 1).setEndpoint(false);
+                counter++;
             }
-            counter++;
         }
         return counter;
     }
 
     @Override
     public List<StationEntity> getStationsByTrain(TrainEntity train) {
-            return stationDao.getStationsByTrain(train);
+        return stationDao.getStationsByTrain(train);
     }
 
     @Override
@@ -96,5 +92,11 @@ public class StationServiceImpl implements StationService {
         endpoints.add(stations.get(0));
         endpoints.add(stations.get(stations.size() - 1));
         return endpoints;
+    }
+
+    @Override
+    public void setEndpoints(LinkedList<StationEntity> route) {
+        route.get(0).setEndpoint(true);
+        route.get(route.size() - 1).setEndpoint(true);
     }
 }

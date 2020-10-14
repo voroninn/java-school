@@ -3,6 +3,7 @@ package org.javaschool.services.impl;
 import org.javaschool.dao.interfaces.SectionDao;
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
+import org.javaschool.entities.TrackEntity;
 import org.javaschool.services.interfaces.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,11 @@ public class SectionServiceImpl implements SectionService {
     @Transactional
     public List<SectionEntity> getSectionsByRoute(List<StationEntity> route) {
         return sectionDao.getSectionsByRoute(route);
+    }
+
+    @Override
+    @Transactional
+    public void createSection(StationEntity station, int length, TrackEntity track) {
+        sectionDao.createSection(station, length, track);
     }
 }

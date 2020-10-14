@@ -19,10 +19,6 @@ public class TrackEntity {
     private int id;
 
     @Transient
-    @ManyToMany(mappedBy = "tracks")
-    private Set<StationEntity> stations;
-
-    @Transient
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "track")
     private Set<TrainEntity> trains;
 

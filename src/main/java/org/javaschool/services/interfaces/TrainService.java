@@ -1,6 +1,7 @@
 package org.javaschool.services.interfaces;
 
 import org.javaschool.entities.ScheduleEntity;
+import org.javaschool.entities.TrackEntity;
 import org.javaschool.entities.TrainEntity;
 
 import java.util.List;
@@ -18,5 +19,7 @@ public interface TrainService {
 
     void deleteTrain(TrainEntity train);
 
-    Set<TrainEntity> getTrainsBySchedules(List<ScheduleEntity> schedules);
+    Set<TrainEntity> getTrainsBySchedule(List<ScheduleEntity> schedule);
+
+    List<TrainEntity> getTrainsByTrack(TrackEntity track);
 }

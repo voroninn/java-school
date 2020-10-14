@@ -1,13 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Tickets</title>
+    <title>Edit Schedule</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon"/>
 </head>
@@ -22,11 +23,9 @@
         <div class="navbar-nav">
             <a href="<c:url value="/"/>" class="nav-item nav-link active" style="color: white">Home</a>
             <div class="btn-group">
-                <a href="/myaccount/${pageContext.request.userPrincipal.name}"
-                   class="btn btn-outline-light">My Account</a>
-                <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets" class="btn btn-outline-light">My
-                    Tickets</a>
-                <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
+                <a href="<c:url value="/stations"/>" class="btn btn-outline-light">Stations</a>
+                <a href="<c:url value="/trains"/>" class="btn btn-outline-light">Trains</a>
+                <a href="<c:url value="/passengers"/>" class="btn btn-outline-light">Passengers</a>
             </div>
         </div>
         <div class="navbar-nav ml-auto">
@@ -40,42 +39,36 @@
 <div style="height: 100px"></div>
 
 <div class="container">
+    <h2 class="text-center">The following stations are currently on Track ${track}:</h2>
     <div class="jumbotron">
-        <c:if test="${empty ticketsList}">
-            <div class="text-center">
-                <h2>You have not bought any tickets yet.</h2>
-            </div>
-        </c:if>
-        <c:if test="${!empty ticketsList}">
-            <table class="col-sm-10 offset-1 table table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>Number</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Departure</th>
-                    <th>Arrival</th>
-                    <th>Date</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="ticket" items="${ticketsList}">
-                    <tr>
-                        <td>${ticket.number}</td>
-                        <td>${ticket.departureStation}</td>
-                        <td>${ticket.arrivalStation}</td>
-                        <td><fmt:formatDate value="${ticket.departureTime}" pattern="HH:mm"/></td>
-                        <td><fmt:formatDate value="${ticket.arrivalTime}" pattern="HH:mm"/></td>
-                        <td><fmt:formatDate value="${ticket.date}" pattern="dd.MM.yyyy"/></td>
-                        <td>
-                            <a href="/ticket/delete/${ticket.id}" class="btn btn-danger" role="button">Cancel</a>
-                        </td>
-                    </tr>
+        <div style="height: 30px"></div>
+        <div class="text-center">
+            <h4>
+                ${stationsList.get(0).name} -
+                <c:forEach var="stationItem" items="${stationsList}" begin="1" end="${stationsList.size() - 2}">
+                    ${stationItem.name} -
                 </c:forEach>
-                </tbody>
-            </table>
-        </c:if>
+                ${stationsList.get(stationsList.size() - 1).name}
+            </h4>
+            <div style="height: 30px"></div>
+            <p>Where would you like to append <strong>${station.name}?</strong></p>
+        </div>
+        <div style="height: 100px"></div>
+        <form action="/stations/edit/track" method="POST" class="col-sm-10 offset-1">
+            <input type="hidden" name="appendLocation" value="before">
+            <input type="hidden" name="track" value="${track}">
+            <input type="hidden" name="length" value="${length}">
+            <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
+                    type="submit">Before ${stationsList.get(0).name}</button>
+        </form>
+        <div style="height: 30px"></div>
+        <form action="/stations/edit/track" method="POST" class="col-sm-10 offset-1">
+            <input type="hidden" name="appendLocation" value="after">
+            <input type="hidden" name="track" value="${track}">
+            <input type="hidden" name="length" value="${length}">
+            <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
+                    type="submit">After ${stationsList.get(stationsList.size() - 1).name}</button>
+        </form>
     </div>
 </div>
 

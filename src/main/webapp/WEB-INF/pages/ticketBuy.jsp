@@ -42,7 +42,7 @@
 
 <div class="container">
     <h2 class="text-center">Ticket successfully purchased</h2>
-    <p class="text-center">You can view all your tickets under the Tickets tab.</p>
+    <p class="text-center">You can view all your tickets under My Tickets tab.</p>
     <div class="jumbotron">
         <p>Ticket No. ${ticketForm.number}</p>
         <p>Date: <fmt:formatDate value="${ticketForm.date}" pattern="dd.MM.yyyy"/></p>

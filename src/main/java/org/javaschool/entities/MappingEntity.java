@@ -31,4 +31,10 @@ public class MappingEntity {
 
     @Column(name = "station_order")
     private int stationOrder;
+
+    public MappingEntity(StationEntity station, TrackEntity track, int stationOrder) {
+        this.station = station;
+        this.track = track;
+        this.stationOrder = stationOrder;
+    }
 }

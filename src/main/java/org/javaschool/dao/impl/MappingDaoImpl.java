@@ -32,6 +32,15 @@ public class MappingDaoImpl implements MappingDao {
     }
 
     @Override
+    @SuppressWarnings(value = "unchecked")
+    public List<MappingEntity> getMappingsByTrack(TrackEntity track) {
+        Query query = entityManager.createQuery("SELECT m FROM MappingEntity m " +
+                "WHERE m.track = :track ORDER BY m.stationOrder");
+        query.setParameter("track", track);
+        return query.getResultList();
+    }
+
+    @Override
     public void addMapping(MappingEntity mapping) {
         entityManager.persist(mapping);
     }
@@ -53,5 +62,30 @@ public class MappingDaoImpl implements MappingDao {
                 "WHERE m.track = :track ORDER BY m.stationOrder");
         query.setParameter("track", track);
         return query.getResultList();
+    }
+
+    @Override
+    public TrackEntity getTrack(int id) {
+        Query query = entityManager.createQuery("SELECT m.track FROM MappingEntity m WHERE m.track.id = :id");
+        query.setParameter("id", id);
+        return (TrackEntity) query.getSingleResult();
+    }
+
+    @Override
+    public int getStationOrder(StationEntity station, TrackEntity track) {
+        Query query = entityManager.createQuery("SELECT m.stationOrder FROM MappingEntity m " +
+                "WHERE m.station = :station AND m.track = :track");
+        query.setParameter("station", station);
+        query.setParameter("track", track);
+        return (int) query.getSingleResult();
+    }
+
+    @Override
+    public StationEntity getStationByOrder(TrackEntity track, int stationOrder) {
+        Query query = entityManager.createQuery("SELECT m.station FROM MappingEntity m " +
+                "WHERE m.track = :track AND m.stationOrder = :stationOrder");
+        query.setParameter("stationOrder", stationOrder);
+        query.setParameter("track", track);
+        return (StationEntity) query.getSingleResult();
     }
 }

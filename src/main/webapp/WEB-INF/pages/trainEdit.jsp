@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -15,7 +15,7 @@
         <title>Edit Train</title>
     </c:if>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon"/>
 </head>
 
 <body>
@@ -43,48 +43,56 @@
 
 <div style="height: 100px"></div>
 
-<c:if test="${empty train.name}">
-    <c:url value="/trains/add" var="var"/>
-</c:if>
-<c:if test="${!empty train.name}">
-    <c:url value="/trains/edit" var="var"/>
-</c:if>
-<form:form action="${var}" modelAttribute="train" method="POST" class="col-sm-10 offset-1">
-    <c:if test="${!empty train.name}">
-        <input type="hidden" name="id" value="${train.id}">
-    </c:if>
-    <div style="height: 100px">
-        <label for="track">Track</label>
+<div class="container">
+    <h2 class="form-heading text-center">Edit train data:</h2>
+    <div class="jumbotron">
         <c:if test="${empty train.name}">
-            <form:input path="track.id" type="text" class="form-control" id="track" autofocus="true"/>
+            <c:url value="/trains/add" var="var"/>
         </c:if>
         <c:if test="${!empty train.name}">
-            <form:input path="track.id" type="text" class="form-control"
-                        id="track" value="${train.track.id}" autofocus="true"/>
+            <c:url value="/trains/edit" var="var"/>
         </c:if>
+        <form:form action="${var}" modelAttribute="train" method="POST" class="col-sm-10 offset-1">
+            <c:if test="${!empty train.name}">
+                <input type="hidden" name="id" value="${train.id}">
+            </c:if>
+            <div class="form-group col-sm-4 offset-sm-4">
+                <label for="track">Track</label>
+                <c:if test="${empty train.name}">
+                    <form:input path="track.id" type="text" class="form-control" id="track" autofocus="true"/>
+                </c:if>
+                <c:if test="${!empty train.name}">
+                    <form:input path="track.id" type="text" class="form-control"
+                                id="track" value="${train.track.id}" autofocus="true"/>
+                </c:if>
+            </div>
+            <div class="form-group col-sm-4 offset-sm-4">
+                <label for="name">Name</label>
+                <c:if test="${empty train.name}">
+                    <form:input path="name" type="text" class="form-control" id="name"/>
+                </c:if>
+                <c:if test="${!empty train.name}">
+                    <form:input path="name" type="text" class="form-control"
+                                id="name" value="${train.name}"/>
+                </c:if>
+            </div>
+            <div class="form-group col-sm-4 offset-sm-4">
+                <label for="capacity">Capacity</label>
+                <c:if test="${empty train.capacity}">
+                    <form:input path="capacity" type="text" class="form-control" id="capacity"/>
+                </c:if>
+                <c:if test="${!empty train.capacity}">
+                    <form:input path="capacity" type="text" class="form-control" id="capacity"
+                                value="${train.capacity}"/>
+                </c:if>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-lg btn-outline-info btn-center" type="submit">Submit and proceed to Schedule
+                </button>
+            </div>
+        </form:form>
     </div>
-    <div style="height: 100px">
-        <label for="name">Name</label>
-        <c:if test="${empty train.name}">
-            <form:input path="name" type="text" class="form-control" id="name"/>
-        </c:if>
-        <c:if test="${!empty train.name}">
-            <form:input path="name" type="text" class="form-control"
-                        id="name" value="${train.name}"/>
-        </c:if>
-    </div>
-    <div style="height: 100px">
-        <label for="capacity">Capacity</label>
-        <c:if test="${empty train.capacity}">
-            <form:input path="capacity" type="text" class="form-control" id="capacity"/>
-        </c:if>
-        <c:if test="${!empty train.capacity}">
-            <form:input path="capacity" type="text" class="form-control" id="capacity" value="${train.capacity}"/>
-        </c:if>
-    </div>
-    <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
-            type="submit">Submit and proceed to Schedule</button>
-</form:form>
+</div>
 
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:

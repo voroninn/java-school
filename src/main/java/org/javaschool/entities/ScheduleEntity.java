@@ -18,6 +18,12 @@ public class ScheduleEntity {
         this.train = train;
     }
 
+    public ScheduleEntity(StationEntity station, TrainEntity train, boolean direction) {
+        this.station = station;
+        this.train = train;
+        this.direction = direction;
+    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")

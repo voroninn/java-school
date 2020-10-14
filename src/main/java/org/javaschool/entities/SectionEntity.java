@@ -33,4 +33,13 @@ public class SectionEntity {
 
     @Column(name = "direction")
     private boolean direction;
+
+    public SectionEntity(StationEntity stationFrom, StationEntity stationTo,
+                         int length, TrackEntity track, boolean direction) {
+        this.stationFrom = stationFrom;
+        this.stationTo = stationTo;
+        this.length = length;
+        this.track = track;
+        this.direction = direction;
+    }
 }

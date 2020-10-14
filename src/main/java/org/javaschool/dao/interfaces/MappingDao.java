@@ -12,6 +12,8 @@ public interface MappingDao {
 
     List<MappingEntity> getAllMappings();
 
+    List<MappingEntity> getMappingsByTrack(TrackEntity track);
+
     void addMapping(MappingEntity mapping);
 
     void editMapping(MappingEntity mapping);
@@ -19,4 +21,10 @@ public interface MappingDao {
     void deleteMapping(MappingEntity mapping);
 
     List<StationEntity> getOrderedStationsByTrack(TrackEntity track);
+
+    TrackEntity getTrack(int id);
+
+    int getStationOrder(StationEntity station, TrackEntity track);
+
+    StationEntity getStationByOrder(TrackEntity track, int stationOrder);
 }

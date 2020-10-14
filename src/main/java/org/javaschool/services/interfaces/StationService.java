@@ -27,4 +27,6 @@ public interface StationService {
     List<StationEntity> getStationsByTrain(TrainEntity train);
 
     List<StationEntity> selectEndpoints(List<StationEntity> stations);
+
+    void setEndpoints(LinkedList<StationEntity> route);
 }

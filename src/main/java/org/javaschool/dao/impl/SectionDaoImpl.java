@@ -3,7 +3,8 @@ package org.javaschool.dao.impl;
 import org.javaschool.dao.interfaces.SectionDao;
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
-import org.javaschool.services.interfaces.StationService;
+import org.javaschool.entities.TrackEntity;
+import org.javaschool.services.interfaces.MappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +22,7 @@ public class SectionDaoImpl implements SectionDao {
     private EntityManager entityManager;
 
     @Autowired
-    private StationService stationService;
+    private MappingService mappingService;
 
     @Override
     public SectionEntity getSection(int id) {
@@ -66,5 +67,24 @@ public class SectionDaoImpl implements SectionDao {
             sectionsByRoute.add(getSectionBetweenStations(route.get(i), route.get(i + 1)));
         }
         return sectionsByRoute;
+    }
+
+    @Override
+    public void createSection(StationEntity station, int length, TrackEntity track) {
+        StationEntity nearestStation;
+        int stationOrder = mappingService.getStationOrder(station, track);
+        if (stationOrder == 1) {
+            nearestStation = mappingService.getStationByOrder(track, 2);
+            entityManager.persist(entityManager.merge
+                    (new SectionEntity(station, nearestStation, length, track, true)));
+            entityManager.persist(entityManager.merge
+                    (new SectionEntity(nearestStation, station, length, track, false)));
+        } else {
+            nearestStation = mappingService.getStationByOrder(track, stationOrder - 1);
+            entityManager.persist(entityManager.merge
+                    (new SectionEntity(station, nearestStation, length, track, false)));
+            entityManager.persist(entityManager.merge
+                    (new SectionEntity(nearestStation, station, length, track, true)));
+        }
     }
 }

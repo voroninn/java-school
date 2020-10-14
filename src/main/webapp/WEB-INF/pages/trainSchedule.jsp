@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Edit Schedule</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon"/>
 </head>
 
 <body>
@@ -38,99 +38,108 @@
 
 <div style="height: 100px"></div>
 
-<form action="/trains/edit/${train.id}/schedule" method="GET" class="col-sm-10 offset-1">
-    <input type="hidden" name="reverse" value="true">
-    <button class="col-sm-10 offset-1 btn btn-outline-warning btn-block"
-            type="submit">Reverse Schedule</button>
-</form>
 
-<form action="/trains/edit/schedule" method="POST" class="col-sm-10 offset-1">
-    <input type="hidden" name="isReversed" value="${isReversed}">
-    <table class="col-sm-10 offset-1 table table-striped">
-        <thead>
-        <tr>
-            <th>Station</th>
-            <th>Arrival</th>
-            <th>Departure</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <c:if test="${!empty schedulesList[0].id}">
-                <input type="hidden" name="id0" value="${schedulesList[0].id}">
-            </c:if>
-            <input type="hidden" name="station0" value="${schedulesList[0].station.name}">
-            <td>${schedulesList[0].station.name}</td>
-            <td>
-                <input type="text" class="form-control"
-                       name="arrivalTime1" disabled/>
-            </td>
-            <td>
-                <c:if test="${empty schedulesList[0].departureTime}">
-                    <input type="text" class="form-control" name="departureTime0" placeholder="HH:MM"/>
-                </c:if>
-                <c:if test="${!empty schedulesList[0].departureTime}">
-                    <input type="text" class="form-control" name="departureTime0"
-                           value="<fmt:formatDate value="${schedulesList[0].departureTime}" pattern="HH:mm"/>"/>
-                </c:if>
-            </td>
-        </tr>
-        <c:forEach var="schedule" items="${schedulesList}" begin="1" end="${schedulesList.size() - 2}">
-            <tr>
-                <c:if test="${!empty schedule.id}">
-                    <input type="hidden" name="id${schedulesList.indexOf(schedule)}" value="${schedule.id}">
-                </c:if>
-                <input type="hidden" name="station${schedulesList.indexOf(schedule)}" value="${schedule.station.name}">
-                <td>${schedule.station.name}</td>
-                <td>
-                    <c:if test="${empty schedule.arrivalTime}">
-                    <input type="text" class="form-control"
-                           name="arrivalTime${schedulesList.indexOf(schedule)}" placeholder="HH:MM"/>
+<div class="container">
+    <h2 class="form-heading text-center">Edit train schedule:</h2>
+    <div class="jumbotron">
+        <form action="/trains/edit/${train.id}/schedule" method="GET" class="col-sm-10 offset-1">
+            <input type="hidden" name="reverse" value="true">
+            <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
+                    type="submit">Reverse Schedule</button>
+        </form>
+        <form action="/trains/edit/schedule" method="POST" class="col-sm-10 offset-1">
+            <input type="hidden" name="isReversed" value="${isReversed}">
+            <table class="col-sm-10 offset-1 table table-striped">
+                <thead>
+                <tr>
+                    <th>Station</th>
+                    <th>Arrival</th>
+                    <th>Departure</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <c:if test="${!empty schedulesList[0].id}">
+                        <input type="hidden" name="id0" value="${schedulesList[0].id}">
                     </c:if>
-                    <c:if test="${!empty schedule.arrivalTime}">
-                        <input type="text" class="form-control" name="arrivalTime${schedulesList.indexOf(schedule)}"
-                               value="<fmt:formatDate value="${schedule.arrivalTime}" pattern="HH:mm"/>"/>
+                    <input type="hidden" name="station0" value="${schedulesList[0].station.name}">
+                    <td>${schedulesList[0].station.name}</td>
+                    <td>
+                        <input type="text" class="form-control"
+                               name="arrivalTime1" disabled/>
+                    </td>
+                    <td>
+                        <c:if test="${empty schedulesList[0].departureTime}">
+                            <input type="text" class="form-control" name="departureTime0" placeholder="HH:MM"/>
+                        </c:if>
+                        <c:if test="${!empty schedulesList[0].departureTime}">
+                            <input type="text" class="form-control" name="departureTime0"
+                                   value="<fmt:formatDate value="${schedulesList[0].departureTime}" pattern="HH:mm"/>"/>
+                        </c:if>
+                    </td>
+                </tr>
+                <c:forEach var="schedule" items="${schedulesList}" begin="1" end="${schedulesList.size() - 2}">
+                    <tr>
+                        <c:if test="${!empty schedule.id}">
+                            <input type="hidden" name="id${schedulesList.indexOf(schedule)}" value="${schedule.id}">
+                        </c:if>
+                        <input type="hidden" name="station${schedulesList.indexOf(schedule)}"
+                               value="${schedule.station.name}">
+                        <td>${schedule.station.name}</td>
+                        <td>
+                            <c:if test="${empty schedule.arrivalTime}">
+                                <input type="text" class="form-control"
+                                       name="arrivalTime${schedulesList.indexOf(schedule)}" placeholder="HH:MM"/>
+                            </c:if>
+                            <c:if test="${!empty schedule.arrivalTime}">
+                                <input type="text" class="form-control"
+                                       name="arrivalTime${schedulesList.indexOf(schedule)}"
+                                       value="<fmt:formatDate value="${schedule.arrivalTime}" pattern="HH:mm"/>"/>
+                            </c:if>
+                        </td>
+                        <td>
+                            <c:if test="${empty schedule.departureTime}">
+                                <input type="text" class="form-control"
+                                       name="departureTime${schedulesList.indexOf(schedule)}" placeholder="HH:MM"/>
+                            </c:if>
+                            <c:if test="${!empty schedule.departureTime}">
+                                <input type="text" class="form-control"
+                                       name="departureTime${schedulesList.indexOf(schedule)}"
+                                       value="<fmt:formatDate value="${schedule.departureTime}" pattern="HH:mm"/>"/>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+                <tr>
+                    <c:if test="${!empty schedulesList[schedulesList.size() - 1].id}">
+                        <input type="hidden" name="id${schedulesList.size() - 1}"
+                               value="${schedulesList[schedulesList.size() - 1].id}">
                     </c:if>
-                </td>
-                <td>
-                    <c:if test="${empty schedule.departureTime}">
-                    <input type="text" class="form-control"
-                           name="departureTime${schedulesList.indexOf(schedule)}" placeholder="HH:MM"/>
-                    </c:if>
-                    <c:if test="${!empty schedule.departureTime}">
-                        <input type="text" class="form-control" name="departureTime${schedulesList.indexOf(schedule)}"
-                               value="<fmt:formatDate value="${schedule.departureTime}" pattern="HH:mm"/>"/>
-                    </c:if>
-                </td>
-            </tr>
-        </c:forEach>
-        <tr>
-            <c:if test="${!empty schedulesList[schedulesList.size() - 1].id}">
-                <input type="hidden" name="id${schedulesList.size() - 1}" value="${schedulesList[schedulesList.size() - 1].id}">
-            </c:if>
-            <input type="hidden" name="station${schedulesList.size() - 1}"
-                   value="${schedulesList[schedulesList.size() - 1].station.name}">
-            <td>${schedulesList[schedulesList.size() - 1].station.name}</td>
-            <td>
-                <c:if test="${empty schedulesList[schedulesList.size() - 1].arrivalTime}">
-                    <input type="text" class="form-control" name="arrivalTime${schedulesList.size() - 1}" placeholder="HH:MM"/>
-                </c:if>
-                <c:if test="${!empty schedulesList[schedulesList.size() - 1].arrivalTime}">
-                    <input type="text" class="form-control" name="arrivalTime${schedulesList.size() - 1}"
-                           value="<fmt:formatDate value="${schedulesList[schedulesList.size() - 1].arrivalTime}"
+                    <input type="hidden" name="station${schedulesList.size() - 1}"
+                           value="${schedulesList[schedulesList.size() - 1].station.name}">
+                    <td>${schedulesList[schedulesList.size() - 1].station.name}</td>
+                    <td>
+                        <c:if test="${empty schedulesList[schedulesList.size() - 1].arrivalTime}">
+                            <input type="text" class="form-control" name="arrivalTime${schedulesList.size() - 1}"
+                                   placeholder="HH:MM"/>
+                        </c:if>
+                        <c:if test="${!empty schedulesList[schedulesList.size() - 1].arrivalTime}">
+                            <input type="text" class="form-control" name="arrivalTime${schedulesList.size() - 1}"
+                                   value="<fmt:formatDate value="${schedulesList[schedulesList.size() - 1].arrivalTime}"
                            pattern="HH:mm"/>"/>
-                </c:if>
-            </td>
-            <td>
-                <input type="text" class="form-control"
-                       name="departureTime${schedulesList.size()}" disabled/>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
-            type="submit">Submit</button>
-</form>
+                        </c:if>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control"
+                               name="departureTime${schedulesList.size()}" disabled/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="col-sm-10 offset-1 btn btn-outline-info btn-block" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
 
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:

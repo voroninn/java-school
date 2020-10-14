@@ -5,7 +5,9 @@ import org.javaschool.entities.StationEntity;
 import org.javaschool.entities.TrainEntity;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public interface ScheduleService {
 
@@ -23,11 +25,15 @@ public interface ScheduleService {
 
     List<ScheduleEntity> getSchedulesByRoute(List<StationEntity> route);
 
-    List<ScheduleEntity> putSchedulesInCorrectOrder(List<ScheduleEntity> schedules);
-
-    List<List<ScheduleEntity>> separateSchedules(List<ScheduleEntity> schedules, int itemsPerSchedule);
+    List<ScheduleEntity> orderSchedulesByTime(List<ScheduleEntity> schedules);
 
     List<ScheduleEntity> getSchedulesByTrain(TrainEntity train);
 
     Date convertStringtoDate(String date);
+
+    List<ScheduleEntity> buildSchedule(List<StationEntity> route, Date minDepartureTime);
+
+    public void setBreakpoints(List<StationEntity> route);
+
+    public void createEmptyScheduleForStation(StationEntity station, int trackId);
 }

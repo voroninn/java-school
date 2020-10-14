@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +56,7 @@ public class TicketController {
 
         LinkedList<StationEntity> route = stationService.getRoute(ticket.getDepartureStation(), ticket.getArrivalStation());
         modelAndView.addObject("route", route);
+        stationService.setEndpoints(route);
 
         int numberOfChanges = 0;
         if (route.size() > 2) {
@@ -62,15 +64,10 @@ public class TicketController {
         }
         modelAndView.addObject("numberOfChanges", numberOfChanges);
 
-        List<ScheduleEntity> schedules = scheduleService.getSchedulesByRoute(route);
-        if (schedules.size() > route.size()) {
-            scheduleService.putSchedulesInCorrectOrder(schedules);
-            List<List<ScheduleEntity>> separatedSchedules = scheduleService.separateSchedules(schedules, route.size());
-            modelAndView.addObject("separatedSchedulesList", separatedSchedules);
-        } else {
-            modelAndView.addObject("schedulesList", schedules);
-        }
-        Set<TrainEntity> trains = trainService.getTrainsBySchedules(schedules);
+        List<ScheduleEntity> schedule = scheduleService.buildSchedule(route, scheduleService.convertStringtoDate("00:00"));
+        modelAndView.addObject("schedule", schedule);
+
+        Set<TrainEntity> trains = trainService.getTrainsBySchedule(schedule);
         ticket.setPrice(ticketService.calculateTicketPrice(route));
         ticket.setTrains(trains);
         return modelAndView;
@@ -90,7 +87,8 @@ public class TicketController {
         } else {
             modelAndView.addObject("message", "Please enter your personal data");
         }
-        modelAndView.addObject("trainsList", ticket.getTrains());
+        List<TrainEntity> trains = new ArrayList<>(ticket.getTrains());
+        modelAndView.addObject("trainsList", trains);
         return modelAndView;
     }
 

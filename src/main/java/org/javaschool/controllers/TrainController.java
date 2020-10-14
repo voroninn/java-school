@@ -40,7 +40,10 @@ public class TrainController {
         List<TrainEntity> trains = trainService.getAllTrains();
         List<List<StationEntity>> endpointsList = new ArrayList<>();
         for (TrainEntity train : trains) {
-            List<StationEntity> stations = stationService.getStationsByTrain(train);
+            List<StationEntity> stations = mappingService.getOrderedStationsByTrack(train.getTrack());
+            if (!scheduleService.getSchedulesByTrain(train).get(0).isDirection()) {
+                Collections.reverse(stations);
+            }
             if (!stations.isEmpty()) {
                 List<StationEntity> endpoints = stationService.selectEndpoints(stations);
                 endpointsList.add(endpoints);
@@ -68,6 +71,23 @@ public class TrainController {
         modelAndView.setViewName("redirect:/trains/edit/" + train.getId() + "/schedule");
         modelAndView.addObject("train", train);
         trainService.editTrain(train);
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/trains/add")
+    public ModelAndView addTrain() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("trainEdit");
+        modelAndView.addObject("train", new TrainEntity());
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/trains/add")
+    public ModelAndView addTrain(@ModelAttribute("train") TrainEntity train) {
+        ModelAndView modelAndView = new ModelAndView();
+        trainService.addTrain(train);
+        modelAndView.setViewName("redirect:/trains/edit/" + train.getId() + "/schedule");
+        modelAndView.addObject("train", train);
         return modelAndView;
     }
 
@@ -111,23 +131,6 @@ public class TrainController {
             scheduleService.editSchedule(schedule);
         }
         modelAndView.setViewName("redirect:/trains");
-        return modelAndView;
-    }
-
-    @GetMapping(value = "/trains/add")
-    public ModelAndView addTrain() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("trainEdit");
-        modelAndView.addObject("train", new TrainEntity());
-        return modelAndView;
-    }
-
-    @PostMapping(value = "/trains/add")
-    public ModelAndView addTrain(@ModelAttribute("train") TrainEntity train) {
-        ModelAndView modelAndView = new ModelAndView();
-        trainService.addTrain(train);
-        modelAndView.setViewName("redirect:/trains/edit/" + train.getId() + "/schedule");
-        modelAndView.addObject("train", train);
         return modelAndView;
     }
 

@@ -2,6 +2,7 @@ package org.javaschool.services.interfaces;
 
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
+import org.javaschool.entities.TrackEntity;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface SectionService {
     SectionEntity getSectionBetweenStations(StationEntity stationFrom, StationEntity stationTo);
 
     List<SectionEntity> getSectionsByRoute(List<StationEntity> route);
+
+    void createSection(StationEntity station, int length, TrackEntity track);
 }

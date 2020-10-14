@@ -41,7 +41,7 @@
 
 <div class="container">
     <form:form action="/myaccount" modelAttribute="passengerForm" method="POST">
-        <h2 class="form-heading text-center">Edit your personal data: </h2>
+        <h2 class="form-heading text-center">Edit your personal data:</h2>
         <div class="jumbotron">
             <c:if test="${!empty passengerForm.firstName}">
                 <input type="hidden" name="id" value="${passengerForm.id}">

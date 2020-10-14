@@ -1,5 +1,6 @@
 package org.javaschool.dao.interfaces;
 
+import org.javaschool.entities.TrackEntity;
 import org.javaschool.entities.TrainEntity;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface TrainDao {
     void editTrain(TrainEntity train);
 
     void deleteTrain(TrainEntity train);
+
+    List<TrainEntity> getTrainsByTrack(TrackEntity track);
 }

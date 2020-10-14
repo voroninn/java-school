@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>SBB Home</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon"/>
 </head>
 
 <body>
@@ -33,7 +33,8 @@
                 <div class="btn-group">
                     <a href="/myaccount/${pageContext.request.userPrincipal.name}"
                        class="btn btn-outline-light">My Account</a>
-                    <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets" class="btn btn-outline-light">My Tickets</a>
+                    <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets"
+                       class="btn btn-outline-light">My Tickets</a>
                     <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
                 </div>
             </sec:authorize>
@@ -54,49 +55,55 @@
 
 <div style="height: 100px"></div>
 
-<form:form action="/schedule" modelAttribute="ticketForm" method="POST">
-    <div class="form-group row">
-        <div class="input-group col-sm-4 offset-sm-4">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="stationFrom">From</label>
+<div class="media">
+    <div class="media-body align-self-center col-sm-4">
+        <form:form action="/schedule" modelAttribute="ticketForm" method="POST">
+            <div class="form-group row">
+                <div class="input-group text-center col-sm-11 offset-sm-1" >
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="stationFrom">From</label>
+                    </div>
+                    <form:select class="custom-select" path="departureStation" name="stationFrom" id="stationFrom">
+                        <option selected>Select Station</option>
+                        <c:forEach var="station" items="${stationsList}">
+                            <option value="${station.name}">${station.name}</option>
+                        </c:forEach>
+                    </form:select>
+                </div>
             </div>
-            <form:select class="custom-select" path="departureStation" name="stationFrom" id="stationFrom">
-                <option selected>Select Station</option>
-                <c:forEach var="station" items="${stationsList}">
-                <option value="${station.name}">${station.name}</option>
-                </c:forEach>
-            </form:select>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="input-group col-sm-4 offset-sm-4">
-            <div class="input-group-prepend">
-                <label class="input-group-text" for="stationTo">To</label>
+            <div class="form-group row">
+                <div class="input-group text-center col-sm-11 offset-sm-1">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="stationTo">To</label>
+                    </div>
+                    <form:select class="custom-select" path="arrivalStation" name="stationTo" id="stationTo">
+                        <option selected>Select Station</option>
+                        <c:forEach var="station" items="${stationsList}">
+                            <option value="${station.name}">${station.name}</option>
+                        </c:forEach>
+                    </form:select>
+                </div>
             </div>
-            <form:select class="custom-select" path="arrivalStation" name="stationTo" id="stationTo">
-                <option selected>Select Station</option>
-                <c:forEach var="station" items="${stationsList}">
-                    <option value="${station.name}">${station.name}</option>
-                </c:forEach>
-            </form:select>
-        </div>
+            <div class="form-group row">
+                <div class="col-sm-11 offset-sm-1">
+                    <form:input path="date" name="date" id="date" placeholder="DD.MM.YYYY"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-11 offset-sm-1">
+                    <button type="submit" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form:form>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-10 offset-sm-4">
-            <form:input path="date" name="date" id="date" placeholder="DD.MM.YYYY"/>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-10 offset-sm-4">
-            <button type="submit" class="btn btn-danger">Search</button>
-        </div>
-    </div>
-</form:form>
+    <img class="img-fluid align-self-center mr-3 col-sm-8" src="${pageContext.request.contextPath}/assets/graph.png"
+         alt="Map of stations">
+</div>
 
 <div style="height: 100px"></div>
 
-<div class="">
-    <img src="${pageContext.request.contextPath}/assets/spacetrain.jpg" class="img-fluid" alt="Train">
+<div class="text-center">
+    <img src="${pageContext.request.contextPath}/assets/spacetrain.jpg" class="img-fluid" alt="Space train">
 </div>
 
 <footer class="page-footer font-small">

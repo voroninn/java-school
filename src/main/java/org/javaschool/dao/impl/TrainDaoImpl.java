@@ -1,6 +1,7 @@
 package org.javaschool.dao.impl;
 
 import org.javaschool.dao.interfaces.TrainDao;
+import org.javaschool.entities.TrackEntity;
 import org.javaschool.entities.TrainEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,5 +41,13 @@ public class TrainDaoImpl implements TrainDao {
     @Override
     public void deleteTrain(TrainEntity train) {
         entityManager.remove(entityManager.merge(train));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<TrainEntity> getTrainsByTrack(TrackEntity track) {
+        Query query = entityManager.createQuery("SELECT t FROM TrainEntity t WHERE t.track = :track");
+        query.setParameter("track", track);
+        return query.getResultList();
     }
 }

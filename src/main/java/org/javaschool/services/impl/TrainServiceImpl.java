@@ -2,13 +2,13 @@ package org.javaschool.services.impl;
 
 import org.javaschool.dao.interfaces.TrainDao;
 import org.javaschool.entities.ScheduleEntity;
+import org.javaschool.entities.TrackEntity;
 import org.javaschool.entities.TrainEntity;
 import org.javaschool.services.interfaces.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,16 +50,20 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
-    public Set<TrainEntity> getTrainsBySchedules(List<ScheduleEntity> schedules) {
+    public Set<TrainEntity> getTrainsBySchedule(List<ScheduleEntity> schedule) {
         Set<TrainEntity> trains = new HashSet<>();
-        trains.add(schedules.get(0).getTrain());
-        TrainEntity comparedTrain = schedules.get(0).getTrain();
-        for (int i = 1; i < schedules.size(); i++) {
-            if (!schedules.get(i).getTrain().equals(comparedTrain)) {
-                trains.add(schedules.get(i).getTrain());
-                comparedTrain = schedules.get(i).getTrain();
+        TrainEntity comparedTrain = schedule.get(0).getTrain();
+        for (int i = 1; i < schedule.size(); i++) {
+            if (!schedule.get(i).getTrain().equals(comparedTrain)) {
+                trains.add(schedule.get(i).getTrain());
+                comparedTrain = schedule.get(i).getTrain();
             }
         }
         return trains;
+    }
+
+    @Override
+    public List<TrainEntity> getTrainsByTrack(TrackEntity track) {
+        return trainDao.getTrainsByTrack(track);
     }
 }
