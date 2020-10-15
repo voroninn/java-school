@@ -1,4 +1,4 @@
-package org.javaschool.utils;
+package org.javaschool.validation;
 
 import org.javaschool.entities.UserEntity;
 import org.javaschool.services.interfaces.UserService;

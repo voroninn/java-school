@@ -134,7 +134,7 @@ public class TrainController {
         return modelAndView;
     }
 
-    @GetMapping(value="/trains/delete/{id}")
+    @GetMapping(value = "/trains/delete/{id}")
     public ModelAndView deleteTrain(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/trains");

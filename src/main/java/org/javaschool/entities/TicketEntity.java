@@ -16,20 +16,25 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TicketEntity {
+
     @Id
-    @Column(name = "id")
+    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "number")
     private String number;
 
     @ToString.Exclude
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "passenger_id")
     private PassengerEntity passenger;
 
-    @Transient
-    @ManyToMany(mappedBy = "tickets")
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "train_tickets",
+            joinColumns = @JoinColumn(name = "ticket_id"),
+            inverseJoinColumns = @JoinColumn(name = "train_id"))
     private Set<TrainEntity> trains;
 
     @Column(name = "departure_station")

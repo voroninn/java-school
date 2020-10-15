@@ -74,7 +74,7 @@
                 <p>Number of changes: ${numberOfChanges}</p>
             </div>
             <div style="height: 50px">
-                <p>Price: <strong>${ticketForm.price}</strong></p>
+                <p>Price: ₪ <strong>${ticketForm.price}</strong></p>
             </div>
             <form:form action="/ticket/verify" modelAttribute="ticketForm" method="POST">
             <form:hidden path="departureTime" name="departureTime" value="${schedule.get(0).departureTime}"/>
@@ -84,24 +84,6 @@
                 <button type="submit" class="btn btn-primary">Get a Ticket</button>
             </div>
         </div>
-            <%--        <table class="col-sm-10 offset-1 table table-sm table-striped">--%>
-            <%--            <thead>--%>
-            <%--            <tr>--%>
-            <%--                <th>Station</th>--%>
-            <%--                <th>Arrival</th>--%>
-            <%--                <th>Departure</th>--%>
-            <%--            </tr>--%>
-            <%--            </thead>--%>
-            <%--            <tbody>--%>
-            <%--            <c:forEach var="scheduleItem" items="${schedule}">--%>
-            <%--                <tr>--%>
-            <%--                    <td>${scheduleItem.station.name}</td>--%>
-            <%--                    <td><fmt:formatDate value="${scheduleItem.arrivalTime}" pattern="HH:mm"/></td>--%>
-            <%--                    <td><fmt:formatDate value="${scheduleItem.departureTime}" pattern="HH:mm"/></td>--%>
-            <%--                </tr>--%>
-            <%--            </c:forEach>--%>
-            <%--            </tbody>--%>
-            <%--        </table>--%>
         <div class="text-center">
             <img src="${pageContext.request.contextPath}/assets/map.png" class="img-fluid" alt="Map of stations">
         </div>

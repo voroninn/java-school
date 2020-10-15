@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -57,6 +58,15 @@ public class TicketDaoImpl implements TicketDao {
     public List<TicketEntity> getTicketsByPassenger(PassengerEntity passenger) {
         Query query = entityManager.createQuery("SELECT t FROM TicketEntity t WHERE t.passenger = :passenger");
         query.setParameter("passenger", passenger);
+        return query.getResultList();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<TicketEntity> getTicketsByTrainAndDate(TrainEntity train, Date date) {
+        Query query = entityManager.createQuery("SELECT t FROM TicketEntity t WHERE :train member of t.trains AND t.date = :date");
+        query.setParameter("train", train);
+        query.setParameter("date", date);
         return query.getResultList();
     }
 }

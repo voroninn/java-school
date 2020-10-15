@@ -22,13 +22,11 @@ public class MappingServiceImpl implements MappingService {
     private TrackService trackService;
 
     @Override
-    @Transactional
     public MappingEntity getMapping(int id) {
         return mappingDao.getMapping(id);
     }
 
     @Override
-    @Transactional
     public List<MappingEntity> getAllMappings() {
         return mappingDao.getAllMappings();
     }

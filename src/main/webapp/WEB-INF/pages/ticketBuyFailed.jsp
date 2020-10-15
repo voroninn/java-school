@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Ticket Info</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon"/>
+    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon" />
 </head>
 
 <body>
@@ -26,8 +26,7 @@
             <div class="btn-group">
                 <a href="/myaccount/${pageContext.request.userPrincipal.name}"
                    class="btn btn-outline-light">My Account</a>
-                <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets" class="btn btn-outline-light">My
-                    Tickets</a>
+                <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets" class="btn btn-outline-light">My Tickets</a>
                 <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
             </div>
         </div>
@@ -42,32 +41,12 @@
 <div style="height: 100px"></div>
 
 <div class="container">
-    <h2 class="text-center">Ticket successfully purchased</h2>
-    <p class="text-center">You can view all your tickets under My Tickets tab.</p>
     <div class="jumbotron">
         <div class="text-center">
-            <p>Ticket No. ${ticketForm.number}</p>
-            <p>Date: <fmt:formatDate value="${ticketForm.date}" pattern="dd.MM.yyyy"/></p>
-            <p>From ${ticketForm.departureStation} at <fmt:formatDate value="${ticketForm.departureTime}"
-                                                                      pattern="HH:mm"/></p>
-            <p>To ${ticketForm.arrivalStation} at <fmt:formatDate value="${ticketForm.arrivalTime}"
-                                                                  pattern="HH:mm"/></p>
-            <c:if test="${trainsList.size() == 1}">
-                <p>Train: <strong>${trainsList.get(0).name}</strong></p>
-            </c:if>
-            <c:if test="${trainsList.size() > 1}">
-                <p>Trains:
-                    <c:forEach var="train" items="${trainsList}">
-                        <strong>${train.name} </strong>
-                    </c:forEach>
-                </p>
-            </c:if>
-            <c:if test="${!empty passenger.id}">
-                <p>Passenger Info: ${passenger.firstName} ${passenger.lastName}
-                    <fmt:formatDate value="${passenger.birthDate}"
-                                    pattern="dd.MM.yyyy"/> ${passenger.passportNumber}</p>
-            </c:if>
-            <p>Price: ₪ ${ticketForm.price}</p>
+            <h1>Ticket cannot be bought</h1>
+            <c:forEach var="message" items="${validationMessages}">
+                <p>${message}</p>
+            </c:forEach>
         </div>
         <div class="text-center">
             <a href="${pageContext.request.contextPath}/"

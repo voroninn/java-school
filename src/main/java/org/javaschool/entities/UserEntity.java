@@ -4,6 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
 
@@ -16,15 +19,19 @@ public class UserEntity implements UserDetails {
     @Column(name = "id")
     private int id;
 
+    @NotBlank
+    @Size(min = 6, max = 32)
     @Column(name = "username", unique = true)
     private String username;
 
+    @Email
     @Column(name = "email", unique = true)
     private String email;
 
     @OneToOne(mappedBy = "user")
     private PassengerEntity passenger;
 
+    @NotBlank
     @Column(name = "password")
     private String password;
 

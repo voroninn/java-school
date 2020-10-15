@@ -25,17 +25,17 @@ public class ScheduleEntity {
     }
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
     @ToString.Exclude
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST } )
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "station_id")
     private StationEntity station;
 
     @ToString.Exclude
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST } )
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "train_id")
     private TrainEntity train;
 

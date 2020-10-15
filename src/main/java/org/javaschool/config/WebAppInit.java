@@ -23,6 +23,6 @@ public class WebAppInit implements WebApplicationInitializer {
         servletContext.addListener(new ContextLoaderListener(webCtx));
         servletContext.addFilter("securityFilter",
                 new DelegatingFilterProxy("springSecurityFilterChain"))
-                        .addMappingForUrlPatterns(null, false, "/*");
+                .addMappingForUrlPatterns(null, false, "/*");
     }
 }

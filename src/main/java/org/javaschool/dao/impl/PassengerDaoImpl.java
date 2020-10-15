@@ -2,6 +2,7 @@ package org.javaschool.dao.impl;
 
 import org.javaschool.dao.interfaces.PassengerDao;
 import org.javaschool.entities.PassengerEntity;
+import org.javaschool.entities.TrainEntity;
 import org.javaschool.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,16 @@ public class PassengerDaoImpl implements PassengerDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<PassengerEntity> getAllPassengers() {
-        Query query = entityManager.createQuery("SELECT e FROM PassengerEntity e", PassengerEntity.class);
+        Query query = entityManager.createQuery("SELECT p FROM PassengerEntity p", PassengerEntity.class);
+        return query.getResultList();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<PassengerEntity> getPassengersByTrain(TrainEntity train) {
+        Query query = entityManager.createQuery("SELECT DISTINCT t.passenger FROM TicketEntity t " +
+                "WHERE :train member of t.trains");
+        query.setParameter("train", train);
         return query.getResultList();
     }
 
@@ -39,7 +49,7 @@ public class PassengerDaoImpl implements PassengerDao {
 
     @Override
     public void deletePassenger(PassengerEntity passenger) {
-            entityManager.remove(entityManager.merge(passenger));
+        entityManager.remove(entityManager.merge(passenger));
     }
 
     @Override

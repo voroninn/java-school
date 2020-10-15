@@ -27,19 +27,16 @@ public class StationServiceImpl implements StationService {
     private SectionService sectionService;
 
     @Override
-    @Transactional
     public StationEntity getStation(int id) {
         return stationDao.getStation(id);
     }
 
     @Override
-    @Transactional
     public StationEntity getStationByName(String username) {
         return stationDao.getStationByName(username);
     }
 
     @Override
-    @Transactional
     public List<StationEntity> getAllStations() {
         return stationDao.getAllStations();
     }

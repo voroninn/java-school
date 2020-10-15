@@ -27,6 +27,15 @@ public class PassengerController {
         return modelAndView;
     }
 
+    @GetMapping(value = "/passengers/{trainId}")
+    public ModelAndView passengersByTrain(@PathVariable("trainId") int trainId) {
+        List<PassengerEntity> passengers = passengerService.getPassengersByTrainId(trainId);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("passengers");
+        modelAndView.addObject("passengersList", passengers);
+        return modelAndView;
+    }
+
     @GetMapping(value = "/passengers/edit/{id}")
     public ModelAndView editPassenger(@PathVariable("id") int id) {
         PassengerEntity passenger = passengerService.getPassenger(id);
@@ -60,7 +69,7 @@ public class PassengerController {
         return modelAndView;
     }
 
-    @GetMapping(value="/passengers/delete/{id}")
+    @GetMapping(value = "/passengers/delete/{id}")
     public ModelAndView deletePassenger(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");

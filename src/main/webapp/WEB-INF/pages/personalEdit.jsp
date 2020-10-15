@@ -42,6 +42,7 @@
 <div class="container">
     <form:form action="/myaccount" modelAttribute="passengerForm" method="POST">
         <h2 class="form-heading text-center">Edit your personal data:</h2>
+        <span style="color: green">${message}</span>
         <div class="jumbotron">
             <c:if test="${!empty passengerForm.firstName}">
                 <input type="hidden" name="id" value="${passengerForm.id}">
@@ -88,6 +89,7 @@
                                 id="passportNumber" placeholder="${passengerForm.passportNumber}"/>
                 </c:if>
             </div>
+            <input type="hidden" name="message" value="Your changes have been saved.">
             <div class="text-center">
                 <button class="btn btn-lg btn-primary btn-center" type="submit">Submit</button>
             </div>

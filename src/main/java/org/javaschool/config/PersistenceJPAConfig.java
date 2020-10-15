@@ -44,8 +44,8 @@ public class PersistenceJPAConfig {
         dataSource.setUrl("jdbc:mysql://localhost:3306/sbb?useUnicode=true" +
                 "&useJDBCCompliantTimezoneShift=true" +
                 "&useLegacyDatetimeCode=false&serverTimezone=Europe/Moscow");
-        dataSource.setUsername( "root" );
-        dataSource.setPassword( "iamRooT911" );
+        dataSource.setUsername("root");
+        dataSource.setPassword("iamRooT911");
         return dataSource;
     }
 

@@ -57,12 +57,12 @@
                 <input type="hidden" name="id" value="${train.id}">
             </c:if>
             <div class="form-group col-sm-4 offset-sm-4">
-                <label for="track">Track</label>
                 <c:if test="${empty train.name}">
+                    <label for="track">Track</label>
                     <form:input path="track.id" type="text" class="form-control" id="track" autofocus="true"/>
                 </c:if>
                 <c:if test="${!empty train.name}">
-                    <form:input path="track.id" type="text" class="form-control"
+                    <form:input path="track.id" type="hidden" class="form-control"
                                 id="track" value="${train.track.id}" autofocus="true"/>
                 </c:if>
             </div>
@@ -86,8 +86,9 @@
                                 value="${train.capacity}"/>
                 </c:if>
             </div>
+            <div style="height: 30px"></div>
             <div class="text-center">
-                <button class="btn btn-lg btn-outline-info btn-center" type="submit">Submit and proceed to Schedule
+                <button class="btn btn-outline-info btn-center" type="submit">Submit and proceed to Schedule
                 </button>
             </div>
         </form:form>

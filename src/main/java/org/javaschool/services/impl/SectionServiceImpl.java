@@ -18,13 +18,11 @@ public class SectionServiceImpl implements SectionService {
     private SectionDao sectionDao;
 
     @Override
-    @Transactional
     public SectionEntity getSection(int id) {
         return sectionDao.getSection(id);
     }
 
     @Override
-    @Transactional
     public List<SectionEntity> getAllSections() {
         return sectionDao.getAllSections();
     }

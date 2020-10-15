@@ -11,11 +11,13 @@ public interface PassengerService {
 
     List<PassengerEntity> getAllPassengers();
 
+    List<PassengerEntity> getPassengersByTrainId(int trainId);
+
+    PassengerEntity getPassengerByUser(UserEntity user);
+
     void addPassenger(PassengerEntity passenger);
 
     void editPassenger(PassengerEntity passenger);
 
     void deletePassenger(PassengerEntity passenger);
-
-    PassengerEntity getPassengerByUser(UserEntity user);
 }

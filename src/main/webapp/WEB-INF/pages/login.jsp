@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +31,8 @@
 
 <div class="container">
     <form method="POST" action="<c:url value="/login"/>" class="form-signin">
-        <h2 class="form-heading text-center">Log in</h2>
+        <h2 class="form-heading text-center">Log in <sec:authorize access="hasRole('ROLE_ADMIN')">as user
+        </sec:authorize></h2>
         <div class="form-group ${error != null ? 'has-error' : ''}">
             <span style="color: green">${message}</span>
             <span style="color: red">${error}</span>

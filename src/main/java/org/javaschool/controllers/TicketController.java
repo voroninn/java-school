@@ -81,11 +81,12 @@ public class TicketController {
         PassengerEntity passenger = passengerService.getPassengerByUser(user);
         if (passenger != null) {
             if (passenger.getFirstName() != null && passenger.getLastName() != null
-                    && passenger.getBirthDate() != null && passenger.getPassportNumber() != 0)
-            modelAndView.addObject("passenger", passenger);
-            ticket.setPassenger(passenger);
-        } else {
-            modelAndView.addObject("message", "Please enter your personal data");
+                    && passenger.getBirthDate() != null && passenger.getPassportNumber() != 0) {
+                modelAndView.addObject("passenger", passenger);
+                ticket.setPassenger(passenger);
+            } else {
+                modelAndView.addObject("message", "Please enter your personal data");
+            }
         }
         List<TrainEntity> trains = new ArrayList<>(ticket.getTrains());
         modelAndView.addObject("trainsList", trains);
@@ -95,13 +96,22 @@ public class TicketController {
     @GetMapping(value = "/ticket/buy")
     public ModelAndView ticketBuy(@ModelAttribute("ticketForm") TicketEntity ticket) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("ticketBuy");
-        ticket.setNumber(ticketService.generateTicketNumber(ticket));
-        ticketService.addTicket(ticket);
+        List<String> validationMessages = ticketService.validateTicket(ticket);
+        if (validationMessages.get(0).equals("success")) {
+            modelAndView.setViewName("ticketBuy");
+            List<TrainEntity> trains = new ArrayList<>(ticket.getTrains());
+            modelAndView.addObject("passenger", ticket.getPassenger());
+            modelAndView.addObject("trainsList", trains);
+            ticket.setNumber(ticketService.generateTicketNumber(ticket));
+            ticketService.addTicket(ticket);
+        } else {
+            modelAndView.setViewName("ticketBuyFailed");
+            modelAndView.addObject("validationMessages", validationMessages);
+        }
         return modelAndView;
     }
 
-    @GetMapping(value="/ticket/delete/{id}")
+    @GetMapping(value = "/ticket/delete/{id}")
     public ModelAndView deleteTicket(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         UserEntity user = userService.findUserByUsername(userService.getCurrentUserName());

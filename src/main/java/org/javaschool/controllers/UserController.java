@@ -7,15 +7,12 @@ import org.javaschool.services.interfaces.PassengerService;
 import org.javaschool.services.interfaces.SecurityService;
 import org.javaschool.services.interfaces.TicketService;
 import org.javaschool.services.interfaces.UserService;
-import org.javaschool.utils.UserValidator;
+import org.javaschool.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -58,18 +55,22 @@ public class UserController {
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
         if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
+            model.addAttribute("error", "Username or password is invalid.");
         if (logout != null)
             model.addAttribute("message", "You have been logged out successfully.");
         return "login";
     }
 
     @GetMapping(value = "/myaccount/{username}")
-    public ModelAndView editPersonalData(@PathVariable("username") String username) {
+    public ModelAndView editPersonalData(@PathVariable("username") String username,
+                                         @RequestParam(required = false) String message) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("personalEdit");
         UserEntity user = userService.findUserByUsername(username);
         modelAndView.addObject("user", user);
+        if (message != null) {
+            modelAndView.addObject("message", message);
+        }
         PassengerEntity passenger = passengerService.getPassengerByUser(user);
         if (passenger != null) {
             modelAndView.addObject("passengerForm", passenger);

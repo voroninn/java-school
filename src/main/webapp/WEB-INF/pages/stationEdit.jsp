@@ -53,7 +53,7 @@
     </c:if>
     <h2 class="form-heading text-center">Edit station data:</h2>
     <div class="jumbotron">
-        <form action="${var}" method="POST" class="col-sm-10 offset-1">
+        <form action="${var}" method="POST" class="col-sm-4 offset-sm-4">
             <c:if test="${!empty station.name}">
                 <input type="hidden" name="id" value="${station.id}">
             </c:if>
@@ -80,7 +80,7 @@
                 </c:if>
             </div>
             <div class="text-center">
-                <button class="btn btn-lg btn-outline-info btn-center" type="submit">Submit</button>
+                <button class="btn btn-outline-info btn-center" type="submit">Submit</button>
             </div>
         </form>
     </div>

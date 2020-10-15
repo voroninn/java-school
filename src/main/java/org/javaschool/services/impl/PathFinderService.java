@@ -102,14 +102,9 @@ public class PathFinderService {
         }
     }
 
-    /*
-     * This method returns the path from the source to the selected target and
-     * NULL if no path exists
-     */
     public LinkedList<StationEntity> createRoute(StationEntity target) {
         LinkedList<StationEntity> path = new LinkedList<>();
         StationEntity step = target;
-        // Check if a path exists
         if (predecessors.get(step) == null) {
             return null;
         }
@@ -118,7 +113,6 @@ public class PathFinderService {
             step = predecessors.get(step);
             path.add(step);
         }
-        // Put the route in the correct order
         Collections.reverse(path);
         return path;
     }

@@ -20,13 +20,11 @@ public class TrainServiceImpl implements TrainService {
     private TrainDao trainDao;
 
     @Override
-    @Transactional
     public TrainEntity getTrain(int id) {
         return trainDao.getTrain(id);
     }
 
     @Override
-    @Transactional
     public List<TrainEntity> getAllTrains() {
         return trainDao.getAllTrains();
     }
@@ -53,6 +51,7 @@ public class TrainServiceImpl implements TrainService {
     public Set<TrainEntity> getTrainsBySchedule(List<ScheduleEntity> schedule) {
         Set<TrainEntity> trains = new HashSet<>();
         TrainEntity comparedTrain = schedule.get(0).getTrain();
+        trains.add(comparedTrain);
         for (int i = 1; i < schedule.size(); i++) {
             if (!schedule.get(i).getTrain().equals(comparedTrain)) {
                 trains.add(schedule.get(i).getTrain());

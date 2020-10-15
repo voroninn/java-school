@@ -65,6 +65,7 @@
                     <td>
                         <a href="/trains/edit/${train.id}" class="btn btn-secondary" role="button">Edit</a>
                         <a href="/trains/delete/${train.id}" class="btn btn-danger" role="button">Delete</a>
+                        <a href="/passengers/${train.id}" class="btn btn-info" role="button">Passengers</a>
                     </td>
                 </tr>
             </c:forEach>

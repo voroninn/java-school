@@ -51,7 +51,7 @@ public class StationController {
     @PostMapping(value = "/stations/edit")
     public ModelAndView editStation(@ModelAttribute("station") StationEntity station, @RequestParam String name) {
         ModelAndView modelAndView = new ModelAndView();
-        station.setName("name");
+        station.setName(name);
         modelAndView.setViewName("redirect:/stations");
         stationService.editStation(station);
         return modelAndView;
@@ -78,7 +78,7 @@ public class StationController {
 
     @GetMapping(value = "/stations/edit/{id}/track")
     public ModelAndView editTrack(@ModelAttribute("station") StationEntity station,
-                                          @RequestParam Map<String, String> requestParams) {
+                                  @RequestParam Map<String, String> requestParams) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("stationMapping");
         List<StationEntity> stations = mappingService.
@@ -91,7 +91,7 @@ public class StationController {
 
     @PostMapping(value = "/stations/edit/track")
     public ModelAndView editTrack(@RequestParam Map<String, String> requestParams,
-                                          @ModelAttribute("station") StationEntity station) {
+                                  @ModelAttribute("station") StationEntity station) {
         ModelAndView modelAndView = new ModelAndView();
         mappingService.appendStation(station, Integer.parseInt(requestParams.get("track")),
                 requestParams.get("appendLocation"));

@@ -3,6 +3,7 @@ package org.javaschool.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
@@ -17,6 +18,7 @@ public class StationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank
     @Column(name = "name")
     private String name;
 

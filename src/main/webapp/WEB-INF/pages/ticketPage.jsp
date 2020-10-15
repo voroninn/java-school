@@ -70,11 +70,12 @@
             <span style="color: red">${message}</span>
             <div>
                 <a href="/myaccount/${pageContext.request.userPrincipal.name}"
-                   class="btn btn-secondary" role="button">Edit</a>
+                   class="btn btn-secondary" role="button">Edit personal data</a>
             </div>
         </div>
+        <div style="height: 30px"></div>
         <div class="text-center">
-            <a href="${pageContext.request.contextPath}/ticket/buy"
+            <a href="/ticket/buy"
                class="btn btn-success" role="button">Confirm and Buy</a>
         </div>
     </div>
