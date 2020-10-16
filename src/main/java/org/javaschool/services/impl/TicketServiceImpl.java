@@ -66,8 +66,8 @@ public class TicketServiceImpl implements TicketService {
     public String generateTicketNumber(TicketEntity ticket) {
         return String.valueOf(ticket.getDepartureStation().charAt(0)) +
                 ticket.getArrivalStation().charAt(0) +
-                ticket.getPassenger().getId() +
-                getTicketCount();
+                (ticket.getPassenger().getId() + (int) (Math.random() * ((99 - 1) + 1)) + 1) +
+                (getTicketCount() + (int) (Math.random() * ((99 - 1) + 1)) + 1);
     }
 
     @Override

@@ -56,7 +56,8 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<TicketEntity> getTicketsByPassenger(PassengerEntity passenger) {
-        Query query = entityManager.createQuery("SELECT t FROM TicketEntity t WHERE t.passenger = :passenger");
+        Query query = entityManager.createQuery("SELECT t FROM TicketEntity t " +
+                "WHERE t.passenger = :passenger ORDER BY t.date");
         query.setParameter("passenger", passenger);
         return query.getResultList();
     }
