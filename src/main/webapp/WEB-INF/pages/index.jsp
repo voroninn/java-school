@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,37 +59,39 @@
 <div class="media">
     <div class="media-body align-self-center col-sm-4">
         <form:form action="/schedule" modelAttribute="ticketForm" method="POST">
-            <div class="form-group row">
-                <div class="input-group text-center col-sm-11 offset-sm-1" >
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="stationFrom">From</label>
+                <div class="form-group row">
+                    <div class="input-group text-center col-sm-11 offset-sm-1">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="departureStation">From</label>
+                        </div>
+                        <form:select class="custom-select" path="departureStation" name="departureStation"
+                                     id="departureStation">
+                            <option selected>Select Station</option>
+                            <c:forEach var="station" items="${stationsList}">
+                                <option value="${station.name}">${station.name}</option>
+                            </c:forEach>
+                        </form:select>
                     </div>
-                    <form:select class="custom-select" path="departureStation" name="stationFrom" id="stationFrom">
-                        <option selected>Select Station</option>
-                        <c:forEach var="station" items="${stationsList}">
-                            <option value="${station.name}">${station.name}</option>
-                        </c:forEach>
-                    </form:select>
                 </div>
-            </div>
-            <div class="form-group row">
-                <div class="input-group text-center col-sm-11 offset-sm-1">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="stationTo">To</label>
+                <div class="form-group row">
+                    <div class="input-group text-center col-sm-11 offset-sm-1">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="arrivalStation">To</label>
+                        </div>
+                        <form:select class="custom-select" path="arrivalStation" name="arrivalStation"
+                                     id="arrivalStation">
+                            <option selected>Select Station</option>
+                            <c:forEach var="station" items="${stationsList}">
+                                <option value="${station.name}">${station.name}</option>
+                            </c:forEach>
+                        </form:select>
                     </div>
-                    <form:select class="custom-select" path="arrivalStation" name="stationTo" id="stationTo">
-                        <option selected>Select Station</option>
-                        <c:forEach var="station" items="${stationsList}">
-                            <option value="${station.name}">${station.name}</option>
-                        </c:forEach>
-                    </form:select>
                 </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-11 offset-sm-1">
-                    <form:input path="date" name="date" id="date" placeholder="DD.MM.YYYY"/>
+                <div class="form-group row">
+                    <div class="col-sm-11 offset-sm-1">
+                        <form:input path="date" name="date" id="date" placeholder="DD.MM.YYYY"/>
+                    </div>
                 </div>
-            </div>
             <div class="form-group row">
                 <div class="col-sm-11 offset-sm-1">
                     <button type="submit" class="btn btn-danger">Search</button>

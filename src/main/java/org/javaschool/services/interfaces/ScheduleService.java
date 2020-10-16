@@ -29,6 +29,8 @@ public interface ScheduleService {
 
     List<ScheduleEntity> getSchedulesByTrain(TrainEntity train);
 
+    List<List<ScheduleEntity>> getAllSchedulesByStations(List<StationEntity> stations);
+
     Date convertStringtoDate(String date);
 
     List<ScheduleEntity> buildSchedule(List<StationEntity> route, Date minDepartureTime);

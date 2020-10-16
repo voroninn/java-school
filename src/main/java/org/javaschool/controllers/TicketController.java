@@ -2,6 +2,7 @@ package org.javaschool.controllers;
 
 import org.javaschool.entities.*;
 import org.javaschool.services.interfaces.*;
+import org.javaschool.validation.TicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,9 @@ public class TicketController {
     @Autowired
     private PassengerService passengerService;
 
+    @Autowired
+    private TicketValidator ticketValidator;
+
     @GetMapping(value = "/")
     public ModelAndView homePage(@ModelAttribute("ticketForm") TicketEntity ticket) {
         List<StationEntity> stations = stationService.getAllStations();
@@ -53,7 +57,6 @@ public class TicketController {
     public ModelAndView searchResult(@ModelAttribute("ticketForm") TicketEntity ticket) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("searchResult");
-
         LinkedList<StationEntity> route = stationService.getRoute(ticket.getDepartureStation(), ticket.getArrivalStation());
         modelAndView.addObject("route", route);
         stationService.setEndpoints(route);
@@ -70,6 +73,7 @@ public class TicketController {
         Set<TrainEntity> trains = trainService.getTrainsBySchedule(schedule);
         ticket.setPrice(ticketService.calculateTicketPrice(route));
         ticket.setTrains(trains);
+
         return modelAndView;
     }
 

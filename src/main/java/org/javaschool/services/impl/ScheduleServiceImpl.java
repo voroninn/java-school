@@ -63,6 +63,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional
     public List<ScheduleEntity> getSchedulesByRoute(List<StationEntity> route) {
         List<ScheduleEntity> schedulesByRoute = new ArrayList<>();
         List<SectionEntity> sectionsByRoute = sectionService.getSectionsByRoute(route);
@@ -108,8 +109,22 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional
     public List<ScheduleEntity> getSchedulesByTrain(TrainEntity train) {
         return scheduleDao.getSchedulesByTrain(train);
+    }
+
+    @Override
+    @Transactional
+    public List<List<ScheduleEntity>> getAllSchedulesByStations(List<StationEntity> stations) {
+        List<List<ScheduleEntity>> schedules = new ArrayList<>();
+        for (StationEntity station : stations) {
+            List<ScheduleEntity> subSchedules = new ArrayList<>();
+            subSchedules.addAll(getSchedulesByStationAndDirection(station, true));
+            subSchedules.addAll(getSchedulesByStationAndDirection(station, false));
+            schedules.add(orderSchedulesByTime(subSchedules));
+        }
+        return schedules;
     }
 
     @Override
@@ -185,6 +200,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    @Transactional
     public void setBreakpoints(List<StationEntity> route) {
         for (int i = 0; i < route.size() - 2; i++) {
             SectionEntity section1 = sectionService.getSectionBetweenStations(route.get(i), route.get(i + 1));

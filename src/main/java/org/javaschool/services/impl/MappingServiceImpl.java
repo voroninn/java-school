@@ -22,16 +22,19 @@ public class MappingServiceImpl implements MappingService {
     private TrackService trackService;
 
     @Override
+    @Transactional
     public MappingEntity getMapping(int id) {
         return mappingDao.getMapping(id);
     }
 
     @Override
+    @Transactional
     public List<MappingEntity> getAllMappings() {
         return mappingDao.getAllMappings();
     }
 
     @Override
+    @Transactional
     public List<MappingEntity> getMappingsByTrack(TrackEntity track) {
         return mappingDao.getMappingsByTrack(track);
     }
@@ -60,11 +63,13 @@ public class MappingServiceImpl implements MappingService {
     }
 
     @Override
+    @Transactional
     public List<StationEntity> getOrderedStationsByTrack(TrackEntity track) {
         return mappingDao.getOrderedStationsByTrack(track);
     }
 
     @Override
+    @Transactional
     public TrackEntity getTrack(int id) {
         return mappingDao.getTrack(id);
     }
@@ -94,11 +99,13 @@ public class MappingServiceImpl implements MappingService {
     }
 
     @Override
+    @Transactional
     public int getStationOrder(StationEntity station, TrackEntity track) {
         return mappingDao.getStationOrder(station, track);
     }
 
     @Override
+    @Transactional
     public StationEntity getStationByOrder(TrackEntity track, int stationOrder) {
         return mappingDao.getStationByOrder(track, stationOrder);
     }

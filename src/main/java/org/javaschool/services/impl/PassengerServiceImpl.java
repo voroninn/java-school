@@ -21,21 +21,25 @@ public class PassengerServiceImpl implements PassengerService {
     private TrainService trainService;
 
     @Override
+    @Transactional
     public PassengerEntity getPassenger(int id) {
         return passengerDao.getPassenger(id);
     }
 
     @Override
+    @Transactional
     public List<PassengerEntity> getAllPassengers() {
         return passengerDao.getAllPassengers();
     }
 
     @Override
+    @Transactional
     public List<PassengerEntity> getPassengersByTrainId(int trainId) {
         return passengerDao.getPassengersByTrain(trainService.getTrain(trainId));
     }
 
     @Override
+    @Transactional
     public PassengerEntity getPassengerByUser(UserEntity user) {
         return passengerDao.getPassengerByUser(user);
     }

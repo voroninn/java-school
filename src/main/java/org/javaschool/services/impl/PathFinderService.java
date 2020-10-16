@@ -61,7 +61,7 @@ public class PathFinderService {
                 return section.getLength();
             }
         }
-        throw new RuntimeException("Should not happen");
+        throw new RuntimeException("Something went wrong");
     }
 
     private List<StationEntity> getNeighbors(StationEntity station) {

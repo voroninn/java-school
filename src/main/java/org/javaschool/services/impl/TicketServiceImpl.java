@@ -57,6 +57,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public long getTicketCount() {
         return ticketDao.getTicketCount();
     }
@@ -80,11 +81,13 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public List<TicketEntity> getTicketsByPassenger(PassengerEntity passenger) {
         return ticketDao.getTicketsByPassenger(passenger);
     }
 
     @Override
+    @Transactional
     public List<TicketEntity> getTicketsByTrainAndDate(TrainEntity train, Date date) {
         return ticketDao.getTicketsByTrainAndDate(train, date);
     }

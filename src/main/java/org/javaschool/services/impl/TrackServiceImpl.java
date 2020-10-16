@@ -16,11 +16,13 @@ public class TrackServiceImpl implements TrackService {
     private TrackDao trackDao;
 
     @Override
+    @Transactional
     public TrackEntity getTrack(int id) {
         return trackDao.getTrack(id);
     }
 
     @Override
+    @Transactional
     public List<TrackEntity> getAllTracks() {
         return trackDao.getAllTracks();
     }

@@ -20,11 +20,13 @@ public class TrainServiceImpl implements TrainService {
     private TrainDao trainDao;
 
     @Override
+    @Transactional
     public TrainEntity getTrain(int id) {
         return trainDao.getTrain(id);
     }
 
     @Override
+    @Transactional
     public List<TrainEntity> getAllTrains() {
         return trainDao.getAllTrains();
     }
@@ -62,6 +64,7 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
+    @Transactional
     public List<TrainEntity> getTrainsByTrack(TrackEntity track) {
         return trainDao.getTrainsByTrack(track);
     }
