@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -8,9 +8,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>My Account</title>
+    <title>My Account</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="${pageContext.request.contextPath}/assets/favicon.ico" rel="icon" type="image/x-icon"/>
 </head>
 
 <body>
@@ -25,7 +25,8 @@
             <div class="btn-group">
                 <a href="/myaccount/${pageContext.request.userPrincipal.name}"
                    class="btn btn-outline-light">My Account</a>
-                <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets" class="btn btn-outline-light">My Tickets</a>
+                <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets" class="btn btn-outline-light">My
+                    Tickets</a>
                 <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
             </div>
         </div>
@@ -40,60 +41,60 @@
 <div style="height: 100px"></div>
 
 <div class="container">
-    <form:form action="/myaccount" modelAttribute="passengerForm" method="POST">
-        <h2 class="form-heading text-center">Edit your personal data:</h2>
-        <span style="color: green">${message}</span>
-        <div class="jumbotron">
-            <c:if test="${!empty passengerForm.firstName}">
-                <input type="hidden" name="id" value="${passengerForm.id}">
+    <h2 class="form-heading text-center">Edit your personal data:</h2>
+    <span style="color: green">${message}</span>
+    <div class="jumbotron">
+        <form:form action="/myaccount" modelAttribute="passengerForm" method="POST">
+        <c:if test="${!empty passengerForm.firstName}">
+            <input type="hidden" name="id" value="${passengerForm.id}">
+        </c:if>
+        <input type="hidden" name="message" value="Your changes have been saved.">
+        <div class="form-group col-sm-4 offset-sm-4">
+            <label for="firstName">First Name</label>
+            <c:if test="${empty passengerForm.firstName}">
+                <form:input path="firstName" type="text" class="form-control" id="firstName" autofocus="true"/>
             </c:if>
-            <div class="form-group col-sm-4 offset-sm-4">
-                <label for="firstName">First Name</label>
-                <c:if test="${empty passengerForm.firstName}">
-                    <form:input path="firstName" type="text" class="form-control" id="firstName" autofocus="true"/>
-                </c:if>
-                <c:if test="${!empty passengerForm.firstName}">
-                    <form:input path="firstName" type="text" class="form-control"
-                                id="firstName" placeholder="${passengerForm.firstName}" autofocus="true"/>
-                    </c:if>
-            </div>
-            <div class="form-group col-sm-4 offset-sm-4">
-                <label for="lastName">Last Name</label>
-                <c:if test="${empty passengerForm.lastName}">
-                    <form:input path="lastName" type="text" class="form-control" id="lastName"/>
-                </c:if>
-                <c:if test="${!empty passengerForm.lastName}">
-                    <form:input path="lastName" type="text" class="form-control" id="lastName"
-                                placeholder="${passengerForm.lastName}"/>
-                </c:if>
-            </div>
-            <div class="form-group col-sm-4 offset-sm-4">
-                <label for="birthDate">Birth Date</label>
-                <c:if test="${empty passengerForm.birthDate}">
-                    <form:input path="birthDate" type="text" class="form-control"
-                                id="birthDate" placeholder="DD.MM.YYYY"/>
-                </c:if>
-                <c:if test="${!empty passengerForm.birthDate}">
-                    <form:input path="birthDate" type="text" class="form-control"
-                                id="birthDate" placeholder="<${passengerForm.birthDate}"/>
-                </c:if>
-            </div>
-            <div class="form-group col-sm-4 offset-sm-4">
-                <label for="passportNumber">Passport Number</label>
-                <c:if test="${empty passengerForm.passportNumber}">
-                    <form:input path="passportNumber" type="text" class="form-control"
-                                id="passportNumber" placeholder=""/>
-                </c:if>
-                <c:if test="${!empty passengerForm.passportNumber}">
-                    <form:input path="passportNumber" type="text" class="form-control"
-                                id="passportNumber" placeholder="${passengerForm.passportNumber}"/>
-                </c:if>
-            </div>
-            <input type="hidden" name="message" value="Your changes have been saved.">
-            <div class="text-center">
-                <button class="btn btn-lg btn-primary btn-center" type="submit">Submit</button>
-            </div>
+            <c:if test="${!empty passengerForm.firstName}">
+                <form:input path="firstName" type="text" class="form-control"
+                            id="firstName" placeholder="${passengerForm.firstName}" autofocus="true"/>
+            </c:if>
         </div>
+        <div class="form-group col-sm-4 offset-sm-4">
+            <label for="lastName">Last Name</label>
+            <c:if test="${empty passengerForm.lastName}">
+                <form:input path="lastName" type="text" class="form-control" id="lastName"/>
+            </c:if>
+            <c:if test="${!empty passengerForm.lastName}">
+                <form:input path="lastName" type="text" class="form-control" id="lastName"
+                            placeholder="${passengerForm.lastName}"/>
+            </c:if>
+        </div>
+        <div class="form-group col-sm-4 offset-sm-4">
+            <label for="birthDate">Birth Date</label>
+            <c:if test="${empty passengerForm.birthDate}">
+                <form:input path="birthDate" type="text" class="form-control"
+                            id="birthDate" placeholder="DD.MM.YYYY"/>
+            </c:if>
+            <c:if test="${!empty passengerForm.birthDate}">
+                <form:input path="birthDate" type="text" class="form-control"
+                            id="birthDate" placeholder="<${passengerForm.birthDate}"/>
+            </c:if>
+        </div>
+        <div class="form-group col-sm-4 offset-sm-4">
+            <label for="passportNumber">Passport Number</label>
+            <c:if test="${empty passengerForm.passportNumber}">
+                <form:input path="passportNumber" type="text" class="form-control"
+                            id="passportNumber" placeholder=""/>
+            </c:if>
+            <c:if test="${!empty passengerForm.passportNumber}">
+                <form:input path="passportNumber" type="text" class="form-control"
+                            id="passportNumber" placeholder="${passengerForm.passportNumber}"/>
+            </c:if>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-lg btn-primary btn-center" type="submit">Submit</button>
+        </div>
+    </div>
     </form:form>
 </div>
 
