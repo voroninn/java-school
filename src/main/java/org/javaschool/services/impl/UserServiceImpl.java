@@ -1,5 +1,7 @@
 package org.javaschool.services.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.javaschool.dao.interfaces.RoleDao;
 import org.javaschool.dao.interfaces.UserDao;
 import org.javaschool.entities.UserEntity;
@@ -26,12 +28,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
+
     @Override
     @Transactional
     public void save(UserEntity user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(roleDao.findRoleByName("ROLE_USER")));
         userDao.addUser(user);
+        LOGGER.info("Created new user " + user.getUsername());
     }
 
     @Override

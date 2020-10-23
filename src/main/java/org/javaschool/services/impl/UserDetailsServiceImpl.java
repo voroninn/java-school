@@ -1,5 +1,7 @@
 package org.javaschool.services.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.javaschool.dao.interfaces.UserDao;
 import org.javaschool.entities.RoleEntity;
 import org.javaschool.entities.UserEntity;
@@ -21,11 +23,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserDao userDao;
 
+    private static final Logger LOGGER = LogManager.getLogger(UserDetailsServiceImpl.class);
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userDao.findUserByUsername(username);
-        if (user == null) throw new UsernameNotFoundException(username);
+        if (user == null) {
+            LOGGER.error("User not found");
+            throw new UsernameNotFoundException(username);
+        }
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (RoleEntity role : user.getRoles()) {

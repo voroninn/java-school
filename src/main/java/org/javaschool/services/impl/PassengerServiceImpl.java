@@ -1,5 +1,7 @@
 package org.javaschool.services.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.javaschool.dao.interfaces.PassengerDao;
 import org.javaschool.entities.PassengerEntity;
 import org.javaschool.entities.UserEntity;
@@ -19,6 +21,8 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Autowired
     private TrainService trainService;
+
+    private static final Logger LOGGER = LogManager.getLogger(PassengerServiceImpl.class);
 
     @Override
     @Transactional
@@ -48,17 +52,20 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public void addPassenger(PassengerEntity passenger) {
         passengerDao.addPassenger(passenger);
+        LOGGER.info("Created new passenger " + passenger.getFirstName() + " " + passenger.getLastName());
     }
 
     @Override
     @Transactional
     public void editPassenger(PassengerEntity passenger) {
         passengerDao.editPassenger(passenger);
+        LOGGER.info("Edited passenger " + passenger.getFirstName() + " " + passenger.getLastName());
     }
 
     @Override
     @Transactional
     public void deletePassenger(PassengerEntity passenger) {
         passengerDao.deletePassenger(passenger);
+        LOGGER.info("Deleted passenger " + passenger.getFirstName() + " " + passenger.getLastName());
     }
 }

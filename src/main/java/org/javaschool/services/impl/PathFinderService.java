@@ -1,5 +1,7 @@
 package org.javaschool.services.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
 import org.javaschool.services.interfaces.SectionService;
@@ -18,12 +20,13 @@ public class PathFinderService {
     @Autowired
     SectionService sectionService;
 
+    private static final Logger LOGGER = LogManager.getLogger(PathFinderService.class);
+
     private List<SectionEntity> sections;
     private Set<StationEntity> settledStations;
     private Set<StationEntity> unsettledStations;
     private Map<StationEntity, StationEntity> predecessors;
     private Map<StationEntity, Double> distance;
-
 
     public void initialize(StationEntity source) {
         sections = sectionService.getAllSections();
@@ -106,7 +109,7 @@ public class PathFinderService {
         LinkedList<StationEntity> path = new LinkedList<>();
         StationEntity step = target;
         if (predecessors.get(step) == null) {
-            return null;
+            LOGGER.error("Route not found");
         }
         path.add(step);
         while (predecessors.get(step) != null) {
