@@ -85,7 +85,7 @@ public class MappingServiceImpl implements MappingService {
     @Transactional
     public void appendStation(StationEntity station, int trackId, String appendLocation) {
         TrackEntity track = trackService.getTrack(trackId);
-        int stationOrder = 0;
+        int stationOrder;
         switch (appendLocation) {
             case "before":
                 stationOrder = 1;
