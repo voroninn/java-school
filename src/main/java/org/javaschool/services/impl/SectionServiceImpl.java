@@ -1,7 +1,6 @@
 package org.javaschool.services.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.SectionDao;
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
@@ -14,12 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Log4j2
 public class SectionServiceImpl implements SectionService {
 
     @Autowired
     private SectionDao sectionDao;
-
-    private static final Logger LOGGER = LogManager.getLogger(SectionServiceImpl.class);
 
     @Override
     public SectionEntity getSection(int id) {
@@ -35,21 +33,21 @@ public class SectionServiceImpl implements SectionService {
     @Transactional
     public void addSection(SectionEntity section) {
         sectionDao.addSection(section);
-        LOGGER.info("Created new section between " + section.getStationFrom() + " and " + section.getStationTo());
+        log.info("Created new section between " + section.getStationFrom() + " and " + section.getStationTo());
     }
 
     @Override
     @Transactional
     public void editSection(SectionEntity section) {
         sectionDao.editSection(section);
-        LOGGER.info("Edited section between " + section.getStationFrom() + " and " + section.getStationTo());
+        log.info("Edited section between " + section.getStationFrom() + " and " + section.getStationTo());
     }
 
     @Override
     @Transactional
     public void deleteSection(SectionEntity section) {
         sectionDao.deleteSection(section);
-        LOGGER.info("Deleted section between " + section.getStationFrom() + " and " + section.getStationTo());
+        log.info("Deleted section between " + section.getStationFrom() + " and " + section.getStationTo());
     }
 
     @Override

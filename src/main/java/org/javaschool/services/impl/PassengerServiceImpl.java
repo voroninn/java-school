@@ -1,7 +1,6 @@
 package org.javaschool.services.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.PassengerDao;
 import org.javaschool.entities.PassengerEntity;
 import org.javaschool.entities.UserEntity;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Log4j2
 public class PassengerServiceImpl implements PassengerService {
 
     @Autowired
@@ -21,8 +21,6 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Autowired
     private TrainService trainService;
-
-    private static final Logger LOGGER = LogManager.getLogger(PassengerServiceImpl.class);
 
     @Override
     @Transactional
@@ -52,20 +50,20 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public void addPassenger(PassengerEntity passenger) {
         passengerDao.addPassenger(passenger);
-        LOGGER.info("Created new passenger " + passenger.getFirstName() + " " + passenger.getLastName());
+        log.info("Created new passenger " + passenger.getFirstName() + " " + passenger.getLastName());
     }
 
     @Override
     @Transactional
     public void editPassenger(PassengerEntity passenger) {
         passengerDao.editPassenger(passenger);
-        LOGGER.info("Edited passenger " + passenger.getFirstName() + " " + passenger.getLastName());
+        log.info("Edited passenger " + passenger.getFirstName() + " " + passenger.getLastName());
     }
 
     @Override
     @Transactional
     public void deletePassenger(PassengerEntity passenger) {
         passengerDao.deletePassenger(passenger);
-        LOGGER.info("Deleted passenger " + passenger.getFirstName() + " " + passenger.getLastName());
+        log.info("Deleted passenger " + passenger.getFirstName() + " " + passenger.getLastName());
     }
 }

@@ -1,7 +1,6 @@
 package org.javaschool.services.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
 import org.javaschool.services.interfaces.SectionService;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+@Log4j2
 public class PathFinderService {
 
     @Autowired
@@ -19,8 +19,6 @@ public class PathFinderService {
 
     @Autowired
     SectionService sectionService;
-
-    private static final Logger LOGGER = LogManager.getLogger(PathFinderService.class);
 
     private List<SectionEntity> sections;
     private Set<StationEntity> settledStations;
@@ -109,7 +107,7 @@ public class PathFinderService {
         LinkedList<StationEntity> path = new LinkedList<>();
         StationEntity step = target;
         if (predecessors.get(step) == null) {
-            LOGGER.error("Route not found");
+            log.error("Route not found");
         }
         path.add(step);
         while (predecessors.get(step) != null) {

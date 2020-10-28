@@ -1,7 +1,6 @@
 package org.javaschool.services.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.MappingDao;
 import org.javaschool.entities.MappingEntity;
 import org.javaschool.entities.StationEntity;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Log4j2
 public class MappingServiceImpl implements MappingService {
 
     @Autowired
@@ -22,8 +22,6 @@ public class MappingServiceImpl implements MappingService {
 
     @Autowired
     private TrackService trackService;
-
-    private static final Logger LOGGER = LogManager.getLogger(MappingServiceImpl.class);
 
     @Override
     @Transactional
@@ -47,14 +45,14 @@ public class MappingServiceImpl implements MappingService {
     @Transactional
     public void addMapping(MappingEntity mapping) {
         mappingDao.addMapping(mapping);
-        LOGGER.info("Created new mapping " + mapping.getId());
+        log.info("Created new mapping " + mapping.getId());
     }
 
     @Override
     @Transactional
     public void editMapping(MappingEntity mapping) {
         mappingDao.editMapping(mapping);
-        LOGGER.info("Edited mapping " + mapping.getId());
+        log.info("Edited mapping " + mapping.getId());
     }
 
     @Override
@@ -66,7 +64,7 @@ public class MappingServiceImpl implements MappingService {
             mappingDao.editMapping(mappings.get(i));
         }
         mappingDao.deleteMapping(mapping);
-        LOGGER.info("Deleted mapping " + mapping.getId());
+        log.info("Deleted mapping " + mapping.getId());
     }
 
     @Override

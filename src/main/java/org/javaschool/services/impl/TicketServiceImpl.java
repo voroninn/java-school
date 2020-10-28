@@ -1,7 +1,6 @@
 package org.javaschool.services.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.TicketDao;
 import org.javaschool.entities.*;
 import org.javaschool.services.interfaces.SectionService;
@@ -17,6 +16,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 @Service
+@Log4j2
 public class TicketServiceImpl implements TicketService {
 
     @Autowired
@@ -27,8 +27,6 @@ public class TicketServiceImpl implements TicketService {
 
     @Autowired
     private StationService stationService;
-
-    private static final Logger LOGGER = LogManager.getLogger(TicketServiceImpl.class);
 
     @Override
     @Transactional
@@ -46,21 +44,21 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public void addTicket(TicketEntity ticket) {
         ticketDao.addTicket(ticket);
-        LOGGER.info("Created new ticket " + ticket.getNumber());
+        log.info("Created new ticket " + ticket.getNumber());
     }
 
     @Override
     @Transactional
     public void editTicket(TicketEntity ticket) {
         ticketDao.editTicket(ticket);
-        LOGGER.info("Edited ticket " + ticket.getNumber());
+        log.info("Edited ticket " + ticket.getNumber());
     }
 
     @Override
     @Transactional
     public void deleteTicket(TicketEntity ticket) {
         ticketDao.deleteTicket(ticket);
-        LOGGER.info("Deleted ticket " + ticket.getNumber());
+        log.info("Deleted ticket " + ticket.getNumber());
     }
 
     @Override

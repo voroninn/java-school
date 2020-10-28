@@ -1,7 +1,6 @@
 package org.javaschool.services.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.StationDao;
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
@@ -17,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
+@Log4j2
 public class StationServiceImpl implements StationService {
 
     @Autowired
@@ -27,8 +27,6 @@ public class StationServiceImpl implements StationService {
 
     @Autowired
     private SectionService sectionService;
-
-    private static final Logger LOGGER = LogManager.getLogger(StationServiceImpl.class);
 
     @Override
     @Transactional
@@ -52,21 +50,21 @@ public class StationServiceImpl implements StationService {
     @Transactional
     public void addStation(StationEntity station) {
         stationDao.addStation(station);
-        LOGGER.info("Created new station " + station.getName());
+        log.info("Created new station " + station.getName());
     }
 
     @Override
     @Transactional
     public void editStation(StationEntity station) {
         stationDao.editStation(station);
-        LOGGER.info("Edited station " + station.getName());
+        log.info("Edited station " + station.getName());
     }
 
     @Override
     @Transactional
     public void deleteStation(StationEntity station) {
         stationDao.deleteStation(station);
-        LOGGER.info("Deleted station " + station.getName());
+        log.info("Deleted station " + station.getName());
     }
 
     public LinkedList<StationEntity> getRoute(String stationFrom, String stationTo) {

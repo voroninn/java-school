@@ -1,7 +1,6 @@
 package org.javaschool.services.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.TrainDao;
 import org.javaschool.entities.ScheduleEntity;
 import org.javaschool.entities.TrackEntity;
@@ -16,12 +15,11 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Log4j2
 public class TrainServiceImpl implements TrainService {
 
     @Autowired
     private TrainDao trainDao;
-
-    private static final Logger LOGGER = LogManager.getLogger(TrainServiceImpl.class);
 
     @Override
     @Transactional
@@ -39,21 +37,21 @@ public class TrainServiceImpl implements TrainService {
     @Transactional
     public void addTrain(TrainEntity train) {
         trainDao.addTrain(train);
-        LOGGER.info("Created new train " + train.getName());
+        log.info("Created new train " + train.getName());
     }
 
     @Override
     @Transactional
     public void editTrain(TrainEntity train) {
         trainDao.editTrain(train);
-        LOGGER.info("Updated train " + train.getName());
+        log.info("Updated train " + train.getName());
     }
 
     @Override
     @Transactional
     public void deleteTrain(TrainEntity train) {
         trainDao.deleteTrain(train);
-        LOGGER.info("Deleted train " + train.getName());
+        log.info("Deleted train " + train.getName());
     }
 
     @Override

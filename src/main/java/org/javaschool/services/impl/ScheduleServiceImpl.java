@@ -1,7 +1,6 @@
 package org.javaschool.services.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.ScheduleDao;
 import org.javaschool.entities.*;
 import org.javaschool.services.interfaces.*;
@@ -14,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
+@Log4j2
 public class ScheduleServiceImpl implements ScheduleService {
 
     @Autowired
@@ -31,8 +31,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     MessagingService messagingService;
 
-    private static final Logger LOGGER = LogManager.getLogger(ScheduleServiceImpl.class);
-
     @Override
     @Transactional
     public ScheduleEntity getSchedule(int id) {
@@ -49,26 +47,26 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public void addSchedule(ScheduleEntity schedule) {
         scheduleDao.addSchedule(schedule);
-        LOGGER.info("Created new schedule for " +
-                schedule.getTrain().getName() + " at " + schedule.getStation().getName());
+        log.info("Created new schedule for " +
+                schedule.getTrain().getName() + " on " + schedule.getStation().getName());
     }
 
     @Override
     @Transactional
     public void editSchedule(ScheduleEntity schedule) {
         scheduleDao.editSchedule(schedule);
-        LOGGER.info("Edited schedule for " +
-                schedule.getTrain().getName() + " at " + schedule.getStation().getName());
+        log.info("Edited schedule for " +
+                schedule.getTrain().getName() + " on " + schedule.getStation().getName());
         messagingService.sendMessage(schedule);
-        LOGGER.info("Message sent to queue");
+        log.info("Message sent to queue");
     }
 
     @Override
     @Transactional
     public void deleteSchedule(ScheduleEntity schedule) {
         scheduleDao.deleteSchedule(schedule);
-        LOGGER.info("Deleted schedule for " +
-                schedule.getTrain().getName() + " at " + schedule.getStation().getName());
+        log.info("Deleted schedule for " +
+                schedule.getTrain().getName() + " on " + schedule.getStation().getName());
     }
 
     @Override
@@ -151,7 +149,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 parsedDate = formatter.parse(date);
             } catch (ParseException pE) {
                 pE.getStackTrace();
-                LOGGER.error("Could not parse date from string");
+                log.error("Could not parse date from string");
             }
         }
         return parsedDate;

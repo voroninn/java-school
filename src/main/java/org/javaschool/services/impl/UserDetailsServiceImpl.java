@@ -1,5 +1,6 @@
 package org.javaschool.services.impl;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.javaschool.dao.interfaces.UserDao;
@@ -18,19 +19,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@Log4j2
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserDao userDao;
-
-    private static final Logger LOGGER = LogManager.getLogger(UserDetailsServiceImpl.class);
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userDao.findUserByUsername(username);
         if (user == null) {
-            LOGGER.error("User not found");
+            log.error("User not found");
             throw new UsernameNotFoundException(username);
         }
 
