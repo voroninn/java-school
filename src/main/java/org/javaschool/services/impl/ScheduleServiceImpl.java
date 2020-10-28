@@ -28,6 +28,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private TrainService trainService;
 
+    @Autowired
+    MessagingService messagingService;
+
     private static final Logger LOGGER = LogManager.getLogger(ScheduleServiceImpl.class);
 
     @Override
@@ -46,21 +49,26 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public void addSchedule(ScheduleEntity schedule) {
         scheduleDao.addSchedule(schedule);
-        LOGGER.info("Created new schedule for " + schedule.getTrain().getName() + " at " + schedule.getStation());
+        LOGGER.info("Created new schedule for " +
+                schedule.getTrain().getName() + " at " + schedule.getStation().getName());
     }
 
     @Override
     @Transactional
     public void editSchedule(ScheduleEntity schedule) {
         scheduleDao.editSchedule(schedule);
-        LOGGER.info("Edited schedule for " + schedule.getTrain().getName() + " at " + schedule.getStation());
+        LOGGER.info("Edited schedule for " +
+                schedule.getTrain().getName() + " at " + schedule.getStation().getName());
+        messagingService.sendMessage(schedule);
+        LOGGER.info("Message sent to queue");
     }
 
     @Override
     @Transactional
     public void deleteSchedule(ScheduleEntity schedule) {
         scheduleDao.deleteSchedule(schedule);
-        LOGGER.info("Deleted schedule for " + schedule.getTrain().getName() + " at " + schedule.getStation());
+        LOGGER.info("Deleted schedule for " +
+                schedule.getTrain().getName() + " at " + schedule.getStation().getName());
     }
 
     @Override

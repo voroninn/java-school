@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "mappings", schema = "sbb")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MappingEntity {
+public class MappingEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

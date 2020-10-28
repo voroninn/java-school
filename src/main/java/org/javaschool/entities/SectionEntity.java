@@ -3,13 +3,14 @@ package org.javaschool.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "sections", schema = "sbb")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SectionEntity {
+public class SectionEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

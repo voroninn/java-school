@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -11,7 +12,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleEntity {
+public class ScheduleEntity implements Serializable {
 
     public ScheduleEntity(StationEntity station, TrainEntity train) {
         this.station = station;
