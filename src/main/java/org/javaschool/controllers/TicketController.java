@@ -2,7 +2,6 @@ package org.javaschool.controllers;
 
 import org.javaschool.entities.*;
 import org.javaschool.services.interfaces.*;
-import org.javaschool.validation.TicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +33,6 @@ public class TicketController {
 
     @Autowired
     private PassengerService passengerService;
-
-    @Autowired
-    private TicketValidator ticketValidator;
 
     @GetMapping(value = "/")
     public ModelAndView homePage(@ModelAttribute("ticketForm") TicketEntity ticket) {
