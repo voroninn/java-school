@@ -128,14 +128,19 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public List<ScheduleEntity> getSchedulesByStation(StationEntity station) {
+        List<ScheduleEntity> schedules = new ArrayList<>();
+        schedules.addAll(getSchedulesByStationAndDirection(station, true));
+        schedules.addAll(getSchedulesByStationAndDirection(station, false));
+        return orderSchedulesByTime(schedules);
+    }
+
+    @Override
     @Transactional
     public List<List<ScheduleEntity>> getAllSchedulesByStations(List<StationEntity> stations) {
         List<List<ScheduleEntity>> schedules = new ArrayList<>();
         for (StationEntity station : stations) {
-            List<ScheduleEntity> subSchedules = new ArrayList<>();
-            subSchedules.addAll(getSchedulesByStationAndDirection(station, true));
-            subSchedules.addAll(getSchedulesByStationAndDirection(station, false));
-            schedules.add(orderSchedulesByTime(subSchedules));
+            schedules.add(getSchedulesByStation(station));
         }
         return schedules;
     }
