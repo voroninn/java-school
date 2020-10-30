@@ -2,9 +2,12 @@ package org.javaschool.services.impl;
 
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.SectionDao;
-import org.javaschool.entities.SectionEntity;
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrackEntity;
+import org.javaschool.dto.SectionDto;
+import org.javaschool.dto.StationDto;
+import org.javaschool.dto.TrackDto;
+import org.javaschool.mapper.SectionMapper;
+import org.javaschool.mapper.StationMapper;
+import org.javaschool.services.interfaces.MappingService;
 import org.javaschool.services.interfaces.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,52 +22,76 @@ public class SectionServiceImpl implements SectionService {
     @Autowired
     private SectionDao sectionDao;
 
+    @Autowired
+    private MappingService mappingService;
+
+    @Autowired
+    private SectionMapper sectionMapper;
+
+    @Autowired
+    private StationMapper stationMapper;
+
     @Override
-    public SectionEntity getSection(int id) {
-        return sectionDao.getSection(id);
+    public SectionDto getSection(int id) {
+        return sectionMapper.toDto(sectionDao.getSection(id));
     }
 
     @Override
-    public List<SectionEntity> getAllSections() {
-        return sectionDao.getAllSections();
-    }
-
-    @Override
-    @Transactional
-    public void addSection(SectionEntity section) {
-        sectionDao.addSection(section);
-        log.info("Created new section between " + section.getStationFrom() + " and " + section.getStationTo());
-    }
-
-    @Override
-    @Transactional
-    public void editSection(SectionEntity section) {
-        sectionDao.editSection(section);
-        log.info("Edited section between " + section.getStationFrom() + " and " + section.getStationTo());
+    public List<SectionDto> getAllSections() {
+        return sectionMapper.toDtoList(sectionDao.getAllSections());
     }
 
     @Override
     @Transactional
-    public void deleteSection(SectionEntity section) {
-        sectionDao.deleteSection(section);
-        log.info("Deleted section between " + section.getStationFrom() + " and " + section.getStationTo());
+    public void addSection(SectionDto sectionDto) {
+        sectionDao.addSection(sectionMapper.toEntity(sectionDto));
+        log.info("Created new section between " + sectionDto.getStationFrom() + " and " + sectionDto.getStationTo());
     }
 
     @Override
     @Transactional
-    public SectionEntity getSectionBetweenStations(StationEntity stationFrom, StationEntity stationTo) {
-        return sectionDao.getSectionBetweenStations(stationFrom, stationTo);
+    public void editSection(SectionDto sectionDto) {
+        sectionDao.editSection(sectionMapper.toEntity(sectionDto));
+        log.info("Edited section between " + sectionDto.getStationFrom() + " and " + sectionDto.getStationTo());
     }
 
     @Override
     @Transactional
-    public List<SectionEntity> getSectionsByRoute(List<StationEntity> route) {
-        return sectionDao.getSectionsByRoute(route);
+    public void deleteSection(SectionDto sectionDto) {
+        sectionDao.deleteSection(sectionMapper.toEntity(sectionDto));
+        log.info("Deleted section between " + sectionDto.getStationFrom() + " and " + sectionDto.getStationTo());
     }
 
     @Override
     @Transactional
-    public void createSection(StationEntity station, int length, TrackEntity track) {
-        sectionDao.createSection(station, length, track);
+    public SectionDto getSectionBetweenStations(StationDto stationFrom, StationDto stationTo) {
+        return sectionMapper.toDto(sectionDao.getSectionBetweenStations(stationMapper.toEntity(stationFrom),
+                stationMapper.toEntity(stationTo)));
+    }
+
+    @Override
+    @Transactional
+    public List<SectionDto> getSectionsByRoute(List<StationDto> route) {
+        return sectionMapper.toDtoList(sectionDao.getSectionsByRoute(stationMapper.toEntityList(route)));
+    }
+
+    @Override
+    @Transactional
+    public void createSection(StationDto stationDto, int length, TrackDto trackDto) {
+        StationDto nearestStation;
+        int stationOrder = mappingService.getStationOrder(stationDto, trackDto);
+        if (stationOrder == 1) {
+            nearestStation = mappingService.getStationByOrder(trackDto, 2);
+            sectionDao.addSection(sectionMapper.toEntity(new SectionDto(stationDto,
+                    nearestStation, length, trackDto, true)));
+            sectionDao.addSection(sectionMapper.toEntity(new SectionDto(nearestStation,
+                    stationDto, length, trackDto, false)));
+        } else {
+            nearestStation = mappingService.getStationByOrder(trackDto, stationOrder - 1);
+            sectionDao.addSection(sectionMapper.toEntity(new SectionDto(stationDto,
+                    nearestStation, length, trackDto, false)));
+            sectionDao.addSection(sectionMapper.toEntity(new SectionDto(nearestStation,
+                    stationDto, length, trackDto, true)));
+        }
     }
 }

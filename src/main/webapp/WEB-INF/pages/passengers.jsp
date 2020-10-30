@@ -60,7 +60,7 @@
                 <tr>
                     <td>${passenger.firstName}</td>
                     <td>${passenger.lastName}</td>
-                    <td><fmt:formatDate value="${passenger.birthDate}" pattern="dd.MM.yyyy"/></td>
+                    <td>${passenger.birthDate}</td>
                     <td>${passenger.passportNumber}</td>
                     <td>
                         <a href="/passengers/edit/${passenger.id}" class="btn btn-secondary" role="button">Edit</a>

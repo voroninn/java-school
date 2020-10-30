@@ -1,8 +1,6 @@
 package org.javaschool.services.impl;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.javaschool.dao.interfaces.UserDao;
 import org.javaschool.entities.RoleEntity;
 import org.javaschool.entities.UserEntity;

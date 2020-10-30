@@ -65,9 +65,9 @@
                         <td>${ticket.number}</td>
                         <td>${ticket.departureStation}</td>
                         <td>${ticket.arrivalStation}</td>
-                        <td><fmt:formatDate value="${ticket.departureTime}" pattern="HH:mm"/></td>
-                        <td><fmt:formatDate value="${ticket.arrivalTime}" pattern="HH:mm"/></td>
-                        <td><fmt:formatDate value="${ticket.date}" pattern="dd.MM.yyyy"/></td>
+                        <td>${ticket.departureTime}</td>
+                        <td>${ticket.arrivalTime}</td>
+                        <td>${ticket.date}</td>
                         <td>
                             <a href="/ticket/delete/${ticket.id}" class="btn btn-danger" role="button">Cancel</a>
                         </td>

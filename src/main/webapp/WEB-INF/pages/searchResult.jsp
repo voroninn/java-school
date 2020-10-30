@@ -57,18 +57,17 @@
 <div style="height: 100px"></div>
 
 <div class="container">
-    <h2 class="text-center">Your route from ${route[0].name} to ${route[route.size() - 1].name}
-        on <fmt:formatDate value="${ticketForm.date}" pattern="dd.MM.yyyy"/></h2>
+    <h2 class="text-center">Your route from ${route[0].name}
+        to ${route[route.size() - 1].name} on ${ticketForm.date}"</h2>
     <div class="jumbotron">
         <div class="text-center">
             <div style="height: 50px">
-                <strong><fmt:formatDate value="${schedule[0].departureTime}" pattern="HH:mm"/> ${route[0].name}</strong>
+                <strong>${schedule[0].departureTime} ${route[0].name}</strong>
                 &LongRightArrow;
                 <c:forEach var="station" items="${route}" begin="1" end="${route.size() - 2}">
                     ${station.name} &LongRightArrow;
                 </c:forEach>
-                <strong>${route[route.size() - 1].name} <fmt:formatDate
-                        value="${schedule[schedule.size() - 1].arrivalTime}" pattern="HH:mm"/></strong>
+                <strong>${route[route.size() - 1].name} ${schedule[schedule.size() - 1].arrivalTime}</strong>
             </div>
             <div style="height: 50px">
                 <p>Number of changes: ${numberOfChanges}</p>

@@ -1,6 +1,6 @@
 package org.javaschool.controllers;
 
-import org.javaschool.entities.ScheduleEntity;
+import org.javaschool.dto.ScheduleDto;
 import org.javaschool.services.interfaces.ScheduleService;
 import org.javaschool.services.interfaces.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class RestController {
     private StationService stationService;
 
     @GetMapping(value = "/timetable/{stationName}")
-    public List<ScheduleEntity> getSchedulesByStation(@PathVariable String stationName) {
+    public List<ScheduleDto> getSchedulesByStation(@PathVariable String stationName) {
         return scheduleService.getSchedulesByStation(stationService.getStationByName(stationName));
     }
 }

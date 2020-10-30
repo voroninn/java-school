@@ -1,13 +1,11 @@
 package org.javaschool.controllers;
 
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TicketEntity;
+import org.javaschool.dto.StationDto;
 import org.javaschool.services.interfaces.ScheduleService;
 import org.javaschool.services.interfaces.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -22,12 +20,12 @@ public class TimetableController {
     private ScheduleService scheduleService;
 
     @GetMapping(value = "/timetable")
-    public ModelAndView timetable(@ModelAttribute("ticketForm") TicketEntity ticket) {
+    public ModelAndView timetable() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("timetable");
-        List<StationEntity> stations = stationService.getAllStations();
-        modelAndView.addObject("stationsList", stations);
-        modelAndView.addObject("schedules", scheduleService.getAllSchedulesByStations(stations));
+        List<StationDto> stationDtoList = stationService.getAllStations();
+        modelAndView.addObject("stationsList", stationDtoList);
+        modelAndView.addObject("schedules", scheduleService.getAllSchedulesByStations(stationDtoList));
         return modelAndView;
     }
 }

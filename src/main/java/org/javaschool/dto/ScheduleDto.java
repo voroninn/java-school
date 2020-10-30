@@ -2,8 +2,6 @@ package org.javaschool.dto;
 
 import lombok.*;
 
-import java.util.Date;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,9 +14,12 @@ public class ScheduleDto {
 
     private TrainDto train;
 
-    private Date arrivalTime;
+    private String arrivalTime;
 
-    private Date departureTime;
+    private String departureTime;
 
     private boolean direction;
+
+    public ScheduleDto(StationDto stationDto, TrainDto trainDto) {
+    }
 }

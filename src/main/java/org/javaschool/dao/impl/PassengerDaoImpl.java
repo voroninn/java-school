@@ -6,7 +6,6 @@ import org.javaschool.entities.TrainEntity;
 import org.javaschool.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;

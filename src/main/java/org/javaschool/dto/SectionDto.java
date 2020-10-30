@@ -22,4 +22,7 @@ public class SectionDto {
     private TrackDto track;
 
     private boolean direction;
+
+    public SectionDto(StationDto stationFromDto, StationDto stationToDto, int length, TrackDto trackDto, boolean direction) {
+    }
 }

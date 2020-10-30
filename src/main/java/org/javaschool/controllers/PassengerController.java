@@ -1,6 +1,6 @@
 package org.javaschool.controllers;
 
-import org.javaschool.entities.PassengerEntity;
+import org.javaschool.dto.PassengerDto;
 import org.javaschool.services.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,36 +20,36 @@ public class PassengerController {
 
     @GetMapping(value = "/passengers")
     public ModelAndView allPassengers() {
-        List<PassengerEntity> passengers = passengerService.getAllPassengers();
+        List<PassengerDto> passengerDtoList = passengerService.getAllPassengers();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengers");
-        modelAndView.addObject("passengersList", passengers);
+        modelAndView.addObject("passengersList", passengerDtoList);
         return modelAndView;
     }
 
     @GetMapping(value = "/passengers/{trainId}")
     public ModelAndView passengersByTrain(@PathVariable("trainId") int trainId) {
-        List<PassengerEntity> passengers = passengerService.getPassengersByTrainId(trainId);
+        List<PassengerDto> passengerDtoList = passengerService.getPassengersByTrainId(trainId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengers");
-        modelAndView.addObject("passengersList", passengers);
+        modelAndView.addObject("passengersList", passengerDtoList);
         return modelAndView;
     }
 
     @GetMapping(value = "/passengers/edit/{id}")
     public ModelAndView editPassenger(@PathVariable("id") int id) {
-        PassengerEntity passenger = passengerService.getPassenger(id);
+        PassengerDto passengerDto = passengerService.getPassenger(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengerEdit");
-        modelAndView.addObject("passenger", passenger);
+        modelAndView.addObject("passenger", passengerDto);
         return modelAndView;
     }
 
     @PostMapping(value = "/passengers/edit")
-    public ModelAndView editPassenger(@ModelAttribute("passenger") PassengerEntity passenger) {
+    public ModelAndView editPassenger(@ModelAttribute("passenger") PassengerDto passengerDto) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");
-        passengerService.editPassenger(passenger);
+        passengerService.editPassenger(passengerDto);
         return modelAndView;
     }
 
@@ -57,15 +57,15 @@ public class PassengerController {
     public ModelAndView addPassenger() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengerEdit");
-        modelAndView.addObject("passenger", new PassengerEntity());
+        modelAndView.addObject("passenger", new PassengerDto());
         return modelAndView;
     }
 
     @PostMapping(value = "/passengers/add")
-    public ModelAndView addPassenger(@ModelAttribute("passenger") PassengerEntity passenger) {
+    public ModelAndView addPassenger(@ModelAttribute("passenger") PassengerDto passengerDto) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");
-        passengerService.addPassenger(passenger);
+        passengerService.addPassenger(passengerDto);
         return modelAndView;
     }
 
@@ -73,8 +73,8 @@ public class PassengerController {
     public ModelAndView deletePassenger(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");
-        PassengerEntity passenger = passengerService.getPassenger(id);
-        passengerService.deletePassenger(passenger);
+        PassengerDto passengerDto = passengerService.getPassenger(id);
+        passengerService.deletePassenger(passengerDto);
         return modelAndView;
     }
 }

@@ -1,40 +1,40 @@
 package org.javaschool.services.interfaces;
 
-import org.javaschool.entities.PassengerEntity;
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TicketEntity;
-import org.javaschool.entities.TrainEntity;
+import org.javaschool.dto.PassengerDto;
+import org.javaschool.dto.StationDto;
+import org.javaschool.dto.TicketDto;
+import org.javaschool.dto.TrainDto;
 
 import java.util.Date;
 import java.util.List;
 
 public interface TicketService {
 
-    TicketEntity getTicket(int id);
+    TicketDto getTicket(int id);
 
-    List<TicketEntity> getAllTickets();
+    List<TicketDto> getAllTickets();
 
-    void addTicket(TicketEntity ticket);
+    void addTicket(TicketDto ticketDto);
 
-    void editTicket(TicketEntity ticket);
+    void editTicket(TicketDto ticketDto);
 
-    void deleteTicket(TicketEntity ticket);
+    void deleteTicket(TicketDto ticketDto);
 
     long getTicketCount();
 
-    String generateTicketNumber(TicketEntity ticket);
+    String generateTicketNumber(TicketDto ticketDto);
 
-    double calculateTicketPrice(List<StationEntity> route);
+    double calculateTicketPrice(List<StationDto> route);
 
-    List<TicketEntity> getTicketsByPassenger(PassengerEntity passenger);
+    List<TicketDto> getTicketsByPassenger(PassengerDto passengerDto);
 
-    List<TicketEntity> getTicketsByTrainAndDate(TrainEntity train, Date date);
+    List<TicketDto> getTicketsByTrainAndDate(TrainDto trainDto, Date date);
 
-    public boolean areTicketsAvailable(TicketEntity ticket);
+    public boolean areTicketsAvailable(TicketDto ticketDto);
 
-    public boolean isPassengerNotPresentOnTrain(TicketEntity ticket);
+    public boolean isPassengerNotPresentOnTrain(TicketDto ticketDto);
 
-    public boolean isEnoughTimeToDeparture(TicketEntity ticket);
+    public boolean isEnoughTimeToDeparture(TicketDto ticketDto);
 
-    public List<String> validateTicket(TicketEntity ticket);
+    public List<String> validateTicket(TicketDto ticketDto);
 }

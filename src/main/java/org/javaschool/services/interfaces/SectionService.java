@@ -1,26 +1,26 @@
 package org.javaschool.services.interfaces;
 
-import org.javaschool.entities.SectionEntity;
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrackEntity;
+import org.javaschool.dto.SectionDto;
+import org.javaschool.dto.StationDto;
+import org.javaschool.dto.TrackDto;
 
 import java.util.List;
 
 public interface SectionService {
 
-    SectionEntity getSection(int id);
+    SectionDto getSection(int id);
 
-    List<SectionEntity> getAllSections();
+    List<SectionDto> getAllSections();
 
-    void addSection(SectionEntity section);
+    void addSection(SectionDto sectionDto);
 
-    void editSection(SectionEntity section);
+    void editSection(SectionDto sectionDto);
 
-    void deleteSection(SectionEntity section);
+    void deleteSection(SectionDto sectionDto);
 
-    SectionEntity getSectionBetweenStations(StationEntity stationFrom, StationEntity stationTo);
+    SectionDto getSectionBetweenStations(StationDto stationFromDto, StationDto stationToDto);
 
-    List<SectionEntity> getSectionsByRoute(List<StationEntity> route);
+    List<SectionDto> getSectionsByRoute(List<StationDto> route);
 
-    void createSection(StationEntity station, int length, TrackEntity track);
+    void createSection(StationDto stationDto, int length, TrackDto trackDto);
 }

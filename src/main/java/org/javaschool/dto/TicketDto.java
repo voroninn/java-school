@@ -2,7 +2,6 @@ package org.javaschool.dto;
 
 import lombok.*;
 
-import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -23,9 +22,9 @@ public class TicketDto {
 
     private String arrivalStation;
 
-    private Date departureTime;
+    private String departureTime;
 
-    private Date arrivalTime;
+    private String arrivalTime;
 
     private String date;
 

@@ -1,25 +1,25 @@
 package org.javaschool.services.interfaces;
 
-import org.javaschool.entities.ScheduleEntity;
-import org.javaschool.entities.TrackEntity;
-import org.javaschool.entities.TrainEntity;
+import org.javaschool.dto.ScheduleDto;
+import org.javaschool.dto.TrackDto;
+import org.javaschool.dto.TrainDto;
 
 import java.util.List;
 import java.util.Set;
 
 public interface TrainService {
 
-    TrainEntity getTrain(int id);
+    TrainDto getTrain(int id);
 
-    List<TrainEntity> getAllTrains();
+    List<TrainDto> getAllTrains();
 
-    void addTrain(TrainEntity train);
+    void addTrain(TrainDto trainDto);
 
-    void editTrain(TrainEntity train);
+    void editTrain(TrainDto trainDto);
 
-    void deleteTrain(TrainEntity train);
+    void deleteTrain(TrainDto trainDto);
 
-    Set<TrainEntity> getTrainsBySchedule(List<ScheduleEntity> schedule);
+    Set<TrainDto> getTrainsBySchedule(List<ScheduleDto> scheduleDtoList);
 
-    List<TrainEntity> getTrainsByTrack(TrackEntity track);
+    List<TrainDto> getTrainsByTrack(TrackDto trackDto);
 }

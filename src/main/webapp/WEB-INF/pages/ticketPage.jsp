@@ -45,11 +45,9 @@
     <h2 class="text-center">Please check your travel details:</h2>
     <div class="jumbotron">
         <div class="text-center">
-            <p>Date: <strong><fmt:formatDate value="${ticketForm.date}" pattern="dd.MM.yyyy"/></strong></p>
-            <p>From <strong>${ticketForm.departureStation}</strong> at <strong><fmt:formatDate
-                    value="${ticketForm.departureTime}" pattern="HH:mm"/></strong></p>
-            <p>To <strong>${ticketForm.arrivalStation}</strong> at <strong><fmt:formatDate
-                    value="${ticketForm.arrivalTime}" pattern="HH:mm"/></strong></p>
+            <p>Date: <strong>${ticketForm.date}</strong></p>
+            <p>From <strong>${ticketForm.departureStation}</strong> at <strong>${ticketForm.departureTime}</strong></p>
+            <p>To <strong>${ticketForm.arrivalStation}</strong> at <strong>${ticketForm.arrivalTime}</strong></p>
             <c:if test="${trainsList.size() == 1}">
                 <p>Train: <strong>${trainsList.get(0).name}</strong></p>
             </c:if>
@@ -62,7 +60,7 @@
             </c:if>
             <c:if test="${!empty passenger.id}">
                 <p>Passenger: <strong>${passenger.firstName} ${passenger.lastName}</strong></p>
-                <p>Birth Date: <strong><fmt:formatDate value="${passenger.birthDate}" pattern="dd.MM.yyyy"/></strong>
+                <p>Birth Date: <strong>${passenger.birthDate}</strong>
                 </p>
                 <p>Passport Number: <strong>${passenger.passportNumber}</strong></p>
 

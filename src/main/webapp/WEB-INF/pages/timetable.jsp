@@ -66,14 +66,12 @@
                                 <c:forEach var="schedule" items="${schedules.get(theCount.index)}">
                                 <tr>
                                     <td>${schedule.train.name}</td>
-                                        <%--                                    <td></td>--%>
-                                    <td><fmt:formatDate value="${schedule.arrivalTime}" pattern="HH:mm"/></td>
-                                    <td><fmt:formatDate value="${schedule.departureTime}" pattern="HH:mm"/></td>
+                                    <td>${schedule.arrivalTime}</td>
+                                    <td>${schedule.departureTime}</td>
 
                                 </tr>
                                 </tbody>
                                 </c:forEach>
-<%--                                </c:forEach>--%>
                             </table>
                         </div>
                     </div>

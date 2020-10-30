@@ -1,43 +1,41 @@
 package org.javaschool.services.interfaces;
 
-import org.javaschool.entities.ScheduleEntity;
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrainEntity;
+import org.javaschool.dto.ScheduleDto;
+import org.javaschool.dto.StationDto;
+import org.javaschool.dto.TrainDto;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public interface ScheduleService {
 
-    ScheduleEntity getSchedule(int id);
+    ScheduleDto getSchedule(int id);
 
-    List<ScheduleEntity> getAllSchedules();
+    List<ScheduleDto> getAllSchedules();
 
-    void addSchedule(ScheduleEntity schedule);
+    void addSchedule(ScheduleDto scheduleDto);
 
-    void editSchedule(ScheduleEntity schedule);
+    void editSchedule(ScheduleDto scheduleDto);
 
-    void deleteSchedule(ScheduleEntity schedule);
+    void deleteSchedule(ScheduleDto scheduleDto);
 
-    List<ScheduleEntity> getSchedulesByStationAndDirection(StationEntity station, boolean direction);
+    List<ScheduleDto> getSchedulesByStationAndDirection(StationDto stationDto, boolean direction);
 
-    List<ScheduleEntity> getSchedulesByRoute(List<StationEntity> route);
+    List<ScheduleDto> getSchedulesByRoute(List<StationDto> route);
 
-    List<ScheduleEntity> orderSchedulesByTime(List<ScheduleEntity> schedules);
+    List<ScheduleDto> orderSchedulesByTime(List<ScheduleDto> scheduleDtoList);
 
-    List<ScheduleEntity> getSchedulesByTrain(TrainEntity train);
+    List<ScheduleDto> getSchedulesByTrain(TrainDto trainDto);
 
-    List<ScheduleEntity> getSchedulesByStation(StationEntity station);
+    List<ScheduleDto> getSchedulesByStation(StationDto stationDto);
 
-    List<List<ScheduleEntity>> getAllSchedulesByStations(List<StationEntity> stations);
+    List<List<ScheduleDto>> getAllSchedulesByStations(List<StationDto> stationDtoList);
 
     Date convertStringtoDate(String date);
 
-    List<ScheduleEntity> buildSchedule(List<StationEntity> route, Date minDepartureTime);
+    List<ScheduleDto> buildSchedule(List<StationDto> route, Date minDepartureTime);
 
-    public void setBreakpoints(List<StationEntity> route);
+    public void setBreakpoints(List<StationDto> route);
 
-    public void createEmptyScheduleForStation(StationEntity station, int trackId);
+    public void createEmptyScheduleForStation(StationDto stationDto, int trackId);
 }

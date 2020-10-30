@@ -1,18 +1,18 @@
 package org.javaschool.services.interfaces;
 
-import org.javaschool.entities.TrackEntity;
+import org.javaschool.dto.TrackDto;
 
 import java.util.List;
 
 public interface TrackService {
 
-    TrackEntity getTrack(int id);
+    TrackDto getTrack(int id);
 
-    List<TrackEntity> getAllTracks();
+    List<TrackDto> getAllTracks();
 
-    void addTrack(TrackEntity track);
+    void addTrack(TrackDto trackDto);
 
-    void editTrack(TrackEntity track);
+    void editTrack(TrackDto trackDto);
 
-    void deleteTrack(TrackEntity track);
+    void deleteTrack(TrackDto trackDto);
 }

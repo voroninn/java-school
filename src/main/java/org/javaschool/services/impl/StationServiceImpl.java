@@ -2,9 +2,11 @@ package org.javaschool.services.impl;
 
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.StationDao;
-import org.javaschool.entities.SectionEntity;
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrainEntity;
+import org.javaschool.dto.SectionDto;
+import org.javaschool.dto.StationDto;
+import org.javaschool.dto.TrainDto;
+import org.javaschool.mapper.StationMapper;
+import org.javaschool.mapper.TrainMapper;
 import org.javaschool.services.interfaces.SectionService;
 import org.javaschool.services.interfaces.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,55 +30,61 @@ public class StationServiceImpl implements StationService {
     @Autowired
     private SectionService sectionService;
 
+    @Autowired
+    private StationMapper stationMapper;
+
+    @Autowired
+    private TrainMapper trainMapper;
+
     @Override
     @Transactional
-    public StationEntity getStation(int id) {
-        return stationDao.getStation(id);
+    public StationDto getStation(int id) {
+        return stationMapper.toDto(stationDao.getStation(id));
     }
 
     @Override
     @Transactional
-    public StationEntity getStationByName(String username) {
-        return stationDao.getStationByName(username);
+    public StationDto getStationByName(String username) {
+        return stationMapper.toDto(stationDao.getStationByName(username));
     }
 
     @Override
     @Transactional
-    public List<StationEntity> getAllStations() {
-        return stationDao.getAllStations();
+    public List<StationDto> getAllStations() {
+        return stationMapper.toDtoList(stationDao.getAllStations());
     }
 
     @Override
     @Transactional
-    public void addStation(StationEntity station) {
-        stationDao.addStation(station);
-        log.info("Created new station " + station.getName());
+    public void addStation(StationDto stationDto) {
+        stationDao.addStation(stationMapper.toEntity(stationDto));
+        log.info("Created new station " + stationDto.getName());
     }
 
     @Override
     @Transactional
-    public void editStation(StationEntity station) {
-        stationDao.editStation(station);
-        log.info("Edited station " + station.getName());
+    public void editStation(StationDto stationDto) {
+        stationDao.editStation(stationMapper.toEntity(stationDto));
+        log.info("Edited station " + stationDto.getName());
     }
 
     @Override
     @Transactional
-    public void deleteStation(StationEntity station) {
-        stationDao.deleteStation(station);
-        log.info("Deleted station " + station.getName());
+    public void deleteStation(StationDto stationDto) {
+        stationDao.deleteStation(stationMapper.toEntity(stationDto));
+        log.info("Deleted station " + stationDto.getName());
     }
 
-    public LinkedList<StationEntity> getRoute(String stationFrom, String stationTo) {
+    public LinkedList<StationDto> getRoute(String stationFrom, String stationTo) {
         pathFinder.initialize(getStationByName(stationFrom));
         return pathFinder.createRoute(getStationByName(stationTo));
     }
 
-    public int countTrackChanges(LinkedList<StationEntity> route) {
+    public int countTrackChanges(LinkedList<StationDto> route) {
         int counter = 0;
         for (int i = 0; i < route.size() - 2; i++) {
-            SectionEntity section1 = sectionService.getSectionBetweenStations(route.get(i), route.get(i + 1));
-            SectionEntity section2 = sectionService.getSectionBetweenStations(route.get(i + 1), route.get(i + 2));
+            SectionDto section1 = sectionService.getSectionBetweenStations(route.get(i), route.get(i + 1));
+            SectionDto section2 = sectionService.getSectionBetweenStations(route.get(i + 1), route.get(i + 2));
             if (!section1.getTrack().equals(section2.getTrack())) {
                 route.get(i + 1).setBreakpoint(true);
                 route.get(i + 1).setEndpoint(false);
@@ -88,20 +96,20 @@ public class StationServiceImpl implements StationService {
 
     @Override
     @Transactional
-    public List<StationEntity> getStationsByTrain(TrainEntity train) {
-        return stationDao.getStationsByTrain(train);
+    public List<StationDto> getStationsByTrain(TrainDto trainDto) {
+        return stationMapper.toDtoList(stationDao.getStationsByTrain(trainMapper.toEntity(trainDto)));
     }
 
     @Override
-    public List<StationEntity> selectEndpoints(List<StationEntity> stations) {
-        List<StationEntity> endpoints = new ArrayList<>();
-        endpoints.add(stations.get(0));
-        endpoints.add(stations.get(stations.size() - 1));
+    public List<StationDto> selectEndpoints(List<StationDto> stationDtoList) {
+        List<StationDto> endpoints = new ArrayList<>();
+        endpoints.add(stationDtoList.get(0));
+        endpoints.add(stationDtoList.get(stationDtoList.size() - 1));
         return endpoints;
     }
 
     @Override
-    public void setEndpoints(LinkedList<StationEntity> route) {
+    public void setEndpoints(LinkedList<StationDto> route) {
         route.get(0).setEndpoint(true);
         route.get(route.size() - 1).setEndpoint(true);
     }

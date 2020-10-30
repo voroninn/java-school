@@ -2,7 +2,8 @@ package org.javaschool.services.impl;
 
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.TrackDao;
-import org.javaschool.entities.TrackEntity;
+import org.javaschool.dto.TrackDto;
+import org.javaschool.mapper.TrackMapper;
 import org.javaschool.services.interfaces.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,36 +18,39 @@ public class TrackServiceImpl implements TrackService {
     @Autowired
     private TrackDao trackDao;
 
+    @Autowired
+    private TrackMapper trackMapper;
+
     @Override
     @Transactional
-    public TrackEntity getTrack(int id) {
-        return trackDao.getTrack(id);
+    public TrackDto getTrack(int id) {
+        return trackMapper.toDto(trackDao.getTrack(id));
     }
 
     @Override
     @Transactional
-    public List<TrackEntity> getAllTracks() {
-        return trackDao.getAllTracks();
+    public List<TrackDto> getAllTracks() {
+        return trackMapper.toDtoList(trackDao.getAllTracks());
     }
 
     @Override
     @Transactional
-    public void addTrack(TrackEntity track) {
-        trackDao.addTrack(track);
-        log.info("Created new track " + track.getId());
+    public void addTrack(TrackDto trackDto) {
+        trackDao.addTrack(trackMapper.toEntity(trackDto));
+        log.info("Created new track " + trackDto.getId());
     }
 
     @Override
     @Transactional
-    public void editTrack(TrackEntity track) {
-        trackDao.editTrack(track);
-        log.info("Edited track " + track.getId());
+    public void editTrack(TrackDto trackDto) {
+        trackDao.editTrack(trackMapper.toEntity(trackDto));
+        log.info("Edited track " + trackDto.getId());
     }
 
     @Override
     @Transactional
-    public void deleteTrack(TrackEntity track) {
-        trackDao.deleteTrack(track);
-        log.info("Deleted track " + track.getId());
+    public void deleteTrack(TrackDto trackDto) {
+        trackDao.deleteTrack(trackMapper.toEntity(trackDto));
+        log.info("Deleted track " + trackDto.getId());
     }
 }

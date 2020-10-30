@@ -1,8 +1,8 @@
 package org.javaschool.controllers;
 
-import org.javaschool.entities.PassengerEntity;
-import org.javaschool.entities.TicketEntity;
-import org.javaschool.entities.UserEntity;
+import org.javaschool.dto.PassengerDto;
+import org.javaschool.dto.TicketDto;
+import org.javaschool.dto.UserDto;
 import org.javaschool.services.interfaces.PassengerService;
 import org.javaschool.services.interfaces.SecurityService;
 import org.javaschool.services.interfaces.TicketService;
@@ -37,12 +37,12 @@ public class UserController {
 
     @GetMapping("/registration")
     public String registration(Model model) {
-        model.addAttribute("userForm", new UserEntity());
+        model.addAttribute("userForm", new UserDto());
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") UserEntity userForm, BindingResult bindingResult) {
+    public String registration(@ModelAttribute("userForm") UserDto userForm, BindingResult bindingResult) {
         userValidator.validate(userForm, bindingResult);
         if (bindingResult.hasErrors()) {
             return "registration";
@@ -66,31 +66,31 @@ public class UserController {
                                          @RequestParam(required = false) String message) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("personalEdit");
-        UserEntity user = userService.findUserByUsername(username);
-        modelAndView.addObject("user", user);
+        UserDto userDto = userService.findUserByUsername(username);
+        modelAndView.addObject("user", userDto);
         if (message != null) {
             modelAndView.addObject("message", message);
         }
-        PassengerEntity passenger = passengerService.getPassengerByUser(user);
-        if (passenger != null) {
-            modelAndView.addObject("passengerForm", passenger);
+        PassengerDto passengerDto = passengerService.getPassengerByUser(userDto);
+        if (passengerDto != null) {
+            modelAndView.addObject("passengerForm", passengerDto);
         } else {
-            modelAndView.addObject("passengerForm", new PassengerEntity());
+            modelAndView.addObject("passengerForm", new PassengerDto());
         }
         return modelAndView;
     }
 
     @PostMapping(value = "/myaccount")
-    public ModelAndView editPersonalData(@ModelAttribute("passenger") PassengerEntity passenger) {
+    public ModelAndView editPersonalData(@ModelAttribute("passenger") PassengerDto passengerDto) {
         ModelAndView modelAndView = new ModelAndView();
-        UserEntity user = userService.findUserByUsername(userService.getCurrentUserName());
-        modelAndView.addObject("user", user);
-        modelAndView.setViewName("redirect:/myaccount/" + user.getUsername());
-        passenger.setUser(user);
-        if (passengerService.getPassenger(passenger.getId()) != null) {
-            passengerService.editPassenger(passenger);
+        UserDto userDto = userService.findUserByUsername(userService.getCurrentUserName());
+        modelAndView.addObject("user", userDto);
+        modelAndView.setViewName("redirect:/myaccount/" + userDto.getUsername());
+        passengerDto.setUser(userDto);
+        if (passengerService.getPassenger(passengerDto.getId()) != null) {
+            passengerService.editPassenger(passengerDto);
         } else {
-            passengerService.addPassenger(passenger);
+            passengerService.addPassenger(passengerDto);
         }
         return modelAndView;
     }
@@ -99,9 +99,9 @@ public class UserController {
     public ModelAndView viewTickets(@PathVariable("username") String username) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("tickets");
-        UserEntity user = userService.findUserByUsername(username);
-        PassengerEntity passenger = passengerService.getPassengerByUser(user);
-        List<TicketEntity> tickets = ticketService.getTicketsByPassenger(passenger);
+        UserDto userDto = userService.findUserByUsername(username);
+        PassengerDto passengerDto = passengerService.getPassengerByUser(userDto);
+        List<TicketDto> tickets = ticketService.getTicketsByPassenger(passengerDto);
         modelAndView.addObject("ticketsList", tickets);
         return modelAndView;
     }

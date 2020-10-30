@@ -1,14 +1,14 @@
 package org.javaschool.services.interfaces;
 
-import org.javaschool.entities.UserEntity;
+import org.javaschool.dto.UserDto;
 
 public interface UserService {
 
-    void save(UserEntity user);
+    void save(UserDto userDto);
 
-    UserEntity findUserByUsername(String username);
+    UserDto findUserByUsername(String username);
 
-    UserEntity findUserByEmail(String email);
+    UserDto findUserByEmail(String email);
 
     String getCurrentUserName();
 }

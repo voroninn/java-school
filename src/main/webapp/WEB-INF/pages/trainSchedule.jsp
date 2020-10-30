@@ -74,7 +74,7 @@
                         </c:if>
                         <c:if test="${!empty schedulesList[0].departureTime}">
                             <input type="text" class="form-control" name="departureTime0"
-                                   value="<fmt:formatDate value="${schedulesList[0].departureTime}" pattern="HH:mm"/>"/>
+                                   value="${schedulesList[0].departureTime}"/>
                         </c:if>
                     </td>
                 </tr>
@@ -94,7 +94,7 @@
                             <c:if test="${!empty schedule.arrivalTime}">
                                 <input type="text" class="form-control"
                                        name="arrivalTime${schedulesList.indexOf(schedule)}"
-                                       value="<fmt:formatDate value="${schedule.arrivalTime}" pattern="HH:mm"/>"/>
+                                       value="${schedule.arrivalTime}"/>
                             </c:if>
                         </td>
                         <td>
@@ -105,7 +105,7 @@
                             <c:if test="${!empty schedule.departureTime}">
                                 <input type="text" class="form-control"
                                        name="departureTime${schedulesList.indexOf(schedule)}"
-                                       value="<fmt:formatDate value="${schedule.departureTime}" pattern="HH:mm"/>"/>
+                                       value="${schedule.departureTime}"/>
                             </c:if>
                         </td>
                     </tr>
@@ -125,8 +125,7 @@
                         </c:if>
                         <c:if test="${!empty schedulesList[schedulesList.size() - 1].arrivalTime}">
                             <input type="text" class="form-control" name="arrivalTime${schedulesList.size() - 1}"
-                                   value="<fmt:formatDate value="${schedulesList[schedulesList.size() - 1].arrivalTime}"
-                           pattern="HH:mm"/>"/>
+                                   value="${schedulesList[schedulesList.size() - 1].arrivalTime}"/>
                         </c:if>
                     </td>
                     <td>

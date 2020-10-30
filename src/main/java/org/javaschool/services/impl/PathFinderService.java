@@ -1,8 +1,8 @@
 package org.javaschool.services.impl;
 
 import lombok.extern.log4j.Log4j2;
-import org.javaschool.entities.SectionEntity;
-import org.javaschool.entities.StationEntity;
+import org.javaschool.dto.SectionDto;
+import org.javaschool.dto.StationDto;
 import org.javaschool.services.interfaces.SectionService;
 import org.javaschool.services.interfaces.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,13 @@ public class PathFinderService {
     @Autowired
     SectionService sectionService;
 
-    private List<SectionEntity> sections;
-    private Set<StationEntity> settledStations;
-    private Set<StationEntity> unsettledStations;
-    private Map<StationEntity, StationEntity> predecessors;
-    private Map<StationEntity, Double> distance;
+    private List<SectionDto> sections;
+    private Set<StationDto> settledStations;
+    private Set<StationDto> unsettledStations;
+    private Map<StationDto, StationDto> predecessors;
+    private Map<StationDto, Double> distance;
 
-    public void initialize(StationEntity source) {
+    public void initialize(StationDto source) {
         sections = sectionService.getAllSections();
         settledStations = new HashSet<>();
         unsettledStations = new HashSet<>();
@@ -35,16 +35,16 @@ public class PathFinderService {
         distance.put(source, 0.0);
         unsettledStations.add(source);
         while (unsettledStations.size() > 0) {
-            StationEntity station = getMinimum(unsettledStations);
+            StationDto station = getMinimum(unsettledStations);
             settledStations.add(station);
             unsettledStations.remove(station);
             findMinimumDistances(station);
         }
     }
 
-    private void findMinimumDistances(StationEntity station) {
-        List<StationEntity> adjacentStations = getNeighbors(station);
-        for (StationEntity target : adjacentStations) {
+    private void findMinimumDistances(StationDto station) {
+        List<StationDto> adjacentStations = getNeighbors(station);
+        for (StationDto target : adjacentStations) {
             if (getShortestDistance(target) > getShortestDistance(station)
                     + getDistance(station, target)) {
                 distance.put(target, getShortestDistance(station)
@@ -55,8 +55,8 @@ public class PathFinderService {
         }
     }
 
-    private double getDistance(StationEntity station, StationEntity target) {
-        for (SectionEntity section : sections) {
+    private double getDistance(StationDto station, StationDto target) {
+        for (SectionDto section : sections) {
             if (section.getStationFrom().equals(station)
                     && section.getStationTo().equals(target)) {
                 return section.getLength();
@@ -65,9 +65,9 @@ public class PathFinderService {
         throw new RuntimeException("Something went wrong");
     }
 
-    private List<StationEntity> getNeighbors(StationEntity station) {
-        List<StationEntity> neighbors = new ArrayList<>();
-        for (SectionEntity section : sections) {
+    private List<StationDto> getNeighbors(StationDto station) {
+        List<StationDto> neighbors = new ArrayList<>();
+        for (SectionDto section : sections) {
             if (section.getStationFrom().equals(station)
                     && !isSettled(section.getStationTo())) {
                 neighbors.add(section.getStationTo());
@@ -76,9 +76,9 @@ public class PathFinderService {
         return neighbors;
     }
 
-    private StationEntity getMinimum(Set<StationEntity> stations) {
-        StationEntity minimum = null;
-        for (StationEntity station : stations) {
+    private StationDto getMinimum(Set<StationDto> stations) {
+        StationDto minimum = null;
+        for (StationDto station : stations) {
             if (minimum == null) {
                 minimum = station;
             } else {
@@ -90,11 +90,11 @@ public class PathFinderService {
         return minimum;
     }
 
-    private boolean isSettled(StationEntity station) {
+    private boolean isSettled(StationDto station) {
         return settledStations.contains(station);
     }
 
-    private double getShortestDistance(StationEntity destination) {
+    private double getShortestDistance(StationDto destination) {
         Double d = distance.get(destination);
         if (d == null) {
             return Double.MAX_VALUE;
@@ -103,9 +103,9 @@ public class PathFinderService {
         }
     }
 
-    public LinkedList<StationEntity> createRoute(StationEntity target) {
-        LinkedList<StationEntity> path = new LinkedList<>();
-        StationEntity step = target;
+    public LinkedList<StationDto> createRoute(StationDto target) {
+        LinkedList<StationDto> path = new LinkedList<>();
+        StationDto step = target;
         if (predecessors.get(step) == null) {
             log.error("Route not found");
         }

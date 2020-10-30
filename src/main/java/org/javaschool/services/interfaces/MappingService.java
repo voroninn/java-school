@@ -1,32 +1,32 @@
 package org.javaschool.services.interfaces;
 
-import org.javaschool.entities.MappingEntity;
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrackEntity;
+import org.javaschool.dto.MappingDto;
+import org.javaschool.dto.StationDto;
+import org.javaschool.dto.TrackDto;
 
 import java.util.List;
 
 public interface MappingService {
 
-    MappingEntity getMapping(int id);
+    MappingDto getMapping(int id);
 
-    List<MappingEntity> getAllMappings();
+    List<MappingDto> getAllMappings();
 
-    List<MappingEntity> getMappingsByTrack(TrackEntity track);
+    List<MappingDto> getMappingsByTrack(TrackDto trackDto);
 
-    void addMapping(MappingEntity mapping);
+    void addMapping(MappingDto mappingDto);
 
-    void editMapping(MappingEntity mapping);
+    void editMapping(MappingDto mappingDto);
 
-    void deleteMapping(MappingEntity mapping);
+    void deleteMapping(MappingDto mappingDto);
 
-    List<StationEntity> getOrderedStationsByTrack(TrackEntity track);
+    List<StationDto> getOrderedStationsByTrack(TrackDto trackDto);
 
-    TrackEntity getTrack(int id);
+    TrackDto getTrack(int id);
 
-    void appendStation(StationEntity station, int trackId, String appendLocation);
+    void appendStation(StationDto stationDto, int trackId, String appendLocation);
 
-    int getStationOrder(StationEntity station, TrackEntity track);
+    int getStationOrder(StationDto stationDto, TrackDto trackDto);
 
-    StationEntity getStationByOrder(TrackEntity track, int stationOrder);
+    StationDto getStationByOrder(TrackDto trackDto, int stationOrder);
 }

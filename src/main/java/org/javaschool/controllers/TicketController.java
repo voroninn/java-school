@@ -1,6 +1,6 @@
 package org.javaschool.controllers;
 
-import org.javaschool.entities.*;
+import org.javaschool.dto.*;
 import org.javaschool.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,25 +35,25 @@ public class TicketController {
     private PassengerService passengerService;
 
     @GetMapping(value = "/")
-    public ModelAndView homePage(@ModelAttribute("ticketForm") TicketEntity ticket) {
-        List<StationEntity> stations = stationService.getAllStations();
+    public ModelAndView homePage(@ModelAttribute("ticketForm") TicketDto ticketDto) {
+        List<StationDto> stationDtoList = stationService.getAllStations();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
-        modelAndView.addObject("stationsList", stations);
-        modelAndView.addObject("ticketForm", new TicketEntity());
+        modelAndView.addObject("stationsList", stationDtoList);
+        modelAndView.addObject("ticketForm", new TicketDto());
         return modelAndView;
     }
 
     @ModelAttribute("ticketForm")
-    public TicketEntity createTicket() {
-        return new TicketEntity();
+    public TicketDto createTicket() {
+        return new TicketDto();
     }
 
     @PostMapping(value = "/schedule")
-    public ModelAndView searchResult(@ModelAttribute("ticketForm") TicketEntity ticket) {
+    public ModelAndView searchResult(@ModelAttribute("ticketForm") TicketDto ticketDto) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("searchResult");
-        LinkedList<StationEntity> route = stationService.getRoute(ticket.getDepartureStation(), ticket.getArrivalStation());
+        LinkedList<StationDto> route = stationService.getRoute(ticketDto.getDepartureStation(), ticketDto.getArrivalStation());
         modelAndView.addObject("route", route);
         stationService.setEndpoints(route);
 
@@ -63,47 +63,47 @@ public class TicketController {
         }
         modelAndView.addObject("numberOfChanges", numberOfChanges);
 
-        List<ScheduleEntity> schedule = scheduleService.buildSchedule(route, scheduleService.convertStringtoDate("00:00"));
+        List<ScheduleDto> schedule = scheduleService.buildSchedule(route, scheduleService.convertStringtoDate("00:00"));
         modelAndView.addObject("schedule", schedule);
 
-        Set<TrainEntity> trains = trainService.getTrainsBySchedule(schedule);
-        ticket.setPrice(ticketService.calculateTicketPrice(route));
-        ticket.setTrains(trains);
+        Set<TrainDto> trainDtoSet = trainService.getTrainsBySchedule(schedule);
+        ticketDto.setPrice(ticketService.calculateTicketPrice(route));
+        ticketDto.setTrains(trainDtoSet);
 
         return modelAndView;
     }
 
     @PostMapping(value = "/ticket/verify")
-    public ModelAndView ticketPage(@ModelAttribute("ticketForm") TicketEntity ticket) {
+    public ModelAndView ticketPage(@ModelAttribute("ticketForm") TicketDto ticketDto) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("ticketPage");
-        UserEntity user = userService.findUserByUsername(userService.getCurrentUserName());
-        PassengerEntity passenger = passengerService.getPassengerByUser(user);
-        if (passenger != null) {
-            if (passenger.getFirstName() != null && passenger.getLastName() != null
-                    && passenger.getBirthDate() != null && passenger.getPassportNumber() != 0) {
-                modelAndView.addObject("passenger", passenger);
-                ticket.setPassenger(passenger);
+        UserDto userDto = userService.findUserByUsername(userService.getCurrentUserName());
+        PassengerDto passengerDto = passengerService.getPassengerByUser(userDto);
+        if (passengerDto != null) {
+            if (passengerDto.getFirstName() != null && passengerDto.getLastName() != null
+                    && passengerDto.getBirthDate() != null && passengerDto.getPassportNumber() != 0) {
+                modelAndView.addObject("passenger", passengerDto);
+                ticketDto.setPassenger(passengerDto);
             } else {
                 modelAndView.addObject("message", "Please enter your personal data");
             }
         }
-        List<TrainEntity> trains = new ArrayList<>(ticket.getTrains());
-        modelAndView.addObject("trainsList", trains);
+        List<TrainDto> trainDtoList = new ArrayList<>(ticketDto.getTrains());
+        modelAndView.addObject("trainsList", trainDtoList);
         return modelAndView;
     }
 
     @GetMapping(value = "/ticket/buy")
-    public ModelAndView ticketBuy(@ModelAttribute("ticketForm") TicketEntity ticket) {
+    public ModelAndView ticketBuy(@ModelAttribute("ticketForm") TicketDto ticketDto) {
         ModelAndView modelAndView = new ModelAndView();
-        List<String> validationMessages = ticketService.validateTicket(ticket);
+        List<String> validationMessages = ticketService.validateTicket(ticketDto);
         if (validationMessages.get(0).equals("success")) {
             modelAndView.setViewName("ticketBuy");
-            List<TrainEntity> trains = new ArrayList<>(ticket.getTrains());
-            modelAndView.addObject("passenger", ticket.getPassenger());
-            modelAndView.addObject("trainsList", trains);
-            ticket.setNumber(ticketService.generateTicketNumber(ticket));
-            ticketService.addTicket(ticket);
+            List<TrainDto> trainDtoList = new ArrayList<>(ticketDto.getTrains());
+            modelAndView.addObject("passenger", ticketDto.getPassenger());
+            modelAndView.addObject("trainsList", trainDtoList);
+            ticketDto.setNumber(ticketService.generateTicketNumber(ticketDto));
+            ticketService.addTicket(ticketDto);
         } else {
             modelAndView.setViewName("ticketBuyFailed");
             modelAndView.addObject("validationMessages", validationMessages);
@@ -114,10 +114,10 @@ public class TicketController {
     @GetMapping(value = "/ticket/delete/{id}")
     public ModelAndView deleteTicket(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
-        UserEntity user = userService.findUserByUsername(userService.getCurrentUserName());
-        modelAndView.setViewName("redirect:/myaccount/" + user.getUsername() + "/tickets");
-        TicketEntity ticket = ticketService.getTicket(id);
-        ticketService.deleteTicket(ticket);
+        UserDto userDto = userService.findUserByUsername(userService.getCurrentUserName());
+        modelAndView.setViewName("redirect:/myaccount/" + userDto.getUsername() + "/tickets");
+        TicketDto ticketDto = ticketService.getTicket(id);
+        ticketService.deleteTicket(ticketDto);
         return modelAndView;
     }
 }

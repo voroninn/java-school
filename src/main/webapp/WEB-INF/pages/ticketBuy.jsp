@@ -47,11 +47,9 @@
     <div class="jumbotron">
         <div class="text-center">
             <p>Ticket No. ${ticketForm.number}</p>
-            <p>Date: <fmt:formatDate value="${ticketForm.date}" pattern="dd.MM.yyyy"/></p>
-            <p>From ${ticketForm.departureStation} at <fmt:formatDate value="${ticketForm.departureTime}"
-                                                                      pattern="HH:mm"/></p>
-            <p>To ${ticketForm.arrivalStation} at <fmt:formatDate value="${ticketForm.arrivalTime}"
-                                                                  pattern="HH:mm"/></p>
+            <p>Date: ${ticketForm.date}</p>
+            <p>From ${ticketForm.departureStation} at ${ticketForm.departureTime}</p>
+            <p>To ${ticketForm.arrivalStation} at ${ticketForm.arrivalTime}</p>
             <c:if test="${trainsList.size() == 1}">
                 <p>Train: <strong>${trainsList.get(0).name}</strong></p>
             </c:if>
@@ -64,8 +62,7 @@
             </c:if>
             <c:if test="${!empty passenger.id}">
                 <p>Passenger Info: ${passenger.firstName} ${passenger.lastName}
-                    <fmt:formatDate value="${passenger.birthDate}"
-                                    pattern="dd.MM.yyyy"/> ${passenger.passportNumber}</p>
+                    ${passenger.birthDate} ${passenger.passportNumber}</p>
             </c:if>
             <p>Price: ₪ ${ticketForm.price}</p>
         </div>

@@ -2,8 +2,15 @@ package org.javaschool.services.impl;
 
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.ScheduleDao;
-import org.javaschool.entities.*;
-import org.javaschool.services.interfaces.*;
+import org.javaschool.dto.*;
+import org.javaschool.entities.ScheduleEntity;
+import org.javaschool.mapper.ScheduleMapper;
+import org.javaschool.mapper.StationMapper;
+import org.javaschool.mapper.TrainMapper;
+import org.javaschool.services.interfaces.ScheduleService;
+import org.javaschool.services.interfaces.SectionService;
+import org.javaschool.services.interfaces.TrackService;
+import org.javaschool.services.interfaces.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,80 +36,91 @@ public class ScheduleServiceImpl implements ScheduleService {
     private TrainService trainService;
 
     @Autowired
-    MessagingService messagingService;
+    private MessagingService messagingService;
+
+    @Autowired
+    private ScheduleMapper scheduleMapper;
+
+    @Autowired
+    private StationMapper stationMapper;
+
+    @Autowired
+    private TrainMapper trainMapper;
 
     @Override
     @Transactional
-    public ScheduleEntity getSchedule(int id) {
-        return scheduleDao.getSchedule(id);
+    public ScheduleDto getSchedule(int id) {
+        return scheduleMapper.toDto(scheduleDao.getSchedule(id));
     }
 
     @Override
     @Transactional
-    public List<ScheduleEntity> getAllSchedules() {
-        return scheduleDao.getAllSchedules();
+    public List<ScheduleDto> getAllSchedules() {
+        return scheduleMapper.toDtoList(scheduleDao.getAllSchedules());
     }
 
     @Override
     @Transactional
-    public void addSchedule(ScheduleEntity schedule) {
-        scheduleDao.addSchedule(schedule);
+    public void addSchedule(ScheduleDto scheduleDto) {
+        scheduleDao.addSchedule(scheduleMapper.toEntity(scheduleDto));
         log.info("Created new schedule for " +
-                schedule.getTrain().getName() + " on " + schedule.getStation().getName());
+                scheduleDto.getTrain().getName() + " on " + scheduleDto.getStation().getName());
     }
 
     @Override
     @Transactional
-    public void editSchedule(ScheduleEntity schedule) {
-        scheduleDao.editSchedule(schedule);
+    public void editSchedule(ScheduleDto scheduleDto) {
+        scheduleDao.editSchedule(scheduleMapper.toEntity(scheduleDto));
         log.info("Edited schedule for " +
-                schedule.getTrain().getName() + " on " + schedule.getStation().getName());
-        messagingService.sendMessage(schedule);
+                scheduleDto.getTrain().getName() + " on " + scheduleDto.getStation().getName());
+        messagingService.sendMessage(scheduleMapper.toEntity(scheduleDto));
         log.info("Message sent to queue");
     }
 
     @Override
     @Transactional
-    public void deleteSchedule(ScheduleEntity schedule) {
-        scheduleDao.deleteSchedule(schedule);
+    public void deleteSchedule(ScheduleDto scheduleDto) {
+        scheduleDao.deleteSchedule(scheduleMapper.toEntity(scheduleDto));
         log.info("Deleted schedule for " +
-                schedule.getTrain().getName() + " on " + schedule.getStation().getName());
+                scheduleDto.getTrain().getName() + " on " + scheduleDto.getStation().getName());
     }
 
     @Override
     @Transactional
-    public List<ScheduleEntity> getSchedulesByStationAndDirection(StationEntity station, boolean direction) {
-        return scheduleDao.getSchedulesByStationAndDirection(station, direction);
+    public List<ScheduleDto> getSchedulesByStationAndDirection(StationDto stationDto, boolean direction) {
+        return scheduleMapper.toDtoList(scheduleDao.getSchedulesByStationAndDirection(stationMapper.toEntity(stationDto), direction));
     }
 
     @Override
     @Transactional
-    public List<ScheduleEntity> getSchedulesByRoute(List<StationEntity> route) {
-        List<ScheduleEntity> schedulesByRoute = new ArrayList<>();
-        List<SectionEntity> sectionsByRoute = sectionService.getSectionsByRoute(route);
-        for (SectionEntity section : sectionsByRoute) {
+    public List<ScheduleDto> getSchedulesByRoute(List<StationDto> route) {
+        List<ScheduleDto> schedulesByRoute = new ArrayList<>();
+        List<SectionDto> sectionsByRoute = sectionService.getSectionsByRoute(route);
+        for (SectionDto section : sectionsByRoute) {
             schedulesByRoute.addAll(getSchedulesByStationAndDirection(section.getStationFrom(), section.isDirection()));
         }
-        SectionEntity lastSection = sectionsByRoute.get(sectionsByRoute.size() - 1);
+        SectionDto lastSection = sectionsByRoute.get(sectionsByRoute.size() - 1);
         schedulesByRoute.addAll(getSchedulesByStationAndDirection(lastSection.getStationTo(), lastSection.isDirection()));
         return schedulesByRoute;
     }
 
     @Override
-    public List<ScheduleEntity> orderSchedulesByTime(List<ScheduleEntity> schedules) {
+    public List<ScheduleDto> orderSchedulesByTime(List<ScheduleDto> scheduleDtoList) {
         List<Date> arrivalTimes = new ArrayList<>();
-        List<ScheduleEntity> orderedSchedules = new ArrayList<>();
+        List<ScheduleDto> orderedSchedules = new ArrayList<>();
         List<Date> afterMidnightTimes = new ArrayList<>();
+        Date ScheduleArrivalTime;
 
-        for (ScheduleEntity schedule : schedules) {
-            if (schedule.getArrivalTime() == null) {
+        for (ScheduleDto schedule : scheduleDtoList) {
+            ScheduleArrivalTime = convertStringtoDate(schedule.getArrivalTime());
+            if (ScheduleArrivalTime == null) {
                 orderedSchedules.add(schedule);
-            } else if (schedule.getArrivalTime().equals(convertStringtoDate("00:00")) ||
-                    (schedule.getArrivalTime().after(convertStringtoDate("00:00")) &&
-                            schedule.getArrivalTime().before(convertStringtoDate("07:00")))) {
-                afterMidnightTimes.add(schedule.getArrivalTime());
+            } else if (ScheduleArrivalTime.equals(convertStringtoDate("00:00")) ||
+                    (ScheduleArrivalTime.after(convertStringtoDate("00:00")) &&
+                            ScheduleArrivalTime.before(convertStringtoDate("07:00")))) {
+                afterMidnightTimes.add(ScheduleArrivalTime);
             } else {
-                arrivalTimes.add(schedule.getArrivalTime());
+                arrivalTimes.add(ScheduleArrivalTime);
             }
         }
 
@@ -111,8 +129,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         arrivalTimes.addAll(afterMidnightTimes);
 
         for (Date time : arrivalTimes) {
-            for (ScheduleEntity schedule : schedules) {
-                if (schedule.getArrivalTime() != null && schedule.getArrivalTime().equals(time)) {
+            for (ScheduleDto schedule : scheduleDtoList) {
+                ScheduleArrivalTime = convertStringtoDate(schedule.getArrivalTime());
+                if (ScheduleArrivalTime != null && ScheduleArrivalTime.equals(time)) {
                     orderedSchedules.add(schedule);
                     break;
                 }
@@ -123,23 +142,23 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public List<ScheduleEntity> getSchedulesByTrain(TrainEntity train) {
-        return scheduleDao.getSchedulesByTrain(train);
+    public List<ScheduleDto> getSchedulesByTrain(TrainDto trainDto) {
+        return scheduleMapper.toDtoList(scheduleDao.getSchedulesByTrain(trainMapper.toEntity(trainDto)));
     }
 
     @Override
-    public List<ScheduleEntity> getSchedulesByStation(StationEntity station) {
-        List<ScheduleEntity> schedules = new ArrayList<>();
-        schedules.addAll(getSchedulesByStationAndDirection(station, true));
-        schedules.addAll(getSchedulesByStationAndDirection(station, false));
+    public List<ScheduleDto> getSchedulesByStation(StationDto stationDto) {
+        List<ScheduleDto> schedules = new ArrayList<>();
+        schedules.addAll(getSchedulesByStationAndDirection(stationDto, true));
+        schedules.addAll(getSchedulesByStationAndDirection(stationDto, false));
         return orderSchedulesByTime(schedules);
     }
 
     @Override
     @Transactional
-    public List<List<ScheduleEntity>> getAllSchedulesByStations(List<StationEntity> stations) {
-        List<List<ScheduleEntity>> schedules = new ArrayList<>();
-        for (StationEntity station : stations) {
+    public List<List<ScheduleDto>> getAllSchedulesByStations(List<StationDto> stationDtoList) {
+        List<List<ScheduleDto>> schedules = new ArrayList<>();
+        for (StationDto station : stationDtoList) {
             schedules.add(getSchedulesByStation(station));
         }
         return schedules;
@@ -161,30 +180,33 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<ScheduleEntity> buildSchedule(List<StationEntity> route, Date minDepartureTime) {
-        List<ScheduleEntity> orderedSchedules = orderSchedulesByTime(getSchedulesByRoute(route));
+    public List<ScheduleDto> buildSchedule(List<StationDto> route, Date minDepartureTime) {
+        List<ScheduleDto> orderedSchedules = orderSchedulesByTime(getSchedulesByRoute(route));
         if (route.size() > 2) {
             setBreakpoints(route);
         }
-        List<ScheduleEntity> schedules = new ArrayList<>();
-        TrackEntity currentTrack;
-        ScheduleEntity currentSchedule;
+        List<ScheduleDto> schedules = new ArrayList<>();
+        TrackDto currentTrack;
+        ScheduleDto currentSchedule;
+        Date ScheduleArrivalTime;
+        Date ScheduleDepartureTime;
         mainLoop:
         for (int i = 0; i < route.size(); i++) {
 
-            StationEntity currentStation = route.get(i);
+            StationDto currentStation = route.get(i);
 
             if (i != route.size() - 1) {
-                StationEntity nextStation = route.get(i + 1);
+                StationDto nextStation = route.get(i + 1);
                 currentTrack = sectionService.getSectionBetweenStations(currentStation, nextStation).getTrack();
-                for (ScheduleEntity schedule : orderedSchedules) {
+                for (ScheduleDto schedule : orderedSchedules) {
+                    ScheduleArrivalTime = convertStringtoDate(schedule.getArrivalTime());
+                    ScheduleDepartureTime = convertStringtoDate(schedule.getDepartureTime());
                     if (currentStation.isBreakpoint()) {
                         if (schedule.getStation().getName().equals(currentStation.getName()) &&
                                 schedule.getTrain().getTrack().equals(currentTrack) &&
-                                schedule.getArrivalTime() != null &&
-                                schedule.getArrivalTime().after(minDepartureTime)) {
+                                ScheduleArrivalTime != null && ScheduleArrivalTime.after(minDepartureTime)) {
                             currentSchedule = schedule;
-                            minDepartureTime = schedule.getArrivalTime();
+                            minDepartureTime = ScheduleArrivalTime;
                             schedules.add(currentSchedule);
                             currentStation.setBreakpoint(false);
                             schedules.addAll(buildSchedule(route.subList(i, route.size()), minDepartureTime));
@@ -192,22 +214,21 @@ public class ScheduleServiceImpl implements ScheduleService {
                         }
                     } else if (schedule.getStation().getName().equals(currentStation.getName()) &&
                             schedule.getTrain().getTrack().equals(currentTrack) &&
-                            schedule.getDepartureTime() != null &&
-                            schedule.getDepartureTime().after(minDepartureTime)) {
+                            ScheduleDepartureTime != null && ScheduleDepartureTime.after(minDepartureTime)) {
                         currentSchedule = schedule;
-                        minDepartureTime = schedule.getDepartureTime();
+                        minDepartureTime = ScheduleDepartureTime;
                         schedules.add(currentSchedule);
                         break;
                     }
                 }
             } else {
-                StationEntity previousStation = route.get(i - 1);
+                StationDto previousStation = route.get(i - 1);
                 currentTrack = sectionService.getSectionBetweenStations(previousStation, currentStation).getTrack();
-                for (ScheduleEntity schedule : orderedSchedules) {
+                for (ScheduleDto schedule : orderedSchedules) {
+                    ScheduleArrivalTime = convertStringtoDate(schedule.getArrivalTime());
                     if (schedule.getStation().getName().equals(currentStation.getName()) &&
                             schedule.getTrain().getTrack().equals(currentTrack) &&
-                            schedule.getArrivalTime() != null &&
-                            schedule.getArrivalTime().after(minDepartureTime)) {
+                            ScheduleArrivalTime != null && ScheduleArrivalTime.after(minDepartureTime)) {
                         currentSchedule = schedule;
                         schedules.add(currentSchedule);
                         break;
@@ -220,10 +241,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public void setBreakpoints(List<StationEntity> route) {
+    public void setBreakpoints(List<StationDto> route) {
         for (int i = 0; i < route.size() - 2; i++) {
-            SectionEntity section1 = sectionService.getSectionBetweenStations(route.get(i), route.get(i + 1));
-            SectionEntity section2 = sectionService.getSectionBetweenStations(route.get(i + 1), route.get(i + 2));
+            SectionDto section1 = sectionService.getSectionBetweenStations(route.get(i), route.get(i + 1));
+            SectionDto section2 = sectionService.getSectionBetweenStations(route.get(i + 1), route.get(i + 2));
             if (!section1.getTrack().equals(section2.getTrack())) {
                 route.get(i + 1).setBreakpoint(true);
                 route.get(i + 1).setEndpoint(false);
@@ -233,14 +254,16 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public void createEmptyScheduleForStation(StationEntity station, int trackId) {
-        TrackEntity track = trackService.getTrack(trackId);
-        List<TrainEntity> trains = trainService.getTrainsByTrack(track);
-        for (TrainEntity train : trains) {
-            if (getSchedulesByTrain(train).get(0).isDirection()) {
-                scheduleDao.addSchedule(new ScheduleEntity(station, train, true));
+    public void createEmptyScheduleForStation(StationDto stationDto, int trackId) {
+        TrackDto track = trackService.getTrack(trackId);
+        List<TrainDto> trainDtoList = trainService.getTrainsByTrack(track);
+        for (TrainDto trainDto : trainDtoList) {
+            if (getSchedulesByTrain(trainDto).get(0).isDirection()) {
+                scheduleDao.addSchedule(new ScheduleEntity(stationMapper.toEntity(stationDto),
+                        trainMapper.toEntity(trainDto), true));
             } else {
-                scheduleDao.addSchedule(new ScheduleEntity(station, train, false));
+                scheduleDao.addSchedule(new ScheduleEntity(stationMapper.toEntity(stationDto),
+                        trainMapper.toEntity(trainDto), false));
             }
         }
     }

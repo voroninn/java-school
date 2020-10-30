@@ -1,32 +1,32 @@
 package org.javaschool.services.interfaces;
 
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrainEntity;
+import org.javaschool.dto.StationDto;
+import org.javaschool.dto.TrainDto;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public interface StationService {
 
-    StationEntity getStation(int id);
+    StationDto getStation(int id);
 
-    StationEntity getStationByName(String username);
+    StationDto getStationByName(String username);
 
-    List<StationEntity> getAllStations();
+    List<StationDto> getAllStations();
 
-    void addStation(StationEntity station);
+    void addStation(StationDto stationDto);
 
-    void editStation(StationEntity station);
+    void editStation(StationDto stationDto);
 
-    void deleteStation(StationEntity station);
+    void deleteStation(StationDto stationDto);
 
-    LinkedList<StationEntity> getRoute(String stationFrom, String stationTo);
+    LinkedList<StationDto> getRoute(String stationFrom, String stationTo);
 
-    int countTrackChanges(LinkedList<StationEntity> route);
+    int countTrackChanges(LinkedList<StationDto> route);
 
-    List<StationEntity> getStationsByTrain(TrainEntity train);
+    List<StationDto> getStationsByTrain(TrainDto trainDto);
 
-    List<StationEntity> selectEndpoints(List<StationEntity> stations);
+    List<StationDto> selectEndpoints(List<StationDto> stationDtoList);
 
-    void setEndpoints(LinkedList<StationEntity> route);
+    void setEndpoints(LinkedList<StationDto> route);
 }

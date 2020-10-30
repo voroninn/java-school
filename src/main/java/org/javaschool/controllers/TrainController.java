@@ -1,8 +1,8 @@
 package org.javaschool.controllers;
 
-import org.javaschool.entities.ScheduleEntity;
-import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrainEntity;
+import org.javaschool.dto.ScheduleDto;
+import org.javaschool.dto.StationDto;
+import org.javaschool.dto.TrainDto;
 import org.javaschool.services.interfaces.MappingService;
 import org.javaschool.services.interfaces.ScheduleService;
 import org.javaschool.services.interfaces.StationService;
@@ -37,40 +37,40 @@ public class TrainController {
     public ModelAndView allTrains() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trains");
-        List<TrainEntity> trains = trainService.getAllTrains();
-        List<List<StationEntity>> endpointsList = new ArrayList<>();
-        for (TrainEntity train : trains) {
-            List<StationEntity> stations = mappingService.getOrderedStationsByTrack(train.getTrack());
-            if (!scheduleService.getSchedulesByTrain(train).get(0).isDirection()) {
-                Collections.reverse(stations);
+        List<TrainDto> trainDtoList = trainService.getAllTrains();
+        List<List<StationDto>> endpointsList = new ArrayList<>();
+        for (TrainDto trainDto : trainDtoList) {
+            List<StationDto> stationDtoList = mappingService.getOrderedStationsByTrack(trainDto.getTrack());
+            if (!scheduleService.getSchedulesByTrain(trainDto).get(0).isDirection()) {
+                Collections.reverse(stationDtoList);
             }
-            if (!stations.isEmpty()) {
-                List<StationEntity> endpoints = stationService.selectEndpoints(stations);
+            if (!stationDtoList.isEmpty()) {
+                List<StationDto> endpoints = stationService.selectEndpoints(stationDtoList);
                 endpointsList.add(endpoints);
             } else {
-                endpointsList.add(stations);
+                endpointsList.add(stationDtoList);
             }
         }
         modelAndView.addObject("endpointsList", endpointsList);
-        modelAndView.addObject("trainsList", trains);
+        modelAndView.addObject("trainsList", trainDtoList);
         return modelAndView;
     }
 
     @GetMapping(value = "/trains/edit/{id}")
     public ModelAndView editTrain(@PathVariable("id") int id) {
-        TrainEntity train = trainService.getTrain(id);
+        TrainDto trainDto = trainService.getTrain(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trainEdit");
-        modelAndView.addObject("train", train);
+        modelAndView.addObject("train", trainDto);
         return modelAndView;
     }
 
     @PostMapping(value = "/trains/edit")
-    public ModelAndView editTrain(@ModelAttribute("train") TrainEntity train) {
+    public ModelAndView editTrain(@ModelAttribute("train") TrainDto trainDto) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/trains/edit/" + train.getId() + "/schedule");
-        modelAndView.addObject("train", train);
-        trainService.editTrain(train);
+        modelAndView.setViewName("redirect:/trains/edit/" + trainDto.getId() + "/schedule");
+        modelAndView.addObject("train", trainDto);
+        trainService.editTrain(trainDto);
         return modelAndView;
     }
 
@@ -78,57 +78,57 @@ public class TrainController {
     public ModelAndView addTrain() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trainEdit");
-        modelAndView.addObject("train", new TrainEntity());
+        modelAndView.addObject("train", new TrainDto());
         return modelAndView;
     }
 
     @PostMapping(value = "/trains/add")
-    public ModelAndView addTrain(@ModelAttribute("train") TrainEntity train) {
+    public ModelAndView addTrain(@ModelAttribute("train") TrainDto trainDto) {
         ModelAndView modelAndView = new ModelAndView();
-        trainService.addTrain(train);
-        modelAndView.setViewName("redirect:/trains/edit/" + train.getId() + "/schedule");
-        modelAndView.addObject("train", train);
+        trainService.addTrain(trainDto);
+        modelAndView.setViewName("redirect:/trains/edit/" + trainDto.getId() + "/schedule");
+        modelAndView.addObject("train", trainDto);
         return modelAndView;
     }
 
     @GetMapping(value = "/trains/edit/{id}/schedule")
-    public ModelAndView editTrainSchedule(@ModelAttribute("train") TrainEntity train,
+    public ModelAndView editTrainSchedule(@ModelAttribute("train") TrainDto trainDto,
                                           @RequestParam(required = false) String reverse) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trainSchedule");
-        modelAndView.addObject("train", train);
-        List<StationEntity> stations = mappingService.getOrderedStationsByTrack(train.getTrack());
-        List<ScheduleEntity> schedules = new ArrayList<>();
-        if (!scheduleService.getSchedulesByTrain(train).isEmpty()) {
-            schedules = scheduleService.getSchedulesByTrain(train);
+        modelAndView.addObject("train", trainDto);
+        List<StationDto> stationDtoList = mappingService.getOrderedStationsByTrack(trainDto.getTrack());
+        List<ScheduleDto> scheduleDtoList = new ArrayList<>();
+        if (!scheduleService.getSchedulesByTrain(trainDto).isEmpty()) {
+            scheduleDtoList = scheduleService.getSchedulesByTrain(trainDto);
         } else {
-            for (StationEntity station : stations) {
-                schedules.add(new ScheduleEntity(station, train));
+            for (StationDto stationDto : stationDtoList) {
+                scheduleDtoList.add(new ScheduleDto(stationDto, trainDto));
             }
         }
         boolean isReversed = false;
         if (reverse != null && reverse.equals("true")) {
-            Collections.reverse(schedules);
+            Collections.reverse(scheduleDtoList);
             isReversed = true;
         }
         modelAndView.addObject("isReversed", isReversed);
-        modelAndView.addObject("schedulesList", schedules);
+        modelAndView.addObject("schedulesList", scheduleDtoList);
         return modelAndView;
     }
 
     @PostMapping(value = "/trains/edit/schedule")
     public ModelAndView editTrainSchedule(@RequestParam Map<String, String> requestParams,
-                                          @ModelAttribute("train") TrainEntity train) {
+                                          @ModelAttribute("train") TrainDto trainDto) {
         ModelAndView modelAndView = new ModelAndView();
         for (int i = 0; i < requestParams.size() / 3 - 1; i++) {
-            ScheduleEntity schedule = new ScheduleEntity();
-            schedule.setId(Integer.parseInt(requestParams.get("id" + i)));
-            schedule.setStation(stationService.getStationByName(requestParams.get("station" + i)));
-            schedule.setTrain(train);
-            schedule.setArrivalTime(scheduleService.convertStringtoDate(requestParams.get("arrivalTime" + i)));
-            schedule.setDepartureTime(scheduleService.convertStringtoDate(requestParams.get("departureTime" + i)));
-            schedule.setDirection(!Boolean.parseBoolean(requestParams.get("isReversed")));
-            scheduleService.editSchedule(schedule);
+            ScheduleDto scheduleDto = new ScheduleDto();
+            scheduleDto.setId(Integer.parseInt(requestParams.get("id" + i)));
+            scheduleDto.setStation(stationService.getStationByName(requestParams.get("station" + i)));
+            scheduleDto.setTrain(trainDto);
+            scheduleDto.setArrivalTime(requestParams.get("arrivalTime" + i));
+            scheduleDto.setDepartureTime(requestParams.get("departureTime" + i));
+            scheduleDto.setDirection(!Boolean.parseBoolean(requestParams.get("isReversed")));
+            scheduleService.editSchedule(scheduleDto);
         }
         modelAndView.setViewName("redirect:/trains");
         return modelAndView;
@@ -138,8 +138,8 @@ public class TrainController {
     public ModelAndView deleteTrain(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/trains");
-        TrainEntity train = trainService.getTrain(id);
-        trainService.deleteTrain(train);
+        TrainDto trainDto = trainService.getTrain(id);
+        trainService.deleteTrain(trainDto);
         return modelAndView;
     }
 }

@@ -1,23 +1,23 @@
 package org.javaschool.services.interfaces;
 
-import org.javaschool.entities.PassengerEntity;
-import org.javaschool.entities.UserEntity;
+import org.javaschool.dto.PassengerDto;
+import org.javaschool.dto.UserDto;
 
 import java.util.List;
 
 public interface PassengerService {
 
-    PassengerEntity getPassenger(int id);
+    PassengerDto getPassenger(int id);
 
-    List<PassengerEntity> getAllPassengers();
+    List<PassengerDto> getAllPassengers();
 
-    List<PassengerEntity> getPassengersByTrainId(int trainId);
+    List<PassengerDto> getPassengersByTrainId(int trainId);
 
-    PassengerEntity getPassengerByUser(UserEntity user);
+    PassengerDto getPassengerByUser(UserDto userDto);
 
-    void addPassenger(PassengerEntity passenger);
+    void addPassenger(PassengerDto passengerDto);
 
-    void editPassenger(PassengerEntity passenger);
+    void editPassenger(PassengerDto passengerDto);
 
-    void deletePassenger(PassengerEntity passenger);
+    void deletePassenger(PassengerDto passengerDto);
 }

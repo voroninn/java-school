@@ -2,7 +2,6 @@ package org.javaschool.dao.interfaces;
 
 import org.javaschool.entities.SectionEntity;
 import org.javaschool.entities.StationEntity;
-import org.javaschool.entities.TrackEntity;
 
 import java.util.List;
 
@@ -21,6 +20,4 @@ public interface SectionDao {
     SectionEntity getSectionBetweenStations(StationEntity stationFrom, StationEntity stationTo);
 
     List<SectionEntity> getSectionsByRoute(List<StationEntity> route);
-
-    void createSection(StationEntity station, int length, TrackEntity track);
 }

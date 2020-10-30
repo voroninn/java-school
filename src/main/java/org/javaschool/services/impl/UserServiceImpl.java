@@ -3,7 +3,9 @@ package org.javaschool.services.impl;
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.RoleDao;
 import org.javaschool.dao.interfaces.UserDao;
+import org.javaschool.dto.UserDto;
 import org.javaschool.entities.UserEntity;
+import org.javaschool.mapper.UserMapper;
 import org.javaschool.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -28,9 +30,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     @Transactional
-    public void save(UserEntity user) {
+    public void save(UserDto userDto) {
+        UserEntity user = userMapper.toEntity(userDto);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(roleDao.findRoleByName("ROLE_USER")));
         userDao.addUser(user);
@@ -39,14 +45,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserEntity findUserByUsername(String username) {
-        return userDao.findUserByUsername(username);
+    public UserDto findUserByUsername(String username) {
+        return userMapper.toDto(userDao.findUserByUsername(username));
     }
 
     @Override
     @Transactional
-    public UserEntity findUserByEmail(String email) {
-        return userDao.findUserByEmail(email);
+    public UserDto findUserByEmail(String email) {
+        return userMapper.toDto(userDao.findUserByEmail(email));
     }
 
     @Override
