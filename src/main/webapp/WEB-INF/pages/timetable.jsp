@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,13 +22,23 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav">
             <a href="<c:url value="/"/>" class="nav-item nav-link active" style="color: white">Home</a>
-            <div class="btn-group">
-                <a href="/myaccount/${pageContext.request.userPrincipal.name}"
-                   class="btn btn-outline-light">My Account</a>
-                <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets" class="btn btn-outline-light">My
-                    Tickets</a>
-                <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
-            </div>
+            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                <div class="btn-group">
+                    <a href="<c:url value="/stations"/>" class="btn btn-outline-light">Stations</a>
+                    <a href="<c:url value="/trains"/>" class="btn btn-outline-light">Trains</a>
+                    <a href="<c:url value="/passengers"/>" class="btn btn-outline-light">Passengers</a>
+                    <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
+                </div>
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_USER')">
+                <div class="btn-group">
+                    <a href="/myaccount/${pageContext.request.userPrincipal.name}"
+                       class="btn btn-outline-light">My Account</a>
+                    <a href="/myaccount/${pageContext.request.userPrincipal.name}/tickets"
+                       class="btn btn-outline-light">My Tickets</a>
+                    <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
+                </div>
+            </sec:authorize>
         </div>
         <div class="navbar-nav ml-auto">
             <a href="#" class="nav-item nav-link disabled" style="color: white">
@@ -60,6 +71,10 @@
                                     <th>Train</th>
                                     <th>Arrival</th>
                                     <th>Departure</th>
+                                    <th>Direction</th>
+                                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                        <th>Actions</th>
+                                    </sec:authorize>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -68,7 +83,13 @@
                                     <td>${schedule.train.name}</td>
                                     <td>${schedule.arrivalTime}</td>
                                     <td>${schedule.departureTime}</td>
-
+                                    <td>${schedule.endStation}</td>
+                                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                        <td>
+                                            <a href="/timetable/delay/${schedule.id}" class="btn btn-warning" role="button">Delay (15 min)</a>
+                                            <a href="/timetable/cancel/${schedule.id}" class="btn btn-danger" role="button">Cancel</a>
+                                        </td>
+                                    </sec:authorize>
                                 </tr>
                                 </tbody>
                                 </c:forEach>

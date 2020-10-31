@@ -26,6 +26,7 @@
                 <a href="<c:url value="/stations"/>" class="btn btn-outline-light">Stations</a>
                 <a href="<c:url value="/trains"/>" class="btn btn-outline-light">Trains</a>
                 <a href="<c:url value="/passengers"/>" class="btn btn-outline-light">Passengers</a>
+                <a href="<c:url value="/timetable"/>" class="btn btn-outline-light">Timetable</a>
             </div>
         </div>
         <div class="navbar-nav ml-auto">

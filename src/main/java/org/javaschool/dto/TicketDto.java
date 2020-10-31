@@ -2,13 +2,14 @@ package org.javaschool.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TicketDto {
+public class TicketDto implements Serializable {
 
     private int id;
 

@@ -38,4 +38,8 @@ public interface ScheduleService {
     public void setBreakpoints(List<StationDto> route);
 
     public void createEmptyScheduleForStation(StationDto stationDto, int trackId);
+
+    public void delaySchedule(int id, int minutes);
+
+    public void cancelSchedule(int id);
 }

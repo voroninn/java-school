@@ -1,16 +1,14 @@
 package org.javaschool.services.impl;
 
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dao.interfaces.ScheduleDao;
 import org.javaschool.dto.*;
 import org.javaschool.entities.ScheduleEntity;
 import org.javaschool.mapper.ScheduleMapper;
 import org.javaschool.mapper.StationMapper;
 import org.javaschool.mapper.TrainMapper;
-import org.javaschool.services.interfaces.ScheduleService;
-import org.javaschool.services.interfaces.SectionService;
-import org.javaschool.services.interfaces.TrackService;
-import org.javaschool.services.interfaces.TrainService;
+import org.javaschool.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +32,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Autowired
     private TrainService trainService;
+
+    @Autowired
+    private MappingService mappingService;
 
     @Autowired
     private MessagingService messagingService;
@@ -73,8 +74,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleDao.editSchedule(scheduleMapper.toEntity(scheduleDto));
         log.info("Edited schedule for " +
                 scheduleDto.getTrain().getName() + " on " + scheduleDto.getStation().getName());
-        messagingService.sendMessage(scheduleMapper.toEntity(scheduleDto));
-        log.info("Message sent to queue");
+        messagingService.sendMessage(scheduleDto);
     }
 
     @Override
@@ -88,7 +88,19 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public List<ScheduleDto> getSchedulesByStationAndDirection(StationDto stationDto, boolean direction) {
-        return scheduleMapper.toDtoList(scheduleDao.getSchedulesByStationAndDirection(stationMapper.toEntity(stationDto), direction));
+        List<ScheduleDto> scheduleDtoList =
+                scheduleMapper.toDtoList(scheduleDao.getSchedulesByStationAndDirection(stationMapper.toEntity(stationDto), direction));
+        for (ScheduleDto scheduleDto : scheduleDtoList) {
+            TrackDto trackDto = scheduleDto.getTrain().getTrack();
+            int endStationOrder;
+            if (direction) {
+                endStationOrder = mappingService.getOrderedStationsByTrack(trackDto).size();
+            } else {
+                endStationOrder = 1;
+            }
+            scheduleDto.setEndStation(mappingService.getStationByOrder(trackDto, endStationOrder).getName());
+        }
+        return scheduleDtoList;
     }
 
     @Override
@@ -264,6 +276,54 @@ public class ScheduleServiceImpl implements ScheduleService {
             } else {
                 scheduleDao.addSchedule(new ScheduleEntity(stationMapper.toEntity(stationDto),
                         trainMapper.toEntity(trainDto), false));
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delaySchedule(int id, int minutes) {
+        ScheduleDto delayOrigin = getSchedule(id);
+        List<ScheduleDto> scheduleDtoList = getSchedulesByTrain(delayOrigin.getTrain());
+        boolean toBeDelayed = false;
+        for (ScheduleDto scheduleDto : scheduleDtoList) {
+            if (scheduleDto.equals(delayOrigin)) {
+                toBeDelayed = true;
+            }
+            if (toBeDelayed) {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                try {
+                    if (scheduleDto.getArrivalTime() != null) {
+                        scheduleDto.setArrivalTime(sdf.format(DateUtils
+                                .addMinutes(sdf.parse(scheduleDto.getArrivalTime()), minutes)));
+                    }
+                    if (scheduleDto.getDepartureTime() != null) {
+                        scheduleDto.setDepartureTime(sdf.format(DateUtils
+                                .addMinutes(sdf.parse(scheduleDto.getDepartureTime()), minutes)));
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    log.info("Could not parse date from String");
+                }
+                editSchedule(scheduleDto);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
+    public void cancelSchedule(int id) {
+        ScheduleDto cancelOrigin = getSchedule(id);
+        List<ScheduleDto> scheduleDtoList = getSchedulesByTrain(cancelOrigin.getTrain());
+        boolean toBeCancelled = false;
+        for (ScheduleDto scheduleDto : scheduleDtoList) {
+            if (scheduleDto.equals(cancelOrigin)) {
+                toBeCancelled = true;
+            }
+            if (toBeCancelled) {
+                scheduleDto.setArrivalTime(null);
+                scheduleDto.setDepartureTime(null);
+                editSchedule(scheduleDto);
             }
         }
     }
