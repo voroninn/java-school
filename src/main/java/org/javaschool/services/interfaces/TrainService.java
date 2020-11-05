@@ -1,6 +1,7 @@
 package org.javaschool.services.interfaces;
 
 import org.javaschool.dto.ScheduleDto;
+import org.javaschool.dto.StationDto;
 import org.javaschool.dto.TrackDto;
 import org.javaschool.dto.TrainDto;
 

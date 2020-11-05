@@ -58,10 +58,9 @@ public class TrainController {
 
     @GetMapping(value = "/trains/edit/{id}")
     public ModelAndView editTrain(@PathVariable("id") int id) {
-        TrainDto trainDto = trainService.getTrain(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("trainEdit");
-        modelAndView.addObject("train", trainDto);
+        modelAndView.addObject("train", trainService.getTrain(id));
         return modelAndView;
     }
 
@@ -69,7 +68,6 @@ public class TrainController {
     public ModelAndView editTrain(@ModelAttribute("train") TrainDto trainDto) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/trains/edit/" + trainDto.getId() + "/schedule");
-        modelAndView.addObject("train", trainDto);
         trainService.editTrain(trainDto);
         return modelAndView;
     }
@@ -85,9 +83,8 @@ public class TrainController {
     @PostMapping(value = "/trains/add")
     public ModelAndView addTrain(@ModelAttribute("train") TrainDto trainDto) {
         ModelAndView modelAndView = new ModelAndView();
-        trainService.addTrain(trainDto);
         modelAndView.setViewName("redirect:/trains/edit/" + trainDto.getId() + "/schedule");
-        modelAndView.addObject("train", trainDto);
+        trainService.addTrain(trainDto);
         return modelAndView;
     }
 
@@ -138,8 +135,7 @@ public class TrainController {
     public ModelAndView deleteTrain(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/trains");
-        TrainDto trainDto = trainService.getTrain(id);
-        trainService.deleteTrain(trainDto);
+        trainService.deleteTrain(trainService.getTrain(id));
         return modelAndView;
     }
 }

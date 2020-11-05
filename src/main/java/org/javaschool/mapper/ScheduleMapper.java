@@ -21,4 +21,7 @@ public interface ScheduleMapper {
 
     @InheritInverseConfiguration
     ScheduleEntity toEntity(ScheduleDto scheduleDto);
+
+    @InheritInverseConfiguration
+    List<ScheduleEntity> toEntityList(List<ScheduleDto> scheduleDtoList);
 }

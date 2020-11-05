@@ -12,7 +12,7 @@ public class MessagingConfig {
 
     private static final String DEFAULT_BROKER_URL = "tcp://localhost:61616";
 
-    private static final String TIMETABLE_QUEUE = "timetable-queue";
+    private static final String TIMETABLE_QUEUE = "TimetableQueue";
 
     @Bean
     public ActiveMQConnectionFactory connectionFactory(){

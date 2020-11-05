@@ -81,14 +81,17 @@ public class StationServiceImpl implements StationService {
     }
 
     public int countTrackChanges(LinkedList<StationDto> route) {
+        setEndpoints(route);
         int counter = 0;
-        for (int i = 0; i < route.size() - 2; i++) {
-            SectionDto section1 = sectionService.getSectionBetweenStations(route.get(i), route.get(i + 1));
-            SectionDto section2 = sectionService.getSectionBetweenStations(route.get(i + 1), route.get(i + 2));
-            if (!section1.getTrack().equals(section2.getTrack())) {
-                route.get(i + 1).setBreakpoint(true);
-                route.get(i + 1).setEndpoint(false);
-                counter++;
+        if (route.size() > 2) {
+            for (int i = 0; i < route.size() - 2; i++) {
+                SectionDto section1 = sectionService.getSectionBetweenStations(route.get(i), route.get(i + 1));
+                SectionDto section2 = sectionService.getSectionBetweenStations(route.get(i + 1), route.get(i + 2));
+                if (!section1.getTrack().equals(section2.getTrack())) {
+                    route.get(i + 1).setBreakpoint(true);
+                    route.get(i + 1).setEndpoint(false);
+                    counter++;
+                }
             }
         }
         return counter;

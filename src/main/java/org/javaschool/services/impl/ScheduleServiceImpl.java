@@ -74,7 +74,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleDao.editSchedule(scheduleMapper.toEntity(scheduleDto));
         log.info("Edited schedule for " +
                 scheduleDto.getTrain().getName() + " on " + scheduleDto.getStation().getName());
-        messagingService.sendMessage(scheduleDto);
+        messagingService.sendMessage();
     }
 
     @Override
@@ -85,20 +85,24 @@ public class ScheduleServiceImpl implements ScheduleService {
                 scheduleDto.getTrain().getName() + " on " + scheduleDto.getStation().getName());
     }
 
+    public void setEndStationForScheduleDto(ScheduleDto scheduleDto) {
+        TrackDto trackDto = scheduleDto.getTrain().getTrack();
+        int endStationOrder;
+        if (scheduleDto.isDirection()) {
+            endStationOrder = mappingService.getOrderedStationsByTrack(trackDto).size();
+        } else {
+            endStationOrder = 1;
+        }
+        scheduleDto.setEndStation(mappingService.getStationByOrder(trackDto, endStationOrder).getName());
+    }
+
     @Override
     @Transactional
     public List<ScheduleDto> getSchedulesByStationAndDirection(StationDto stationDto, boolean direction) {
         List<ScheduleDto> scheduleDtoList =
                 scheduleMapper.toDtoList(scheduleDao.getSchedulesByStationAndDirection(stationMapper.toEntity(stationDto), direction));
         for (ScheduleDto scheduleDto : scheduleDtoList) {
-            TrackDto trackDto = scheduleDto.getTrain().getTrack();
-            int endStationOrder;
-            if (direction) {
-                endStationOrder = mappingService.getOrderedStationsByTrack(trackDto).size();
-            } else {
-                endStationOrder = 1;
-            }
-            scheduleDto.setEndStation(mappingService.getStationByOrder(trackDto, endStationOrder).getName());
+            setEndStationForScheduleDto(scheduleDto);
         }
         return scheduleDtoList;
     }

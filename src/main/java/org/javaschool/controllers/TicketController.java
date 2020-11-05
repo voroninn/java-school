@@ -10,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @SessionAttributes("ticketForm")
@@ -36,10 +35,9 @@ public class TicketController {
 
     @GetMapping(value = "/")
     public ModelAndView homePage(@ModelAttribute("ticketForm") TicketDto ticketDto) {
-        List<StationDto> stationDtoList = stationService.getAllStations();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
-        modelAndView.addObject("stationsList", stationDtoList);
+        modelAndView.addObject("stationsList", stationService.getAllStations());
         modelAndView.addObject("ticketForm", new TicketDto());
         return modelAndView;
     }
@@ -55,21 +53,11 @@ public class TicketController {
         modelAndView.setViewName("searchResult");
         LinkedList<StationDto> route = stationService.getRoute(ticketDto.getDepartureStation(), ticketDto.getArrivalStation());
         modelAndView.addObject("route", route);
-        stationService.setEndpoints(route);
-
-        int numberOfChanges = 0;
-        if (route.size() > 2) {
-            numberOfChanges = stationService.countTrackChanges(route);
-        }
-        modelAndView.addObject("numberOfChanges", numberOfChanges);
-
+        modelAndView.addObject("numberOfChanges", stationService.countTrackChanges(route));
         List<ScheduleDto> schedule = scheduleService.buildSchedule(route, scheduleService.convertStringtoDate("00:00"));
         modelAndView.addObject("schedule", schedule);
-
-        Set<TrainDto> trainDtoSet = trainService.getTrainsBySchedule(schedule);
+        ticketDto.setTrains(trainService.getTrainsBySchedule(schedule));
         ticketDto.setPrice(ticketService.calculateTicketPrice(route));
-        ticketDto.setTrains(trainDtoSet);
-
         return modelAndView;
     }
 
@@ -79,17 +67,14 @@ public class TicketController {
         modelAndView.setViewName("ticketPage");
         UserDto userDto = userService.findUserByUsername(userService.getCurrentUserName());
         PassengerDto passengerDto = passengerService.getPassengerByUser(userDto);
-        if (passengerDto != null) {
-            if (passengerDto.getFirstName() != null && passengerDto.getLastName() != null
+            if (passengerDto != null && passengerDto.getFirstName() != null && passengerDto.getLastName() != null
                     && passengerDto.getBirthDate() != null && passengerDto.getPassportNumber() != 0) {
                 modelAndView.addObject("passenger", passengerDto);
                 ticketDto.setPassenger(passengerDto);
             } else {
                 modelAndView.addObject("message", "Please enter your personal data");
             }
-        }
-        List<TrainDto> trainDtoList = new ArrayList<>(ticketDto.getTrains());
-        modelAndView.addObject("trainsList", trainDtoList);
+        modelAndView.addObject("trainsList", new ArrayList<>(ticketDto.getTrains()));
         return modelAndView;
     }
 
@@ -116,8 +101,7 @@ public class TicketController {
         ModelAndView modelAndView = new ModelAndView();
         UserDto userDto = userService.findUserByUsername(userService.getCurrentUserName());
         modelAndView.setViewName("redirect:/myaccount/" + userDto.getUsername() + "/tickets");
-        TicketDto ticketDto = ticketService.getTicket(id);
-        ticketService.deleteTicket(ticketDto);
+        ticketService.deleteTicket(ticketService.getTicket(id));
         return modelAndView;
     }
 }

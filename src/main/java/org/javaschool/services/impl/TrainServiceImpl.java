@@ -5,9 +5,6 @@ import org.javaschool.dao.interfaces.TrainDao;
 import org.javaschool.dto.ScheduleDto;
 import org.javaschool.dto.TrackDto;
 import org.javaschool.dto.TrainDto;
-import org.javaschool.entities.ScheduleEntity;
-import org.javaschool.entities.TrackEntity;
-import org.javaschool.entities.TrainEntity;
 import org.javaschool.mapper.TrackMapper;
 import org.javaschool.mapper.TrainMapper;
 import org.javaschool.services.interfaces.TrainService;
@@ -15,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Log4j2

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
 
 @Controller
 public class PassengerController {
@@ -20,28 +19,25 @@ public class PassengerController {
 
     @GetMapping(value = "/passengers")
     public ModelAndView allPassengers() {
-        List<PassengerDto> passengerDtoList = passengerService.getAllPassengers();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengers");
-        modelAndView.addObject("passengersList", passengerDtoList);
+        modelAndView.addObject("passengersList", passengerService.getAllPassengers());
         return modelAndView;
     }
 
     @GetMapping(value = "/passengers/{trainId}")
     public ModelAndView passengersByTrain(@PathVariable("trainId") int trainId) {
-        List<PassengerDto> passengerDtoList = passengerService.getPassengersByTrainId(trainId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengers");
-        modelAndView.addObject("passengersList", passengerDtoList);
+        modelAndView.addObject("passengersList", passengerService.getPassengersByTrainId(trainId));
         return modelAndView;
     }
 
     @GetMapping(value = "/passengers/edit/{id}")
     public ModelAndView editPassenger(@PathVariable("id") int id) {
-        PassengerDto passengerDto = passengerService.getPassenger(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengerEdit");
-        modelAndView.addObject("passenger", passengerDto);
+        modelAndView.addObject("passenger", passengerService.getPassenger(id));
         return modelAndView;
     }
 
@@ -73,8 +69,7 @@ public class PassengerController {
     public ModelAndView deletePassenger(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/passengers");
-        PassengerDto passengerDto = passengerService.getPassenger(id);
-        passengerService.deletePassenger(passengerDto);
+        passengerService.deletePassenger(passengerService.getPassenger(id));
         return modelAndView;
     }
 }
