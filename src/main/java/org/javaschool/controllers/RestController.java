@@ -28,4 +28,10 @@ public class RestController {
         return new Gson().toJson(timetableScheduleMapper.toDtoList(
                 scheduleService.getSchedulesByStation(stationService.getStationByName(stationName))));
     }
+
+    @GetMapping(value = "/timetable/all")
+    public String generateResponse() {
+        log.info("Received request from 2nd app");
+        return new Gson().toJson(scheduleService.getTimetableMap());
+    }
 }

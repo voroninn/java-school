@@ -7,6 +7,7 @@ import org.javaschool.dto.*;
 import org.javaschool.entities.ScheduleEntity;
 import org.javaschool.mapper.ScheduleMapper;
 import org.javaschool.mapper.StationMapper;
+import org.javaschool.mapper.TimetableScheduleMapper;
 import org.javaschool.mapper.TrainMapper;
 import org.javaschool.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     private SectionService sectionService;
 
     @Autowired
+    private StationService stationService;
+
+    @Autowired
     private TrackService trackService;
 
     @Autowired
@@ -41,6 +45,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Autowired
     private ScheduleMapper scheduleMapper;
+
+    @Autowired
+    private TimetableScheduleMapper timetableScheduleMapper;
 
     @Autowired
     private StationMapper stationMapper;
@@ -309,6 +316,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     e.printStackTrace();
                     log.info("Could not parse date from String");
                 }
+                scheduleDto.setTrainStatus("Delayed");
                 editSchedule(scheduleDto);
             }
         }
@@ -325,10 +333,19 @@ public class ScheduleServiceImpl implements ScheduleService {
                 toBeCancelled = true;
             }
             if (toBeCancelled) {
-                scheduleDto.setArrivalTime(null);
-                scheduleDto.setDepartureTime(null);
+                scheduleDto.setTrainStatus("Cancelled");
                 editSchedule(scheduleDto);
             }
         }
+    }
+
+    @Override
+    public Map<String, List<TimetableScheduleDto>> getTimetableMap() {
+        Map<String, List<TimetableScheduleDto>> timetable = new TreeMap<>();
+        List<StationDto> stationDtoList = stationService.getAllStations();
+        for (StationDto station : stationDtoList) {
+            timetable.put(station.getName(), timetableScheduleMapper.toDtoList(getSchedulesByStation(station)));
+        }
+        return timetable;
     }
 }

@@ -19,6 +19,8 @@ public class TimetableScheduleDto implements Serializable {
 
     private String trainName;
 
+    private String trainStatus;
+
     private String arrivalTime;
 
     private String departureTime;

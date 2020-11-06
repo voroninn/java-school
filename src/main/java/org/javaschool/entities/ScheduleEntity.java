@@ -35,6 +35,9 @@ public class ScheduleEntity implements Serializable {
     @JoinColumn(name = "station_id")
     private StationEntity station;
 
+    @Column(name = "train_status")
+    private String trainStatus;
+
     @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "train_id")

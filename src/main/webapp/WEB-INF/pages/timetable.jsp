@@ -72,6 +72,7 @@
                                     <th>Arrival</th>
                                     <th>Departure</th>
                                     <th>Direction</th>
+                                    <th>Status</th>
                                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                                         <th>Actions</th>
                                     </sec:authorize>
@@ -84,6 +85,7 @@
                                     <td>${schedule.arrivalTime}</td>
                                     <td>${schedule.departureTime}</td>
                                     <td>${schedule.endStation}</td>
+                                    <td>${schedule.trainStatus}</td>
                                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                                         <td>
                                             <a href="/timetable/delay/${schedule.id}" class="btn btn-warning" role="button">Delay (15 min)</a>

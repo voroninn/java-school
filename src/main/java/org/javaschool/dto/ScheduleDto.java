@@ -16,6 +16,8 @@ public class ScheduleDto implements Serializable {
 
     private TrainDto train;
 
+    private String trainStatus;
+
     private String arrivalTime;
 
     private String departureTime;

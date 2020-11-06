@@ -2,10 +2,12 @@ package org.javaschool.services.interfaces;
 
 import org.javaschool.dto.ScheduleDto;
 import org.javaschool.dto.StationDto;
+import org.javaschool.dto.TimetableScheduleDto;
 import org.javaschool.dto.TrainDto;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface ScheduleService {
 
@@ -42,4 +44,6 @@ public interface ScheduleService {
     public void delaySchedule(int id, int minutes);
 
     public void cancelSchedule(int id);
+
+    public Map<String, List<TimetableScheduleDto>> getTimetableMap();
 }
