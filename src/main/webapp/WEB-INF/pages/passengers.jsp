@@ -71,8 +71,6 @@
             </c:forEach>
             </tbody>
         </table>
-        <a href="<c:url value="/passengers/add"/>" class="col-sm-10 offset-1 btn btn-outline-info btn-block"
-           role="button">+</a>
         </c:if>
     </div>
 </div>

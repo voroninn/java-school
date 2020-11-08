@@ -191,12 +191,17 @@ public class ScheduleServiceImpl implements ScheduleService {
     public Date convertStringtoDate(String date) {
         Date parsedDate = null;
         if (date != null) {
-            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
             try {
+                SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
                 parsedDate = formatter.parse(date);
             } catch (ParseException pE) {
                 pE.getStackTrace();
-                log.error("Could not parse date from string");
+            }
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+                parsedDate = formatter.parse(date);
+            } catch (ParseException pE) {
+                pE.getStackTrace();
             }
         }
         return parsedDate;

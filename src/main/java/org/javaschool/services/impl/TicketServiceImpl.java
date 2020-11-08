@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -126,7 +124,6 @@ public class TicketServiceImpl implements TicketService {
         List<SectionDto> sections = sectionService.getSectionsByRoute
                 (stationService.getRoute(ticketDto.getDepartureStation(), ticketDto.getArrivalStation()));
         List<TrainDto> trainDtoList = new ArrayList<>(ticketDto.getTrains());
-
         for (TrainDto train : trainDtoList) {
             List<TicketDto> existingTickets = getTicketsByTrainAndDate(train, date);
             int existingTicketsCount = 0;
@@ -153,7 +150,6 @@ public class TicketServiceImpl implements TicketService {
         List<TrainDto> trainDtoList = new ArrayList<>(ticketDto.getTrains());
         Date date = scheduleService.convertStringtoDate(ticketDto.getDate());
         boolean isPassengerNotPresentOnTrain = true;
-
         for (TrainDto trainDto : trainDtoList) {
             List<TicketDto> existingTickets = getTicketsByTrainAndDate(trainDto, date);
             for (TicketDto ticketItem : existingTickets) {

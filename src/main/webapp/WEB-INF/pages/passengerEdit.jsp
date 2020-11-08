@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,64 +46,77 @@
 <div style="height: 100px"></div>
 
 <div class="container">
-    <c:if test="${empty passenger.firstName}">
-        <c:url value="/passengers/add" var="var"/>
-    </c:if>
-    <c:if test="${!empty passenger.firstName}">
-        <c:url value="/passengers/edit" var="var"/>
-    </c:if>
     <h2 class="form-heading text-center">Edit passenger data:</h2>
     <div class="jumbotron">
-        <form:form action="${var}" modelAttribute="passenger" method="POST" class="col-sm-4 offset-sm-4">
-            <c:if test="${!empty passenger.firstName}">
-                <input type="hidden" name="id" value="${passenger.id}">
-            </c:if>
-            <div style="height: 100px">
+        <form:form action="/passengers/edit" modelAttribute="passengerForm" method="POST">
+        <c:if test="${!empty passengerForm.firstName}">
+            <input type="hidden" name="id" value="${passengerForm.id}">
+        </c:if>
+        <spring:bind path="firstName">
+            <div class="form-group col-sm-4 offset-sm-4">
                 <label for="firstName">First Name</label>
-                <c:if test="${empty passenger.firstName}">
-                    <form:input path="firstName" type="text" class="form-control" id="firstName" autofocus="true"/>
+                <c:if test="${empty passengerForm.firstName}">
+                    <form:input path="firstName" type="text" class="form-control ${status.error ? 'is-invalid' : ''}"
+                                id="firstName" autofocus="true"/>
                 </c:if>
-                <c:if test="${!empty passenger.firstName}">
-                    <form:input path="firstName" type="text" class="form-control"
-                                id="firstName" placeholder="${passenger.firstName}" autofocus="true"/>
+                <c:if test="${!empty passengerForm.firstName}">
+                    <form:input path="firstName" type="text" class="form-control ${status.error ? 'is-invalid' : ''}"
+                                id="firstName" placeholder="${passengerForm.firstName}" autofocus="true"/>
                 </c:if>
+                <div class="invalid-feedback"><form:errors path="firstName"/></div>
             </div>
-            <div style="height: 100px">
+        </spring:bind>
+        <spring:bind path="lastName">
+            <div class="form-group col-sm-4 offset-sm-4">
                 <label for="lastName">Last Name</label>
-                <c:if test="${empty passenger.lastName}">
-                    <form:input path="lastName" type="text" class="form-control" id="lastName"/>
+                <c:if test="${empty passengerForm.lastName}">
+                    <form:input path="lastName" type="text" class="form-control ${status.error ? 'is-invalid' : ''}"
+                                id="lastName"/>
                 </c:if>
-                <c:if test="${!empty passenger.lastName}">
-                    <form:input path="lastName" type="text" class="form-control" id="lastName"
-                                placeholder="${passenger.lastName}"/>
+                <c:if test="${!empty passengerForm.lastName}">
+                    <form:input path="lastName" type="text" class="form-control ${status.error ? 'is-invalid' : ''}"
+                                id="lastName"
+                                placeholder="${passengerForm.lastName}"/>
                 </c:if>
+                <div class="invalid-feedback"><form:errors path="lastName"/></div>
             </div>
-            <div style="height: 100px">
+        </spring:bind>
+        <spring:bind path="birthDate">
+            <div class="form-group col-sm-4 offset-sm-4">
                 <label for="birthDate">Birth Date</label>
-                <c:if test="${empty passenger.birthDate}">
-                    <form:input path="birthDate" type="text" class="form-control"
+                <c:if test="${empty passengerForm.birthDate}">
+                    <form:input path="birthDate" type="text" class="form-control ${status.error ? 'is-invalid' : ''}"
                                 id="birthDate" placeholder="DD.MM.YYYY"/>
                 </c:if>
-                <c:if test="${!empty passenger.birthDate}">
-                    <form:input path="birthDate" type="text" class="form-control"
-                                id="birthDate" placeholder="<${passenger.birthDate}"/>
+                <c:if test="${!empty passengerForm.birthDate}">
+                    <form:input path="birthDate" type="text" class="form-control ${status.error ? 'is-invalid' : ''}"
+                                id="birthDate" placeholder="<${passengerForm.birthDate}"/>
                 </c:if>
+                <div class="invalid-feedback"><form:errors path="birthDate"/></div>
             </div>
-            <div style="height: 100px">
+        </spring:bind>
+        <spring:bind path="passportNumber">
+            <div class="form-group col-sm-4 offset-sm-4">
                 <label for="passportNumber">Passport Number</label>
-                <c:if test="${empty passenger.passportNumber}">
-                    <form:input path="passportNumber" type="text" class="form-control" id="passportNumber"/>
+                <c:if test="${empty passengerForm.passportNumber}">
+                    <form:input path="passportNumber" type="text"
+                                class="form-control ${status.error ? 'is-invalid' : ''}"
+                                id="passportNumber" placeholder=""/>
                 </c:if>
-                <c:if test="${!empty passenger.passportNumber}">
-                    <form:input path="passportNumber" type="text" class="form-control" id="passportNumber"
-                                placeholder="${passenger.passportNumber}"/>
+                <c:if test="${!empty passengerForm.passportNumber}">
+                    <form:input path="passportNumber" type="text"
+                                class="form-control ${status.error ? 'is-invalid' : ''}"
+                                id="passportNumber" placeholder="${passengerForm.passportNumber}"/>
                 </c:if>
+                <div class="invalid-feedback"><form:errors path="passportNumber"/></div>
             </div>
-            <div class="text-center">
-                <button class="btn btn-outline-info btn-center" type="submit">Submit</button>
-            </div>
-        </form:form>
+        </spring:bind>
+        <div class="text-center">
+            <button class="btn btn-lg btn-primary btn-center" type="submit">Submit</button>
+        </div>
     </div>
+    </form:form>
+</div>
 </div>
 
 <footer class="page-footer font-small">

@@ -7,6 +7,7 @@ import org.javaschool.dto.StationDto;
 import org.javaschool.dto.TrainDto;
 import org.javaschool.mapper.StationMapper;
 import org.javaschool.mapper.TrainMapper;
+import org.javaschool.services.interfaces.PathFinderService;
 import org.javaschool.services.interfaces.SectionService;
 import org.javaschool.services.interfaces.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class StationServiceImpl implements StationService {
     private StationDao stationDao;
 
     @Autowired
-    private PathFinderService pathFinder;
+    private PathFinderService pathFinderService;
 
     @Autowired
     private SectionService sectionService;
@@ -76,8 +77,8 @@ public class StationServiceImpl implements StationService {
     }
 
     public LinkedList<StationDto> getRoute(String stationFrom, String stationTo) {
-        pathFinder.initialize(getStationByName(stationFrom));
-        return pathFinder.createRoute(getStationByName(stationTo));
+        pathFinderService.initialize(getStationByName(stationFrom));
+        return pathFinderService.createRoute(getStationByName(stationTo));
     }
 
     public int countTrackChanges(LinkedList<StationDto> route) {

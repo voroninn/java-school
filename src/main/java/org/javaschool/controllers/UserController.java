@@ -7,6 +7,7 @@ import org.javaschool.services.interfaces.PassengerService;
 import org.javaschool.services.interfaces.SecurityService;
 import org.javaschool.services.interfaces.TicketService;
 import org.javaschool.services.interfaces.UserService;
+import org.javaschool.validation.PassengerValidator;
 import org.javaschool.validation.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,9 @@ public class UserController {
 
     @Autowired
     private UserValidator userValidator;
+
+    @Autowired
+    private PassengerValidator passengerValidator;
 
     @Autowired
     private PassengerService passengerService;
@@ -81,16 +85,22 @@ public class UserController {
     }
 
     @PostMapping(value = "/myaccount")
-    public ModelAndView editPersonalData(@ModelAttribute("passenger") PassengerDto passengerDto) {
+    public ModelAndView editPersonalData(@ModelAttribute("passengerForm") PassengerDto passengerDto,
+                                         BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         UserDto userDto = userService.findUserByUsername(userService.getCurrentUserName());
         modelAndView.addObject("user", userDto);
-        modelAndView.setViewName("redirect:/myaccount/" + userDto.getUsername());
-        passengerDto.setUser(userDto);
-        if (passengerService.getPassenger(passengerDto.getId()) != null) {
-            passengerService.editPassenger(passengerDto);
+        passengerValidator.validate(passengerDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("personalEdit");
         } else {
-            passengerService.addPassenger(passengerDto);
+            modelAndView.setViewName("redirect:/myaccount/" + userDto.getUsername());
+            passengerDto.setUser(userDto);
+            if (passengerService.getPassenger(passengerDto.getId()) != null) {
+                passengerService.editPassenger(passengerDto);
+            } else {
+                passengerService.addPassenger(passengerDto);
+            }
         }
         return modelAndView;
     }

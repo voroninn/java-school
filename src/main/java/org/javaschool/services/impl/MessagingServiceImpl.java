@@ -7,11 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Log4j2
 @Component
-public class MessagingService {
+public class MessagingServiceImpl implements org.javaschool.services.interfaces.MessagingService {
 
     @Autowired
     JmsTemplate jmsTemplate;
 
+    @Override
     public void sendMessage() {
         jmsTemplate.send(session -> session.createTextMessage("Schedule has been changed"));
         log.info("Message sent to queue");

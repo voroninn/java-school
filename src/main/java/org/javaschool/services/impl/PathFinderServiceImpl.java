@@ -12,7 +12,7 @@ import java.util.*;
 
 @Service
 @Log4j2
-public class PathFinderService {
+public class PathFinderServiceImpl implements org.javaschool.services.interfaces.PathFinderService {
 
     @Autowired
     StationService stationService;
@@ -26,6 +26,7 @@ public class PathFinderService {
     private Map<StationDto, StationDto> predecessors;
     private Map<StationDto, Double> distance;
 
+    @Override
     public void initialize(StationDto source) {
         sections = sectionService.getAllSections();
         settledStations = new HashSet<>();
@@ -103,6 +104,7 @@ public class PathFinderService {
         }
     }
 
+    @Override
     public LinkedList<StationDto> createRoute(StationDto target) {
         LinkedList<StationDto> path = new LinkedList<>();
         StationDto step = target;

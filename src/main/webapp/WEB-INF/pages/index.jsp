@@ -60,39 +60,48 @@
 <div class="media">
     <div class="media-body align-self-center col-sm-4">
         <form:form action="/schedule" modelAttribute="ticketForm" method="POST">
+            <spring:bind path="departureStation">
                 <div class="form-group row">
                     <div class="input-group text-center col-sm-11 offset-sm-1">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="departureStation">From</label>
                         </div>
-                        <form:select class="custom-select" path="departureStation" name="departureStation"
+                        <form:select class="custom-select ${status.error ? 'is-invalid' : ''}" path="departureStation" name="departureStation"
                                      id="departureStation">
-                            <option selected>Select Station</option>
+                            <option selected value="">Select Station</option>
                             <c:forEach var="station" items="${stationsList}">
                                 <option value="${station.name}">${station.name}</option>
                             </c:forEach>
                         </form:select>
+                        <div class="invalid-feedback"><form:errors path="departureStation"/></div>
                     </div>
                 </div>
+            </spring:bind>
+            <spring:bind path="arrivalStation">
                 <div class="form-group row">
                     <div class="input-group text-center col-sm-11 offset-sm-1">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="arrivalStation">To</label>
                         </div>
-                        <form:select class="custom-select" path="arrivalStation" name="arrivalStation"
+                        <form:select class="custom-select ${status.error ? 'is-invalid' : ''}" path="arrivalStation" name="arrivalStation"
                                      id="arrivalStation">
-                            <option selected>Select Station</option>
+                            <option selected value="">Select Station</option>
                             <c:forEach var="station" items="${stationsList}">
                                 <option value="${station.name}">${station.name}</option>
                             </c:forEach>
                         </form:select>
+                        <div class="invalid-feedback"><form:errors path="arrivalStation"/></div>
                     </div>
                 </div>
+            </spring:bind>
+            <spring:bind path="date">
                 <div class="form-group row">
                     <div class="col-sm-11 offset-sm-1">
-                        <form:input path="date" name="date" id="date" placeholder="DD.MM.YYYY"/>
+                        <form:input class="form-control ${status.error ? 'is-invalid' : ''}" path="date" name="date" id="date" placeholder="DD.MM.YYYY"/>
+                        <div class="invalid-feedback"><form:errors path="date"/></div>
                     </div>
                 </div>
+            </spring:bind>
             <div class="form-group row">
                 <div class="col-sm-11 offset-sm-1">
                     <button type="submit" class="btn btn-danger">Search</button>
@@ -120,5 +129,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
 </body>
 </html>

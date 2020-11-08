@@ -2,8 +2,10 @@ package org.javaschool.controllers;
 
 import org.javaschool.dto.*;
 import org.javaschool.services.interfaces.*;
+import org.javaschool.validation.TicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,6 +35,9 @@ public class TicketController {
     @Autowired
     private PassengerService passengerService;
 
+    @Autowired
+    private TicketValidator ticketValidator;
+
     @GetMapping(value = "/")
     public ModelAndView homePage(@ModelAttribute("ticketForm") TicketDto ticketDto) {
         ModelAndView modelAndView = new ModelAndView();
@@ -48,16 +53,22 @@ public class TicketController {
     }
 
     @PostMapping(value = "/schedule")
-    public ModelAndView searchResult(@ModelAttribute("ticketForm") TicketDto ticketDto) {
+    public ModelAndView searchResult(@ModelAttribute("ticketForm") TicketDto ticketDto, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("searchResult");
-        LinkedList<StationDto> route = stationService.getRoute(ticketDto.getDepartureStation(), ticketDto.getArrivalStation());
-        modelAndView.addObject("route", route);
-        modelAndView.addObject("numberOfChanges", stationService.countTrackChanges(route));
-        List<ScheduleDto> schedule = scheduleService.buildSchedule(route, scheduleService.convertStringtoDate("00:00"));
-        modelAndView.addObject("schedule", schedule);
-        ticketDto.setTrains(trainService.getTrainsBySchedule(schedule));
-        ticketDto.setPrice(ticketService.calculateTicketPrice(route));
+        ticketValidator.validate(ticketDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("index");
+            modelAndView.addObject("stationsList", stationService.getAllStations());
+        } else {
+            modelAndView.setViewName("searchResult");
+            LinkedList<StationDto> route = stationService.getRoute(ticketDto.getDepartureStation(), ticketDto.getArrivalStation());
+            modelAndView.addObject("route", route);
+            modelAndView.addObject("numberOfChanges", stationService.countTrackChanges(route));
+            List<ScheduleDto> schedule = scheduleService.buildSchedule(route, scheduleService.convertStringtoDate("00:00"));
+            modelAndView.addObject("schedule", schedule);
+            ticketDto.setTrains(trainService.getTrainsBySchedule(schedule));
+            ticketDto.setPrice(ticketService.calculateTicketPrice(route));
+        }
         return modelAndView;
     }
 
