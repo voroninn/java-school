@@ -2,6 +2,7 @@ package org.javaschool.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dao.interfaces.TicketDao;
 import org.javaschool.dto.*;
 import org.javaschool.mapper.PassengerMapper;
@@ -34,6 +35,8 @@ public class TicketServiceImpl implements TicketService {
     private final TicketMapper ticketMapper;
     private final PassengerMapper passengerMapper;
     private final TrainMapper trainMapper;
+
+    private static final int MIN_TIME_TO_DEPARTURE = 600000;
 
     @Override
     public TicketDto getTicket(int id) {
@@ -154,7 +157,7 @@ public class TicketServiceImpl implements TicketService {
             LocalTime current = LocalTime.now(ZoneId.of("Europe/Moscow"));
             LocalTime departureTime = scheduleService.convertStringtoDate(ticketDto.getDepartureTime())
                     .toInstant().atZone(ZoneId.of("Europe/Moscow")).toLocalTime();
-            return Duration.between(current, departureTime).toMillis() >= 600000;
+            return Duration.between(current, departureTime).toMillis() >= MIN_TIME_TO_DEPARTURE;
         } else {
             return true;
         }

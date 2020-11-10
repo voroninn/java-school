@@ -37,7 +37,7 @@ public interface ScheduleService {
 
     Date convertStringtoDate(String date);
 
-    boolean timeIsBefore(Date d1, Date d2);
+    boolean isTimeBefore(Date d1, Date d2);
 
     List<ScheduleDto> buildSchedule(List<StationDto> route, Date minDepartureTime);
 

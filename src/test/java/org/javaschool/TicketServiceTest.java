@@ -3,67 +3,71 @@ package org.javaschool;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import org.apache.commons.lang3.time.DateUtils;
+import org.javaschool.dao.interfaces.TicketDao;
 import org.javaschool.dto.PassengerDto;
 import org.javaschool.dto.TicketDto;
 import org.javaschool.dto.TrainDto;
 import org.javaschool.entities.TicketEntity;
+import org.javaschool.entities.TrainEntity;
 import org.javaschool.mapper.TicketMapper;
+import org.javaschool.mapper.TrainMapper;
 import org.javaschool.services.impl.TicketServiceImpl;
 import org.javaschool.services.interfaces.ScheduleService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.javaschool.services.interfaces.SectionService;
+import org.javaschool.services.interfaces.StationService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.time.Instant;
+import java.util.*;
 
-@Disabled
 @ExtendWith(MockitoExtension.class)
 public class TicketServiceTest {
 
     @InjectMocks
     private TicketServiceImpl ticketService;
-
-    @Mock
-    private TicketMapper ticketMapper;
-
     @Mock
     private ScheduleService scheduleService;
+    @Mock
+    private SectionService sectionService;
+    @Mock
+    private StationService stationService;
+    @Mock
+    private TicketMapper ticketMapper;
+    @Mock
+    private TrainMapper trainMapper;
+    @Mock
+    private TicketDao ticketDao;
 
-    private TicketDto testTicketDto;
-    private PassengerDto testPassenger;
-    private TrainDto testTrain;
-    private DateTimeFormatter timeFormatter;
-    private DateTimeFormatter dateFormatter;
+    private static final Date DATE_TODAY = new Date();
+    private static final Date DATE_TOMORROW = DateUtils.addDays(new Date(), 1);
+    private static final Date CURRENT_TIME_PLUS_15_MINUTES = Date.from(Instant.now().plusSeconds(900));
+    private static final Date CURRENT_TIME_PLUS_5_MINUTES = Date.from(Instant.now().plusSeconds(300));
 
-    @BeforeEach
-    public void setUp() {
-        timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        testPassenger = PassengerDto.builder()
+    private static TicketDto ticketDto;
+    private static TicketEntity ticketEntity;
+
+    @BeforeAll
+    static void setUp() {
+        ticketEntity = new TicketEntity();
+        PassengerDto testPassenger = PassengerDto.builder()
                 .id(1)
                 .firstName("John")
                 .lastName("Doe")
                 .birthDate("01.01.2001")
                 .passportNumber(12345678)
                 .build();
-        testTrain = TrainDto.builder()
+        TrainDto testTrain = TrainDto.builder()
                 .id(1)
                 .name("Test I")
                 .capacity(3)
                 .build();
-        testTicketDto = TicketDto.builder()
+        ticketDto = TicketDto.builder()
                 .id(1)
                 .number("NUMBER")
                 .passenger(testPassenger)
@@ -75,65 +79,62 @@ public class TicketServiceTest {
                 .date("08.11.2020")
                 .price(0.0)
                 .build();
-        testTicketDto.getTrains().add(testTrain);
+        ticketDto.getTrains().add(testTrain);
     }
 
     @Test
-    public void testGetTicket() {
-        when(ticketService.getTicket(anyInt())).thenReturn(testTicketDto);
-        assertEquals(testTicketDto, ticketService.getTicket(1));
+    public void testGenerateTicketNumber() {
+        assertNotNull(ticketService.generateTicketNumber(ticketDto));
     }
 
     @Test
-    public void testIsDateAfter() {
-        TicketEntity testTicketEnt = new TicketEntity();
-        testTicketEnt.setDate(new Date());
-        when(ticketMapper.toEntity(testTicketDto)).thenReturn(testTicketEnt);
-        //assertFalse(ticketService.isDa);
+    public void testAreTicketsAvailable() {
+        when(scheduleService.convertStringtoDate(any())).thenReturn(DATE_TODAY);
+        when(sectionService.getSectionsByRoute(anyList())).thenReturn(new ArrayList<>());
+        when(scheduleService.convertStringtoDate(anyString())).thenReturn(DATE_TODAY);
+        when(stationService.getRoute(anyString(), anyString())).thenReturn(new LinkedList<>());
+
+        assertTrue(ticketService.areTicketsAvailable(ticketDto));
     }
 
     @Test
-    public void testIsEnoughTimeToDepartureForToday() throws ParseException {
-        TicketEntity testTicketEnt = new TicketEntity();
-        testTicketEnt.setDate(new Date());
-        testTicketDto.setDate(LocalDate.now().format(dateFormatter));
-        testTicketDto.setDepartureTime(LocalTime.now().plusMinutes(15).format(timeFormatter));
+    public void testIsPassengerNotPresentOnTrain() {
+        List<TicketDto> ticketDtoList = new ArrayList<>();
+        ticketDtoList.add(ticketDto);
 
-        when(ticketMapper.toEntity(testTicketDto)).thenReturn(testTicketEnt);
-        when(scheduleService.convertStringtoDate(testTicketDto.getDepartureTime()))
-                .thenReturn(new SimpleDateFormat("HH:mm").parse(testTicketDto.getDepartureTime()));
+        when(trainMapper.toEntity(any())).thenReturn(new TrainEntity());
+        when(ticketDao.getTicketsByTrainAndDate(any(), any())).thenReturn(new ArrayList<>());
+        when(ticketMapper.toDtoList(anyList())).thenReturn(ticketDtoList);
 
-        assertTrue(ticketService.isEnoughTimeToDeparture(testTicketDto));
-
-//        testTicket.setDepartureTime(LocalTime.now().plusMinutes(5).format(timeFormatter));
-//        assertFalse(ticketService.isEnoughTimeToDeparture(testTicket));
+        assertFalse(ticketService.isPassengerNotPresentOnTrain(ticketDto));
     }
 
     @Test
-    public void testIsEnoughTimeToDepartureForFutureDate() {
-        testTicketDto.setDate(LocalDate.now().plusMonths(9).format(dateFormatter));
-        testTicketDto.setDepartureTime(LocalTime.now().plusMinutes(15).format(timeFormatter));
-        assertTrue(ticketService.isEnoughTimeToDeparture(testTicketDto));
-        testTicketDto.setDepartureTime(LocalTime.now().plusMinutes(5).format(timeFormatter));
-        assertTrue(ticketService.isEnoughTimeToDeparture(testTicketDto));
+    public void testIsEnoughTimeToDepartureOnAnotherDate() {
+        ticketEntity.setDate(DATE_TOMORROW);
+
+        when(ticketMapper.toEntity(ticketDto)).thenReturn(ticketEntity);
+
+        assertTrue(ticketService.isEnoughTimeToDeparture(ticketDto));
     }
 
     @Test
-    public void testIsPassengerNotPresentOnTrainSuccess() {
-        List<TicketDto> testTicketList = new ArrayList<>();
-        testTicketList.add(testTicketDto);
-        when(ticketService.getTicketsByTrainAndDate(any(TrainDto.class),
-                any(Date.class))).thenReturn(testTicketList);
-        verify(ticketService).getTicketsByTrainAndDate(any(TrainDto.class),
-                any(Date.class));
-        assertFalse(ticketService.isPassengerNotPresentOnTrain(testTicketDto));
+    public void testIsEnoughTimeToDepartureTodayWithFifteenMinutesLeft() {
+        ticketEntity.setDate(DATE_TODAY);
+
+        when(ticketMapper.toEntity(ticketDto)).thenReturn(ticketEntity);
+        when(scheduleService.convertStringtoDate(any())).thenReturn(CURRENT_TIME_PLUS_15_MINUTES);
+
+        assertTrue(ticketService.isEnoughTimeToDeparture(ticketDto));
     }
 
     @Test
-    public void testIsPassengerNotPresentOnTrainFail() {
-        List<TicketDto> testTicketList = new ArrayList<>();
-        when(ticketService.getTicketsByTrainAndDate(any(TrainDto.class),
-                any(Date.class))).thenReturn(testTicketList);
-        assertTrue(ticketService.isPassengerNotPresentOnTrain(testTicketDto));
+    public void testIsEnoughTimeToDepartureTodayWithFiveMinutesLeft() {
+        ticketEntity.setDate(DATE_TODAY);
+
+        when(ticketMapper.toEntity(ticketDto)).thenReturn(ticketEntity);
+        when(scheduleService.convertStringtoDate(any())).thenReturn(CURRENT_TIME_PLUS_5_MINUTES);
+
+        assertFalse(ticketService.isEnoughTimeToDeparture(ticketDto));
     }
 }
