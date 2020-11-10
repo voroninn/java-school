@@ -1,36 +1,22 @@
 package org.javaschool;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import org.hibernate.loader.collection.OneToManyJoinWalker;
-import org.javaschool.config.WebConfig;
-import org.javaschool.dao.impl.TicketDaoImpl;
-import org.javaschool.dao.interfaces.TicketDao;
 import org.javaschool.dto.PassengerDto;
 import org.javaschool.dto.TicketDto;
 import org.javaschool.dto.TrainDto;
 import org.javaschool.entities.TicketEntity;
-import org.javaschool.entities.TrainEntity;
 import org.javaschool.mapper.TicketMapper;
-import org.javaschool.mapper.TicketMapperImpl;
-import org.javaschool.services.impl.ScheduleServiceImpl;
 import org.javaschool.services.impl.TicketServiceImpl;
 import org.javaschool.services.interfaces.ScheduleService;
-import org.javaschool.services.interfaces.TicketService;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,36 +28,27 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-@Ignore
-@RunWith(MockitoJUnitRunner.class)
-//@WebAppConfiguration
-//@ContextConfiguration(classes = {WebConfig.class})
+@Disabled
+@ExtendWith(MockitoExtension.class)
 public class TicketServiceTest {
 
-//    @Autowired
-//    @InjectMocks
-//    private TicketService ticketService;
-//
-//    @Autowired
-//    private TicketMapper ticketMapper;
-
-    @Mock
-    TicketMapper ticketMapper;
-
-    @Mock
-    ScheduleService scheduleService;
-
     @InjectMocks
-    TicketServiceImpl ticketService;
+    private TicketServiceImpl ticketService;
 
-    private static TicketDto testTicket;
-    private static PassengerDto testPassenger;
-    private static TrainDto testTrain;
-    private static DateTimeFormatter timeFormatter;
-    private static DateTimeFormatter dateFormatter;
+    @Mock
+    private TicketMapper ticketMapper;
 
-    @BeforeClass
-    public static void setUp() {
+    @Mock
+    private ScheduleService scheduleService;
+
+    private TicketDto testTicketDto;
+    private PassengerDto testPassenger;
+    private TrainDto testTrain;
+    private DateTimeFormatter timeFormatter;
+    private DateTimeFormatter dateFormatter;
+
+    @BeforeEach
+    public void setUp() {
         timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         testPassenger = PassengerDto.builder()
@@ -84,9 +61,9 @@ public class TicketServiceTest {
         testTrain = TrainDto.builder()
                 .id(1)
                 .name("Test I")
-                .capacity(10)
+                .capacity(3)
                 .build();
-        testTicket = TicketDto.builder()
+        testTicketDto = TicketDto.builder()
                 .id(1)
                 .number("NUMBER")
                 .passenger(testPassenger)
@@ -98,20 +75,35 @@ public class TicketServiceTest {
                 .date("08.11.2020")
                 .price(0.0)
                 .build();
-        testTicket.getTrains().add(testTrain);
+        testTicketDto.getTrains().add(testTrain);
+    }
+
+    @Test
+    public void testGetTicket() {
+        when(ticketService.getTicket(anyInt())).thenReturn(testTicketDto);
+        assertEquals(testTicketDto, ticketService.getTicket(1));
+    }
+
+    @Test
+    public void testIsDateAfter() {
+        TicketEntity testTicketEnt = new TicketEntity();
+        testTicketEnt.setDate(new Date());
+        when(ticketMapper.toEntity(testTicketDto)).thenReturn(testTicketEnt);
+        //assertFalse(ticketService.isDa);
     }
 
     @Test
     public void testIsEnoughTimeToDepartureForToday() throws ParseException {
-        testTicket.setDate(LocalDate.now().format(dateFormatter));
-        testTicket.setDepartureTime(LocalTime.now().plusMinutes(15).format(timeFormatter));
+        TicketEntity testTicketEnt = new TicketEntity();
+        testTicketEnt.setDate(new Date());
+        testTicketDto.setDate(LocalDate.now().format(dateFormatter));
+        testTicketDto.setDepartureTime(LocalTime.now().plusMinutes(15).format(timeFormatter));
 
-//        when(ticketMapper.toEntity(testTicket).getDate())
-//                .thenReturn(new SimpleDateFormat("dd.MM.yyyy").parse(testTicket.getDate()));
-//        when(scheduleService.convertStringtoDate(testTicket.getDepartureTime()))
-//                .thenReturn(new SimpleDateFormat("HH:mm").parse(testTicket.getDate()));
+        when(ticketMapper.toEntity(testTicketDto)).thenReturn(testTicketEnt);
+        when(scheduleService.convertStringtoDate(testTicketDto.getDepartureTime()))
+                .thenReturn(new SimpleDateFormat("HH:mm").parse(testTicketDto.getDepartureTime()));
 
-        assertTrue(ticketService.isEnoughTimeToDeparture(testTicket));
+        assertTrue(ticketService.isEnoughTimeToDeparture(testTicketDto));
 
 //        testTicket.setDepartureTime(LocalTime.now().plusMinutes(5).format(timeFormatter));
 //        assertFalse(ticketService.isEnoughTimeToDeparture(testTicket));
@@ -119,22 +111,22 @@ public class TicketServiceTest {
 
     @Test
     public void testIsEnoughTimeToDepartureForFutureDate() {
-        testTicket.setDate(LocalDate.now().plusMonths(9).format(dateFormatter));
-        testTicket.setDepartureTime(LocalTime.now().plusMinutes(15).format(timeFormatter));
-        assertTrue(ticketService.isEnoughTimeToDeparture(testTicket));
-        testTicket.setDepartureTime(LocalTime.now().plusMinutes(5).format(timeFormatter));
-        assertTrue(ticketService.isEnoughTimeToDeparture(testTicket));
+        testTicketDto.setDate(LocalDate.now().plusMonths(9).format(dateFormatter));
+        testTicketDto.setDepartureTime(LocalTime.now().plusMinutes(15).format(timeFormatter));
+        assertTrue(ticketService.isEnoughTimeToDeparture(testTicketDto));
+        testTicketDto.setDepartureTime(LocalTime.now().plusMinutes(5).format(timeFormatter));
+        assertTrue(ticketService.isEnoughTimeToDeparture(testTicketDto));
     }
 
     @Test
     public void testIsPassengerNotPresentOnTrainSuccess() {
         List<TicketDto> testTicketList = new ArrayList<>();
-        testTicketList.add(testTicket);
+        testTicketList.add(testTicketDto);
         when(ticketService.getTicketsByTrainAndDate(any(TrainDto.class),
                 any(Date.class))).thenReturn(testTicketList);
         verify(ticketService).getTicketsByTrainAndDate(any(TrainDto.class),
                 any(Date.class));
-        assertFalse(ticketService.isPassengerNotPresentOnTrain(testTicket));
+        assertFalse(ticketService.isPassengerNotPresentOnTrain(testTicketDto));
     }
 
     @Test
@@ -142,6 +134,6 @@ public class TicketServiceTest {
         List<TicketDto> testTicketList = new ArrayList<>();
         when(ticketService.getTicketsByTrainAndDate(any(TrainDto.class),
                 any(Date.class))).thenReturn(testTicketList);
-        assertTrue(ticketService.isPassengerNotPresentOnTrain(testTicket));
+        assertTrue(ticketService.isPassengerNotPresentOnTrain(testTicketDto));
     }
 }

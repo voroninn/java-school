@@ -1,5 +1,6 @@
 package org.javaschool.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dao.interfaces.ScheduleDao;
@@ -22,40 +23,20 @@ import java.util.*;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ScheduleServiceImpl implements ScheduleService {
 
-    @Autowired
-    private ScheduleDao scheduleDao;
-
-    @Autowired
-    private SectionService sectionService;
-
-    @Autowired
-    private StationService stationService;
-
-    @Autowired
-    private TrackService trackService;
-
-    @Autowired
-    private TrainService trainService;
-
-    @Autowired
-    private MappingService mappingService;
-
-    @Autowired
-    private MessagingService messagingService;
-
-    @Autowired
-    private ScheduleMapper scheduleMapper;
-
-    @Autowired
-    private TimetableScheduleMapper timetableScheduleMapper;
-
-    @Autowired
-    private StationMapper stationMapper;
-
-    @Autowired
-    private TrainMapper trainMapper;
+    private final ScheduleDao scheduleDao;
+    private final SectionService sectionService;
+    private final StationService stationService;
+    private final TrackService trackService;
+    private final TrainService trainService;
+    private final MappingService mappingService;
+    private final MessagingService messagingService;
+    private final ScheduleMapper scheduleMapper;
+    private final TimetableScheduleMapper timetableScheduleMapper;
+    private final StationMapper stationMapper;
+    private final TrainMapper trainMapper;
 
     @Override
     public ScheduleDto getSchedule(int id) {

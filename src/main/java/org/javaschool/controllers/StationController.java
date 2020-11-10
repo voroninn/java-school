@@ -1,5 +1,6 @@
 package org.javaschool.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.javaschool.dto.StationDto;
 import org.javaschool.services.interfaces.MappingService;
 import org.javaschool.services.interfaces.ScheduleService;
@@ -15,19 +16,13 @@ import java.util.Map;
 
 @Controller
 @SessionAttributes("station")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StationController {
 
-    @Autowired
-    private StationService stationService;
-
-    @Autowired
-    private MappingService mappingService;
-
-    @Autowired
-    private SectionService sectionService;
-
-    @Autowired
-    private ScheduleService scheduleService;
+    private final StationService stationService;
+    private final MappingService mappingService;
+    private final SectionService sectionService;
+    private final ScheduleService scheduleService;
 
     @GetMapping(value = "/stations")
     public ModelAndView allStations() {

@@ -1,5 +1,6 @@
 package org.javaschool.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.SectionDao;
 import org.javaschool.dto.SectionDto;
@@ -19,22 +20,14 @@ import java.util.List;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SectionServiceImpl implements SectionService {
 
-    @Autowired
-    private SectionDao sectionDao;
-
-    @Autowired
-    private MappingService mappingService;
-
-    @Autowired
-    private SectionMapper sectionMapper;
-
-    @Autowired
-    private StationMapper stationMapper;
-
-    @Autowired
-    private TrackMapper trackMapper;
+    private final SectionDao sectionDao;
+    private final MappingService mappingService;
+    private final SectionMapper sectionMapper;
+    private final StationMapper stationMapper;
+    private final TrackMapper trackMapper;
 
     @Override
     public SectionDto getSection(int id) {

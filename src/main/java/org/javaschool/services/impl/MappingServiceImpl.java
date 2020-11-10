@@ -1,5 +1,6 @@
 package org.javaschool.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.MappingDao;
 import org.javaschool.dto.MappingDto;
@@ -19,22 +20,14 @@ import java.util.List;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MappingServiceImpl implements MappingService {
 
-    @Autowired
-    private MappingDao mappingDao;
-
-    @Autowired
-    private TrackService trackService;
-
-    @Autowired
-    private MappingMapper mappingMapper;
-
-    @Autowired
-    private TrackMapper trackMapper;
-
-    @Autowired
-    private StationMapper stationMapper;
+    private final MappingDao mappingDao;
+    private final TrackService trackService;
+    private final MappingMapper mappingMapper;
+    private final TrackMapper trackMapper;
+    private final StationMapper stationMapper;
 
     @Override
     public MappingDto getMapping(int id) {

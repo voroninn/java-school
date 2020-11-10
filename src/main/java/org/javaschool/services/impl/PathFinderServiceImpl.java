@@ -1,10 +1,10 @@
 package org.javaschool.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dto.SectionDto;
 import org.javaschool.dto.StationDto;
 import org.javaschool.services.interfaces.SectionService;
-import org.javaschool.services.interfaces.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +12,10 @@ import java.util.*;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PathFinderServiceImpl implements org.javaschool.services.interfaces.PathFinderService {
 
-    @Autowired
-    StationService stationService;
-
-    @Autowired
-    SectionService sectionService;
+    private final SectionService sectionService;
 
     private List<SectionDto> sections;
     private Set<StationDto> settledStations;

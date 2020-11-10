@@ -1,5 +1,6 @@
 package org.javaschool.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.UserDao;
 import org.javaschool.entities.RoleEntity;
@@ -18,10 +19,10 @@ import java.util.Set;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserDao userDao;
+    private final UserDao userDao;
 
     @Override
     @Transactional

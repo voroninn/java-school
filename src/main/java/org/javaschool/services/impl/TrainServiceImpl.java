@@ -1,5 +1,6 @@
 package org.javaschool.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.TrainDao;
 import org.javaschool.dto.ScheduleDto;
@@ -17,19 +18,13 @@ import java.util.*;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TrainServiceImpl implements TrainService {
 
-    @Autowired
-    private TrainDao trainDao;
-
-    @Autowired
-    private TrainMapper trainMapper;
-
-    @Autowired
-    private TrackMapper trackMapper;
-
-    @Autowired
-    private MessagingService messagingService;
+    private final TrainDao trainDao;
+    private final TrainMapper trainMapper;
+    private final TrackMapper trackMapper;
+    private final MessagingService messagingService;
 
     @Override
     public TrainDto getTrain(int id) {

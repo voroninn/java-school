@@ -1,5 +1,6 @@
 package org.javaschool.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.StationDao;
 import org.javaschool.dto.SectionDto;
@@ -21,25 +22,15 @@ import java.util.List;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StationServiceImpl implements StationService {
 
-    @Autowired
-    private StationDao stationDao;
-
-    @Autowired
-    private PathFinderService pathFinderService;
-
-    @Autowired
-    private SectionService sectionService;
-
-    @Autowired
-    private MessagingService messagingService;
-
-    @Autowired
-    private StationMapper stationMapper;
-
-    @Autowired
-    private TrainMapper trainMapper;
+    private final StationDao stationDao;
+    private final PathFinderService pathFinderService;
+    private final SectionService sectionService;
+    private final MessagingService messagingService;
+    private final StationMapper stationMapper;
+    private final TrainMapper trainMapper;
 
     @Override
     public StationDto getStation(int id) {

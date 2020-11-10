@@ -1,5 +1,6 @@
 package org.javaschool.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.javaschool.dto.PassengerDto;
 import org.javaschool.dto.TicketDto;
 import org.javaschool.dto.UserDto;
@@ -19,25 +20,15 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private SecurityService securityService;
-
-    @Autowired
-    private UserValidator userValidator;
-
-    @Autowired
-    private PassengerValidator passengerValidator;
-
-    @Autowired
-    private PassengerService passengerService;
-
-    @Autowired
-    private TicketService ticketService;
+    private final UserService userService;
+    private final SecurityService securityService;
+    private final UserValidator userValidator;
+    private final PassengerValidator passengerValidator;
+    private final PassengerService passengerService;
+    private final TicketService ticketService;
 
     @GetMapping("/registration")
     public String registration(Model model) {

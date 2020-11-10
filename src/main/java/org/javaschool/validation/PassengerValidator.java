@@ -1,5 +1,6 @@
 package org.javaschool.validation;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dto.PassengerDto;
 import org.javaschool.services.interfaces.ScheduleService;
@@ -12,10 +13,10 @@ import org.springframework.validation.Validator;
 import java.util.Date;
 
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PassengerValidator implements Validator {
 
-    @Autowired
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -57,7 +58,8 @@ public class PassengerValidator implements Validator {
                     "(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])" +
                     "00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$")) {
                 errors.rejectValue("birthDate", "Format.passengerForm.birthDate");
-            } else if (DateUtils.addYears(scheduleService.convertStringtoDate(passenger.getBirthDate()), 16).after(new Date())) {
+            } else if (DateUtils.addYears(scheduleService.convertStringtoDate(passenger.getBirthDate()),
+                    16).after(new Date())) {
                 errors.rejectValue("birthDate", "Young.passengerForm.birthDate");
             }
         }

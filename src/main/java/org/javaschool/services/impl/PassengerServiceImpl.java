@@ -1,5 +1,6 @@
 package org.javaschool.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.PassengerDao;
 import org.javaschool.dto.PassengerDto;
@@ -17,22 +18,14 @@ import java.util.List;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PassengerServiceImpl implements PassengerService {
 
-    @Autowired
-    private PassengerDao passengerDao;
-
-    @Autowired
-    private TrainService trainService;
-
-    @Autowired
-    private PassengerMapper passengerMapper;
-
-    @Autowired
-    private TrainMapper trainMapper;
-
-    @Autowired
-    private UserMapper userMapper;
+    private final PassengerDao passengerDao;
+    private final TrainService trainService;
+    private final PassengerMapper passengerMapper;
+    private final TrainMapper trainMapper;
+    private final UserMapper userMapper;
 
     @Override
     public PassengerDto getPassenger(int id) {

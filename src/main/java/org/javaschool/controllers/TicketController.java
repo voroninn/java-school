@@ -1,5 +1,6 @@
 package org.javaschool.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dto.*;
 import org.javaschool.services.interfaces.*;
@@ -17,28 +18,16 @@ import java.util.List;
 
 @Controller
 @SessionAttributes("ticketForm")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TicketController {
 
-    @Autowired
-    private TicketService ticketService;
-
-    @Autowired
-    private StationService stationService;
-
-    @Autowired
-    private ScheduleService scheduleService;
-
-    @Autowired
-    private TrainService trainService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private PassengerService passengerService;
-
-    @Autowired
-    private TicketValidator ticketValidator;
+    private final TicketService ticketService;
+    private final StationService stationService;
+    private final ScheduleService scheduleService;
+    private final TrainService trainService;
+    private final UserService userService;
+    private final PassengerService passengerService;
+    private final TicketValidator ticketValidator;
 
     @GetMapping(value = "/")
     public ModelAndView homePage(@ModelAttribute("ticketForm") TicketDto ticketDto) {

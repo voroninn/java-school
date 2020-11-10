@@ -1,5 +1,6 @@
 package org.javaschool.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.javaschool.dto.StationDto;
 import org.javaschool.services.interfaces.ScheduleService;
 import org.javaschool.services.interfaces.StationService;
@@ -12,13 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TimetableController {
 
-    @Autowired
-    private StationService stationService;
-
-    @Autowired
-    private ScheduleService scheduleService;
+    private final StationService stationService;
+    private final ScheduleService scheduleService;
 
     @GetMapping(value = "/timetable")
     public ModelAndView timetable() {

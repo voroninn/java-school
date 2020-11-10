@@ -1,5 +1,6 @@
 package org.javaschool.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.TrackDao;
 import org.javaschool.dto.TrackDto;
@@ -13,13 +14,11 @@ import java.util.List;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TrackServiceImpl implements TrackService {
 
-    @Autowired
-    private TrackDao trackDao;
-
-    @Autowired
-    private TrackMapper trackMapper;
+    private final TrackDao trackDao;
+    private final TrackMapper trackMapper;
 
     @Override
     public TrackDto getTrack(int id) {

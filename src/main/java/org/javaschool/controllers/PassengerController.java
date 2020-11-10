@@ -1,5 +1,6 @@
 package org.javaschool.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.javaschool.dto.PassengerDto;
 import org.javaschool.services.interfaces.PassengerService;
 import org.javaschool.validation.PassengerValidator;
@@ -13,13 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PassengerController {
 
-    @Autowired
-    private PassengerService passengerService;
-
-    @Autowired
-    private PassengerValidator passengerValidator;
+    private final PassengerService passengerService;
+    private final PassengerValidator passengerValidator;
 
     @GetMapping(value = "/passengers")
     public ModelAndView allPassengers() {

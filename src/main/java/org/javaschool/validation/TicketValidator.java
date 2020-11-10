@@ -1,5 +1,6 @@
 package org.javaschool.validation;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dto.TicketDto;
 import org.javaschool.services.interfaces.ScheduleService;
@@ -12,10 +13,10 @@ import org.springframework.validation.Validator;
 import java.util.Date;
 
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TicketValidator implements Validator {
 
-    @Autowired
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
 
     @Override
     public boolean supports(Class<?> aClass) {

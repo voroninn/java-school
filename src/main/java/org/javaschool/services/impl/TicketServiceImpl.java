@@ -1,5 +1,6 @@
 package org.javaschool.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.javaschool.dao.interfaces.TicketDao;
 import org.javaschool.dto.*;
@@ -23,28 +24,16 @@ import java.util.List;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TicketServiceImpl implements TicketService {
 
-    @Autowired
-    private TicketDao ticketDao;
-
-    @Autowired
-    private SectionService sectionService;
-
-    @Autowired
-    private StationService stationService;
-
-    @Autowired
-    private ScheduleService scheduleService;
-
-    @Autowired
-    private TicketMapper ticketMapper;
-
-    @Autowired
-    private PassengerMapper passengerMapper;
-
-    @Autowired
-    private TrainMapper trainMapper;
+    private final TicketDao ticketDao;
+    private final SectionService sectionService;
+    private final StationService stationService;
+    private final ScheduleService scheduleService;
+    private final TicketMapper ticketMapper;
+    private final PassengerMapper passengerMapper;
+    private final TrainMapper trainMapper;
 
     @Override
     public TicketDto getTicket(int id) {

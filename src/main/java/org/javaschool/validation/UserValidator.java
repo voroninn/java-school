@@ -1,5 +1,6 @@
 package org.javaschool.validation;
 
+import lombok.RequiredArgsConstructor;
 import org.javaschool.dto.UserDto;
 import org.javaschool.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,10 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserValidator implements Validator {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @Override
     public boolean supports(Class<?> aClass) {
