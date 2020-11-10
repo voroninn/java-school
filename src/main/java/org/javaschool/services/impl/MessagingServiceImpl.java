@@ -14,7 +14,7 @@ public class MessagingServiceImpl implements org.javaschool.services.interfaces.
 
     @Override
     public void sendMessage() {
-        jmsTemplate.send(session -> session.createTextMessage("Schedule has been changed"));
+        jmsTemplate.send(session -> session.createTextMessage("Update timetable"));
         log.info("Message sent to queue");
     }
 }

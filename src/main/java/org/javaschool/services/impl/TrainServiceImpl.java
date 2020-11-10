@@ -7,6 +7,7 @@ import org.javaschool.dto.TrackDto;
 import org.javaschool.dto.TrainDto;
 import org.javaschool.mapper.TrackMapper;
 import org.javaschool.mapper.TrainMapper;
+import org.javaschool.services.interfaces.MessagingService;
 import org.javaschool.services.interfaces.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,14 +28,20 @@ public class TrainServiceImpl implements TrainService {
     @Autowired
     private TrackMapper trackMapper;
 
+    @Autowired
+    private MessagingService messagingService;
+
     @Override
-    @Transactional
     public TrainDto getTrain(int id) {
         return trainMapper.toDto(trainDao.getTrain(id));
     }
 
     @Override
-    @Transactional
+    public TrainDto getTrainByName(String name) {
+        return trainMapper.toDto(trainDao.getTrainByName(name));
+    }
+
+    @Override
     public List<TrainDto> getAllTrains() {
         return trainMapper.toDtoList(trainDao.getAllTrains());
     }
@@ -58,6 +65,7 @@ public class TrainServiceImpl implements TrainService {
     public void deleteTrain(TrainDto trainDto) {
         trainDao.deleteTrain(trainMapper.toEntity(trainDto));
         log.info("Deleted train " + trainDto.getName());
+        messagingService.sendMessage();
     }
 
     @Override
@@ -75,8 +83,12 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
-    @Transactional
     public List<TrainDto> getTrainsByTrack(TrackDto trackDto) {
         return trainMapper.toDtoList(trainDao.getTrainsByTrack(trackMapper.toEntity(trackDto)));
+    }
+
+    @Override
+    public TrainDto updateTrainDto(TrainDto trainDto) {
+        return getTrainByName(trainDto.getName());
     }
 }

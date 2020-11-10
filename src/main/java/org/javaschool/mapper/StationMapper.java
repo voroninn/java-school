@@ -16,4 +16,5 @@ public interface StationMapper {
     StationEntity toEntity(StationDto trainDto);
 
     List<StationEntity> toEntityList(List<StationDto> stationDtoList);
+
 }

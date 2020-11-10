@@ -93,6 +93,7 @@ public class StationController {
         ModelAndView modelAndView = new ModelAndView();
         int trackNumber = Integer.parseInt(requestParams.get("track"));
         mappingService.appendStation(stationDto, trackNumber, requestParams.get("appendLocation"));
+        stationDto = stationService.updateStationDto(stationDto);
         sectionService.createSection(stationDto, Integer.parseInt(requestParams.get("length")),
                 mappingService.getTrack(trackNumber));
         scheduleService.createEmptyScheduleForStation(stationDto, trackNumber);

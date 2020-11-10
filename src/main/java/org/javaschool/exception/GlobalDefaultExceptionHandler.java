@@ -22,4 +22,9 @@ class GlobalDefaultExceptionHandler {
         modelAndView.setViewName(DEFAULT_ERROR_VIEW);
         return modelAndView;
     }
+
+    @ExceptionHandler(value = TrainsNotFoundException.class)
+    public String trainsNotFoundError() {
+        return "searchFailed";
+    }
 }

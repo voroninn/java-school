@@ -22,13 +22,11 @@ public class TrackServiceImpl implements TrackService {
     private TrackMapper trackMapper;
 
     @Override
-    @Transactional
     public TrackDto getTrack(int id) {
         return trackMapper.toDto(trackDao.getTrack(id));
     }
 
     @Override
-    @Transactional
     public List<TrackDto> getAllTracks() {
         return trackMapper.toDtoList(trackDao.getAllTracks());
     }

@@ -46,9 +46,10 @@
         <form action="/trains/edit/${train.id}/schedule" method="GET" class="col-sm-10 offset-1">
             <input type="hidden" name="reverse" value="true">
             <button class="col-sm-10 offset-1 btn btn-outline-info btn-block"
-                    type="submit">Reverse Schedule</button>
+                    type="submit">Reverse Schedule
+            </button>
         </form>
-        <form action="/trains/edit/schedule" method="POST" class="col-sm-10 offset-1">
+        <form action="/trains/edit/schedule" method="POST" class="needs-validation col-sm-10 offset-1" novalidate>
             <input type="hidden" name="isReversed" value="${isReversed}">
             <table class="col-sm-10 offset-1 table table-striped">
                 <thead>
@@ -71,11 +72,12 @@
                     </td>
                     <td>
                         <c:if test="${empty schedulesList[0].departureTime}">
-                            <input type="text" class="form-control" name="departureTime0" placeholder="HH:MM"/>
+                            <input type="text" class="form-control" name="departureTime0"
+                                   placeholder="HH:MM" required/>
                         </c:if>
                         <c:if test="${!empty schedulesList[0].departureTime}">
                             <input type="text" class="form-control" name="departureTime0"
-                                   value="${schedulesList[0].departureTime}"/>
+                                   value="${schedulesList[0].departureTime}" required/>
                         </c:if>
                     </td>
                 </tr>
@@ -90,23 +92,25 @@
                         <td>
                             <c:if test="${empty schedule.arrivalTime}">
                                 <input type="text" class="form-control"
-                                       name="arrivalTime${schedulesList.indexOf(schedule)}" placeholder="HH:MM"/>
+                                       name="arrivalTime${schedulesList.indexOf(schedule)}"
+                                       placeholder="HH:MM" required/>
                             </c:if>
                             <c:if test="${!empty schedule.arrivalTime}">
                                 <input type="text" class="form-control"
                                        name="arrivalTime${schedulesList.indexOf(schedule)}"
-                                       value="${schedule.arrivalTime}"/>
+                                       value="${schedule.arrivalTime}" required/>
                             </c:if>
                         </td>
                         <td>
                             <c:if test="${empty schedule.departureTime}">
                                 <input type="text" class="form-control"
-                                       name="departureTime${schedulesList.indexOf(schedule)}" placeholder="HH:MM"/>
+                                       name="departureTime${schedulesList.indexOf(schedule)}"
+                                       placeholder="HH:MM" required/>
                             </c:if>
                             <c:if test="${!empty schedule.departureTime}">
                                 <input type="text" class="form-control"
                                        name="departureTime${schedulesList.indexOf(schedule)}"
-                                       value="${schedule.departureTime}"/>
+                                       value="${schedule.departureTime}" required/>
                             </c:if>
                         </td>
                     </tr>
@@ -122,11 +126,11 @@
                     <td>
                         <c:if test="${empty schedulesList[schedulesList.size() - 1].arrivalTime}">
                             <input type="text" class="form-control" name="arrivalTime${schedulesList.size() - 1}"
-                                   placeholder="HH:MM"/>
+                                   placeholder="HH:MM" required/>
                         </c:if>
                         <c:if test="${!empty schedulesList[schedulesList.size() - 1].arrivalTime}">
                             <input type="text" class="form-control" name="arrivalTime${schedulesList.size() - 1}"
-                                   value="${schedulesList[schedulesList.size() - 1].arrivalTime}"/>
+                                   value="${schedulesList[schedulesList.size() - 1].arrivalTime}" required/>
                         </c:if>
                     </td>
                     <td>
@@ -136,6 +140,7 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="invalid-feedback">Please enter time in "HH:MM" format.</div>
             <button class="col-sm-10 offset-1 btn btn-outline-info btn-block" type="submit">Submit</button>
         </form>
     </div>
@@ -146,6 +151,24 @@
         <a href="#">JavaSchool</a>
     </div>
 </footer>
+
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            let forms = document.getElementsByClassName('needs-validation');
+            let validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>

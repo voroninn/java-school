@@ -5,6 +5,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dao.interfaces.ScheduleDao;
 import org.javaschool.dto.*;
 import org.javaschool.entities.ScheduleEntity;
+import org.javaschool.exception.TrainsNotFoundException;
 import org.javaschool.mapper.ScheduleMapper;
 import org.javaschool.mapper.StationMapper;
 import org.javaschool.mapper.TimetableScheduleMapper;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -56,13 +58,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     private TrainMapper trainMapper;
 
     @Override
-    @Transactional
     public ScheduleDto getSchedule(int id) {
         return scheduleMapper.toDto(scheduleDao.getSchedule(id));
     }
 
     @Override
-    @Transactional
     public List<ScheduleDto> getAllSchedules() {
         return scheduleMapper.toDtoList(scheduleDao.getAllSchedules());
     }
@@ -70,6 +70,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public void addSchedule(ScheduleDto scheduleDto) {
+        scheduleDto.setTrainStatus("On Schedule");
         scheduleDao.addSchedule(scheduleMapper.toEntity(scheduleDto));
         log.info("Created new schedule for " +
                 scheduleDto.getTrain().getName() + " on " + scheduleDto.getStation().getName());
@@ -81,7 +82,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleDao.editSchedule(scheduleMapper.toEntity(scheduleDto));
         log.info("Edited schedule for " +
                 scheduleDto.getTrain().getName() + " on " + scheduleDto.getStation().getName());
-        messagingService.sendMessage();
     }
 
     @Override
@@ -92,6 +92,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 scheduleDto.getTrain().getName() + " on " + scheduleDto.getStation().getName());
     }
 
+    @Override
     public void setEndStationForScheduleDto(ScheduleDto scheduleDto) {
         TrackDto trackDto = scheduleDto.getTrain().getTrack();
         int endStationOrder;
@@ -104,18 +105,22 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    @Transactional
     public List<ScheduleDto> getSchedulesByStationAndDirection(StationDto stationDto, boolean direction) {
         List<ScheduleDto> scheduleDtoList =
-                scheduleMapper.toDtoList(scheduleDao.getSchedulesByStationAndDirection(stationMapper.toEntity(stationDto), direction));
-        for (ScheduleDto scheduleDto : scheduleDtoList) {
-            setEndStationForScheduleDto(scheduleDto);
+                scheduleMapper.toDtoList(scheduleDao.getSchedulesByStationAndDirection(stationMapper.toEntity(stationDto),
+                        direction));
+        Iterator<ScheduleDto> iterator = scheduleDtoList.iterator();
+        while (iterator.hasNext()) {
+            ScheduleDto schedule = iterator.next();
+            setEndStationForScheduleDto(schedule);
+            if (schedule.getDepartureTime() == null && schedule.getArrivalTime() == null) {
+                iterator.remove();
+            }
         }
         return scheduleDtoList;
     }
 
     @Override
-    @Transactional
     public List<ScheduleDto> getSchedulesByRoute(List<StationDto> route) {
         List<ScheduleDto> schedulesByRoute = new ArrayList<>();
         List<SectionDto> sectionsByRoute = sectionService.getSectionsByRoute(route);
@@ -164,7 +169,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    @Transactional
     public List<ScheduleDto> getSchedulesByTrain(TrainDto trainDto) {
         return scheduleMapper.toDtoList(scheduleDao.getSchedulesByTrain(trainMapper.toEntity(trainDto)));
     }
@@ -178,7 +182,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    @Transactional
     public List<List<ScheduleDto>> getAllSchedulesByStations(List<StationDto> stationDtoList) {
         List<List<ScheduleDto>> schedules = new ArrayList<>();
         for (StationDto station : stationDtoList) {
@@ -208,6 +211,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public boolean timeIsBefore(Date d1, Date d2) {
+        DateFormat f = new SimpleDateFormat("HH:mm:ss.SSS");
+        return f.format(d1).compareTo(f.format(d2)) < 0;
+    }
+
+    @Override
     public List<ScheduleDto> buildSchedule(List<StationDto> route, Date minDepartureTime) {
         List<ScheduleDto> orderedSchedules = orderSchedulesByTime(getSchedulesByRoute(route));
         if (route.size() > 2) {
@@ -215,26 +224,29 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         List<ScheduleDto> schedules = new ArrayList<>();
         TrackDto currentTrack;
-        ScheduleDto currentSchedule;
-        Date ScheduleArrivalTime;
-        Date ScheduleDepartureTime;
+        ScheduleDto currentSchedule = orderedSchedules.get(0);
+        Date scheduleArrivalTime;
+        Date scheduleDepartureTime;
         mainLoop:
         for (int i = 0; i < route.size(); i++) {
-
             StationDto currentStation = route.get(i);
-
             if (i != route.size() - 1) {
                 StationDto nextStation = route.get(i + 1);
                 currentTrack = sectionService.getSectionBetweenStations(currentStation, nextStation).getTrack();
                 for (ScheduleDto schedule : orderedSchedules) {
-                    ScheduleArrivalTime = convertStringtoDate(schedule.getArrivalTime());
-                    ScheduleDepartureTime = convertStringtoDate(schedule.getDepartureTime());
+                    scheduleArrivalTime = convertStringtoDate(schedule.getArrivalTime());
+                    scheduleDepartureTime = convertStringtoDate(schedule.getDepartureTime());
                     if (currentStation.isBreakpoint()) {
                         if (schedule.getStation().getName().equals(currentStation.getName()) &&
                                 schedule.getTrain().getTrack().equals(currentTrack) &&
-                                ScheduleArrivalTime != null && ScheduleArrivalTime.after(minDepartureTime)) {
+                                scheduleArrivalTime != null &&
+                                !(DateUtils.isSameDay(scheduleDepartureTime, new Date()) &&
+                                schedule.getTrainStatus().equals("Cancelled")) &&
+                                (timeIsBefore(minDepartureTime, scheduleArrivalTime) ||
+                                scheduleArrivalTime.after(convertStringtoDate("00:00")) &&
+                                        scheduleArrivalTime.before(convertStringtoDate("07:00")))) {
                             currentSchedule = schedule;
-                            minDepartureTime = ScheduleArrivalTime;
+                            minDepartureTime = scheduleArrivalTime;
                             schedules.add(currentSchedule);
                             currentStation.setBreakpoint(false);
                             schedules.addAll(buildSchedule(route.subList(i, route.size()), minDepartureTime));
@@ -242,9 +254,14 @@ public class ScheduleServiceImpl implements ScheduleService {
                         }
                     } else if (schedule.getStation().getName().equals(currentStation.getName()) &&
                             schedule.getTrain().getTrack().equals(currentTrack) &&
-                            ScheduleDepartureTime != null && ScheduleDepartureTime.after(minDepartureTime)) {
+                            scheduleDepartureTime != null &&
+                            !(DateUtils.isSameDay(scheduleDepartureTime, new Date()) &&
+                            schedule.getTrainStatus().equals("Cancelled")) &&
+                            (timeIsBefore(minDepartureTime, scheduleDepartureTime) ||
+                            scheduleDepartureTime.after(convertStringtoDate("00:00")) &&
+                                    scheduleDepartureTime.before(convertStringtoDate("07:00")))) {
                         currentSchedule = schedule;
-                        minDepartureTime = ScheduleDepartureTime;
+                        minDepartureTime = scheduleDepartureTime;
                         schedules.add(currentSchedule);
                         break;
                     }
@@ -253,10 +270,17 @@ public class ScheduleServiceImpl implements ScheduleService {
                 StationDto previousStation = route.get(i - 1);
                 currentTrack = sectionService.getSectionBetweenStations(previousStation, currentStation).getTrack();
                 for (ScheduleDto schedule : orderedSchedules) {
-                    ScheduleArrivalTime = convertStringtoDate(schedule.getArrivalTime());
-                    if (schedule.getStation().getName().equals(currentStation.getName()) &&
+                    scheduleArrivalTime = convertStringtoDate(schedule.getArrivalTime());
+                    if (!schedule.getTrainStatus().equals("Cancelled") &&
+                            schedule.getStation().getName().equals(currentStation.getName()) &&
+                            schedule.getTrain().getName().equals(currentSchedule.getTrain().getName()) &&
                             schedule.getTrain().getTrack().equals(currentTrack) &&
-                            ScheduleArrivalTime != null && ScheduleArrivalTime.after(minDepartureTime)) {
+                            scheduleArrivalTime != null &&
+                            !(DateUtils.isSameDay(scheduleArrivalTime, new Date()) &&
+                            schedule.getTrainStatus().equals("Cancelled")) &&
+                            (timeIsBefore(minDepartureTime, scheduleArrivalTime) ||
+                            scheduleArrivalTime.after(convertStringtoDate("00:00")) &&
+                                    scheduleArrivalTime.before(convertStringtoDate("07:00")))) {
                         currentSchedule = schedule;
                         schedules.add(currentSchedule);
                         break;
@@ -264,11 +288,13 @@ public class ScheduleServiceImpl implements ScheduleService {
                 }
             }
         }
+        if (schedules.size() < route.size()) {
+            throw new TrainsNotFoundException("No trains found for route " + route);
+        }
         return schedules;
     }
 
     @Override
-    @Transactional
     public void setBreakpoints(List<StationDto> route) {
         for (int i = 0; i < route.size() - 2; i++) {
             SectionDto section1 = sectionService.getSectionBetweenStations(route.get(i), route.get(i + 1));
@@ -288,10 +314,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         for (TrainDto trainDto : trainDtoList) {
             if (getSchedulesByTrain(trainDto).get(0).isDirection()) {
                 scheduleDao.addSchedule(new ScheduleEntity(stationMapper.toEntity(stationDto),
-                        trainMapper.toEntity(trainDto), true));
+                        trainMapper.toEntity(trainDto), "On Schedule", true));
             } else {
                 scheduleDao.addSchedule(new ScheduleEntity(stationMapper.toEntity(stationDto),
-                        trainMapper.toEntity(trainDto), false));
+                        trainMapper.toEntity(trainDto), "On Schedule",false));
             }
         }
     }
@@ -325,6 +351,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 editSchedule(scheduleDto);
             }
         }
+        messagingService.sendMessage();
     }
 
     @Override
@@ -342,6 +369,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 editSchedule(scheduleDto);
             }
         }
+        messagingService.sendMessage();
     }
 
     @Override

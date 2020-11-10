@@ -3,10 +3,7 @@ package org.javaschool.controllers;
 import org.javaschool.dto.ScheduleDto;
 import org.javaschool.dto.StationDto;
 import org.javaschool.dto.TrainDto;
-import org.javaschool.services.interfaces.MappingService;
-import org.javaschool.services.interfaces.ScheduleService;
-import org.javaschool.services.interfaces.StationService;
-import org.javaschool.services.interfaces.TrainService;
+import org.javaschool.services.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +29,9 @@ public class TrainController {
 
     @Autowired
     private ScheduleService scheduleService;
+
+    @Autowired
+    private MessagingService messagingService;
 
     @GetMapping(value = "/trains")
     public ModelAndView allTrains() {
@@ -96,11 +96,15 @@ public class TrainController {
         modelAndView.addObject("train", trainDto);
         List<StationDto> stationDtoList = mappingService.getOrderedStationsByTrack(trainDto.getTrack());
         List<ScheduleDto> scheduleDtoList = new ArrayList<>();
+        trainDto = trainService.updateTrainDto(trainDto);
         if (!scheduleService.getSchedulesByTrain(trainDto).isEmpty()) {
             scheduleDtoList = scheduleService.getSchedulesByTrain(trainDto);
         } else {
             for (StationDto stationDto : stationDtoList) {
-                scheduleDtoList.add(new ScheduleDto(stationDto, trainDto));
+                ScheduleDto scheduleDto = new ScheduleDto();
+                scheduleDto.setStation(stationDto);
+                scheduleDto.setTrain(trainDto);
+                scheduleDtoList.add(scheduleDto);
             }
         }
         boolean isReversed = false;
@@ -121,13 +125,15 @@ public class TrainController {
             ScheduleDto scheduleDto = new ScheduleDto();
             scheduleDto.setId(Integer.parseInt(requestParams.get("id" + i)));
             scheduleDto.setStation(stationService.getStationByName(requestParams.get("station" + i)));
-            scheduleDto.setTrain(trainDto);
+            scheduleDto.setTrain(trainService.updateTrainDto(trainDto));
+            scheduleDto.setTrainStatus("On Schedule");
             scheduleDto.setArrivalTime(requestParams.get("arrivalTime" + i));
             scheduleDto.setDepartureTime(requestParams.get("departureTime" + i));
             scheduleDto.setDirection(!Boolean.parseBoolean(requestParams.get("isReversed")));
             scheduleService.editSchedule(scheduleDto);
         }
         modelAndView.setViewName("redirect:/trains");
+        messagingService.sendMessage();
         return modelAndView;
     }
 

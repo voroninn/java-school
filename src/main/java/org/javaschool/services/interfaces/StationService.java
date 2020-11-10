@@ -29,4 +29,6 @@ public interface StationService {
     List<StationDto> selectEndpoints(List<StationDto> stationDtoList);
 
     void setEndpoints(LinkedList<StationDto> route);
+
+    StationDto updateStationDto(StationDto stationDto);
 }

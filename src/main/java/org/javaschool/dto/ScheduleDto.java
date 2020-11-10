@@ -25,7 +25,4 @@ public class ScheduleDto implements Serializable {
     private boolean direction;
 
     private String endStation;
-
-    public ScheduleDto(StationDto stationDto, TrainDto trainDto) {
-    }
 }

@@ -42,7 +42,7 @@ public class MappingDaoImpl implements MappingDao {
 
     @Override
     public void addMapping(MappingEntity mapping) {
-        entityManager.persist(mapping);
+        entityManager.persist(entityManager.merge(mapping));
     }
 
     @Override

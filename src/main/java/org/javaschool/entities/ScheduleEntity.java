@@ -25,13 +25,19 @@ public class ScheduleEntity implements Serializable {
         this.direction = direction;
     }
 
+    public ScheduleEntity(StationEntity station, TrainEntity train, String trainStatus, boolean direction) {
+        this.station = station;
+        this.train = train;
+        this.direction = direction;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "station_id")
     private StationEntity station;
 
@@ -39,7 +45,7 @@ public class ScheduleEntity implements Serializable {
     private String trainStatus;
 
     @ToString.Exclude
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "train_id")
     private TrainEntity train;
 

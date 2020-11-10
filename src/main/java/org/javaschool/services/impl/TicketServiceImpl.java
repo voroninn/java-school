@@ -47,13 +47,11 @@ public class TicketServiceImpl implements TicketService {
     private TrainMapper trainMapper;
 
     @Override
-    @Transactional
     public TicketDto getTicket(int id) {
         return ticketMapper.toDto(ticketDao.getTicket(id));
     }
 
     @Override
-    @Transactional
     public List<TicketDto> getAllTickets() {
         return ticketMapper.toDtoList(ticketDao.getAllTickets());
     }
@@ -80,7 +78,6 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    @Transactional
     public long getTicketCount() {
         return ticketDao.getTicketCount();
     }
@@ -104,13 +101,11 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    @Transactional
     public List<TicketDto> getTicketsByPassenger(PassengerDto passengerDto) {
         return ticketMapper.toDtoList(ticketDao.getTicketsByPassenger(passengerMapper.toEntity(passengerDto)));
     }
 
     @Override
-    @Transactional
     public List<TicketDto> getTicketsByTrainAndDate(TrainDto trainDto, Date date) {
         return ticketMapper.toDtoList(ticketDao.getTicketsByTrainAndDate(trainMapper.toEntity(trainDto), date));
     }

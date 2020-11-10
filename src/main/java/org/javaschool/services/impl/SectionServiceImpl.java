@@ -5,8 +5,10 @@ import org.javaschool.dao.interfaces.SectionDao;
 import org.javaschool.dto.SectionDto;
 import org.javaschool.dto.StationDto;
 import org.javaschool.dto.TrackDto;
+import org.javaschool.entities.SectionEntity;
 import org.javaschool.mapper.SectionMapper;
 import org.javaschool.mapper.StationMapper;
+import org.javaschool.mapper.TrackMapper;
 import org.javaschool.services.interfaces.MappingService;
 import org.javaschool.services.interfaces.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class SectionServiceImpl implements SectionService {
 
     @Autowired
     private StationMapper stationMapper;
+
+    @Autowired
+    private TrackMapper trackMapper;
 
     @Override
     public SectionDto getSection(int id) {
@@ -63,14 +68,12 @@ public class SectionServiceImpl implements SectionService {
     }
 
     @Override
-    @Transactional
     public SectionDto getSectionBetweenStations(StationDto stationFrom, StationDto stationTo) {
         return sectionMapper.toDto(sectionDao.getSectionBetweenStations(stationMapper.toEntity(stationFrom),
                 stationMapper.toEntity(stationTo)));
     }
 
     @Override
-    @Transactional
     public List<SectionDto> getSectionsByRoute(List<StationDto> route) {
         return sectionMapper.toDtoList(sectionDao.getSectionsByRoute(stationMapper.toEntityList(route)));
     }
@@ -82,16 +85,16 @@ public class SectionServiceImpl implements SectionService {
         int stationOrder = mappingService.getStationOrder(stationDto, trackDto);
         if (stationOrder == 1) {
             nearestStation = mappingService.getStationByOrder(trackDto, 2);
-            sectionDao.addSection(sectionMapper.toEntity(new SectionDto(stationDto,
-                    nearestStation, length, trackDto, true)));
-            sectionDao.addSection(sectionMapper.toEntity(new SectionDto(nearestStation,
-                    stationDto, length, trackDto, false)));
+            sectionDao.addSection(new SectionEntity(stationMapper.toEntity(stationDto),
+                    stationMapper.toEntity(nearestStation), length, trackMapper.toEntity(trackDto), true));
+            sectionDao.addSection(new SectionEntity(stationMapper.toEntity(stationDto),
+                    stationMapper.toEntity(nearestStation), length, trackMapper.toEntity(trackDto), false));
         } else {
             nearestStation = mappingService.getStationByOrder(trackDto, stationOrder - 1);
-            sectionDao.addSection(sectionMapper.toEntity(new SectionDto(stationDto,
-                    nearestStation, length, trackDto, false)));
-            sectionDao.addSection(sectionMapper.toEntity(new SectionDto(nearestStation,
-                    stationDto, length, trackDto, true)));
+            sectionDao.addSection(new SectionEntity(stationMapper.toEntity(stationDto),
+                    stationMapper.toEntity(nearestStation), length, trackMapper.toEntity(trackDto), false));
+            sectionDao.addSection(new SectionEntity(stationMapper.toEntity(stationDto),
+                    stationMapper.toEntity(nearestStation), length, trackMapper.toEntity(trackDto), true));
         }
     }
 }

@@ -9,6 +9,8 @@ public interface TrainDao {
 
     TrainEntity getTrain(int id);
 
+    TrainEntity getTrainByName(String name);
+
     List<TrainEntity> getAllTrains();
 
     void addTrain(TrainEntity train);

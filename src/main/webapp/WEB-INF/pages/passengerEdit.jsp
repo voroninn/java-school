@@ -90,7 +90,7 @@
                 </c:if>
                 <c:if test="${!empty passengerForm.birthDate}">
                     <form:input path="birthDate" type="text" class="form-control ${status.error ? 'is-invalid' : ''}"
-                                id="birthDate" placeholder="<${passengerForm.birthDate}"/>
+                                id="birthDate" placeholder="${passengerForm.birthDate}"/>
                 </c:if>
                 <div class="invalid-feedback"><form:errors path="birthDate"/></div>
             </div>
@@ -99,12 +99,12 @@
             <div class="form-group col-sm-4 offset-sm-4">
                 <label for="passportNumber">Passport Number</label>
                 <c:if test="${empty passengerForm.passportNumber}">
-                    <form:input path="passportNumber" type="text"
+                    <form:input path="passportNumber" type="number"
                                 class="form-control ${status.error ? 'is-invalid' : ''}"
                                 id="passportNumber" placeholder=""/>
                 </c:if>
                 <c:if test="${!empty passengerForm.passportNumber}">
-                    <form:input path="passportNumber" type="text"
+                    <form:input path="passportNumber" type="number"
                                 class="form-control ${status.error ? 'is-invalid' : ''}"
                                 id="passportNumber" placeholder="${passengerForm.passportNumber}"/>
                 </c:if>
@@ -116,7 +116,6 @@
         </div>
     </div>
     </form:form>
-</div>
 </div>
 
 <footer class="page-footer font-small">

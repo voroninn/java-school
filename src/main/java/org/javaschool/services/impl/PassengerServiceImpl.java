@@ -35,25 +35,21 @@ public class PassengerServiceImpl implements PassengerService {
     private UserMapper userMapper;
 
     @Override
-    @Transactional
     public PassengerDto getPassenger(int id) {
         return passengerMapper.toDto(passengerDao.getPassenger(id));
     }
 
     @Override
-    @Transactional
     public List<PassengerDto> getAllPassengers() {
         return passengerMapper.toDtoList(passengerDao.getAllPassengers());
     }
 
     @Override
-    @Transactional
     public List<PassengerDto> getPassengersByTrainId(int trainId) {
         return passengerMapper.toDtoList(passengerDao.getPassengersByTrain(trainMapper.toEntity(trainService.getTrain(trainId))));
     }
 
     @Override
-    @Transactional
     public PassengerDto getPassengerByUser(UserDto userDto) {
         return passengerMapper.toDto(passengerDao.getPassengerByUser(userMapper.toEntity(userDto)));
     }

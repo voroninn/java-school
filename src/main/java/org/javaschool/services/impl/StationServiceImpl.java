@@ -7,6 +7,7 @@ import org.javaschool.dto.StationDto;
 import org.javaschool.dto.TrainDto;
 import org.javaschool.mapper.StationMapper;
 import org.javaschool.mapper.TrainMapper;
+import org.javaschool.services.interfaces.MessagingService;
 import org.javaschool.services.interfaces.PathFinderService;
 import org.javaschool.services.interfaces.SectionService;
 import org.javaschool.services.interfaces.StationService;
@@ -32,25 +33,25 @@ public class StationServiceImpl implements StationService {
     private SectionService sectionService;
 
     @Autowired
+    private MessagingService messagingService;
+
+    @Autowired
     private StationMapper stationMapper;
 
     @Autowired
     private TrainMapper trainMapper;
 
     @Override
-    @Transactional
     public StationDto getStation(int id) {
         return stationMapper.toDto(stationDao.getStation(id));
     }
 
     @Override
-    @Transactional
     public StationDto getStationByName(String username) {
         return stationMapper.toDto(stationDao.getStationByName(username));
     }
 
     @Override
-    @Transactional
     public List<StationDto> getAllStations() {
         return stationMapper.toDtoList(stationDao.getAllStations());
     }
@@ -72,15 +73,21 @@ public class StationServiceImpl implements StationService {
     @Override
     @Transactional
     public void deleteStation(StationDto stationDto) {
+        if (stationDto.getId() <= 18) {
+            return;
+        }
         stationDao.deleteStation(stationMapper.toEntity(stationDto));
         log.info("Deleted station " + stationDto.getName());
+        messagingService.sendMessage();
     }
 
+    @Override
     public LinkedList<StationDto> getRoute(String stationFrom, String stationTo) {
         pathFinderService.initialize(getStationByName(stationFrom));
         return pathFinderService.createRoute(getStationByName(stationTo));
     }
 
+    @Override
     public int countTrackChanges(LinkedList<StationDto> route) {
         setEndpoints(route);
         int counter = 0;
@@ -99,7 +106,6 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    @Transactional
     public List<StationDto> getStationsByTrain(TrainDto trainDto) {
         return stationMapper.toDtoList(stationDao.getStationsByTrain(trainMapper.toEntity(trainDto)));
     }
@@ -116,5 +122,10 @@ public class StationServiceImpl implements StationService {
     public void setEndpoints(LinkedList<StationDto> route) {
         route.get(0).setEndpoint(true);
         route.get(route.size() - 1).setEndpoint(true);
+    }
+
+    @Override
+    public StationDto updateStationDto(StationDto stationDto) {
+        return getStationByName(stationDto.getName());
     }
 }

@@ -37,19 +37,16 @@ public class MappingServiceImpl implements MappingService {
     private StationMapper stationMapper;
 
     @Override
-    @Transactional
     public MappingDto getMapping(int id) {
         return mappingMapper.toDto(mappingDao.getMapping(id));
     }
 
     @Override
-    @Transactional
     public List<MappingDto> getAllMappings() {
         return mappingMapper.toDtoList(mappingDao.getAllMappings());
     }
 
     @Override
-    @Transactional
     public List<MappingDto> getMappingsByTrack(TrackDto trackDto) {
         return mappingMapper.toDtoList(mappingDao.getMappingsByTrack(trackMapper.toEntity(trackDto)));
     }
@@ -81,13 +78,11 @@ public class MappingServiceImpl implements MappingService {
     }
 
     @Override
-    @Transactional
     public List<StationDto> getOrderedStationsByTrack(TrackDto trackDto) {
         return stationMapper.toDtoList(mappingDao.getOrderedStationsByTrack(trackMapper.toEntity(trackDto)));
     }
 
     @Override
-    @Transactional
     public TrackDto getTrack(int id) {
         return trackMapper.toDto(mappingDao.getTrack(id));
     }
@@ -119,13 +114,11 @@ public class MappingServiceImpl implements MappingService {
     }
 
     @Override
-    @Transactional
     public int getStationOrder(StationDto stationDto, TrackDto trackDto) {
         return mappingDao.getStationOrder(stationMapper.toEntity(stationDto), trackMapper.toEntity(trackDto));
     }
 
     @Override
-    @Transactional
     public StationDto getStationByOrder(TrackDto trackDto, int stationOrder) {
         return stationMapper.toDto(mappingDao.getStationByOrder(trackMapper.toEntity(trackDto), stationOrder));
     }

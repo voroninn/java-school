@@ -21,6 +21,8 @@ public interface ScheduleService {
 
     void deleteSchedule(ScheduleDto scheduleDto);
 
+    void setEndStationForScheduleDto(ScheduleDto scheduleDto);
+
     List<ScheduleDto> getSchedulesByStationAndDirection(StationDto stationDto, boolean direction);
 
     List<ScheduleDto> getSchedulesByRoute(List<StationDto> route);
@@ -35,15 +37,17 @@ public interface ScheduleService {
 
     Date convertStringtoDate(String date);
 
+    boolean timeIsBefore(Date d1, Date d2);
+
     List<ScheduleDto> buildSchedule(List<StationDto> route, Date minDepartureTime);
 
-    public void setBreakpoints(List<StationDto> route);
+    void setBreakpoints(List<StationDto> route);
 
-    public void createEmptyScheduleForStation(StationDto stationDto, int trackId);
+    void createEmptyScheduleForStation(StationDto stationDto, int trackId);
 
-    public void delaySchedule(int id, int minutes);
+    void delaySchedule(int id, int minutes);
 
-    public void cancelSchedule(int id);
+    void cancelSchedule(int id);
 
-    public Map<String, List<TimetableScheduleDto>> getTimetableMap();
+    Map<String, List<TimetableScheduleDto>> getTimetableMap();
 }

@@ -1,5 +1,6 @@
 package org.javaschool.controllers;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dto.*;
 import org.javaschool.services.interfaces.*;
 import org.javaschool.validation.TicketValidator;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -64,7 +66,9 @@ public class TicketController {
             LinkedList<StationDto> route = stationService.getRoute(ticketDto.getDepartureStation(), ticketDto.getArrivalStation());
             modelAndView.addObject("route", route);
             modelAndView.addObject("numberOfChanges", stationService.countTrackChanges(route));
-            List<ScheduleDto> schedule = scheduleService.buildSchedule(route, scheduleService.convertStringtoDate("00:00"));
+            List<ScheduleDto> schedule = scheduleService.buildSchedule(route,
+                    DateUtils.isSameDay(scheduleService.convertStringtoDate(ticketDto.getDate()), new Date())
+                            ? new Date() : scheduleService.convertStringtoDate("00:00"));
             modelAndView.addObject("schedule", schedule);
             ticketDto.setTrains(trainService.getTrainsBySchedule(schedule));
             ticketDto.setPrice(ticketService.calculateTicketPrice(route));
@@ -78,8 +82,7 @@ public class TicketController {
         modelAndView.setViewName("ticketPage");
         UserDto userDto = userService.findUserByUsername(userService.getCurrentUserName());
         PassengerDto passengerDto = passengerService.getPassengerByUser(userDto);
-            if (passengerDto != null && passengerDto.getFirstName() != null && passengerDto.getLastName() != null
-                    && passengerDto.getBirthDate() != null && passengerDto.getPassportNumber() != 0) {
+            if (passengerDto != null ) {
                 modelAndView.addObject("passenger", passengerDto);
                 ticketDto.setPassenger(passengerDto);
             } else {

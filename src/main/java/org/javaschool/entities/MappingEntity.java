@@ -21,12 +21,12 @@ public class MappingEntity implements Serializable {
     private int id;
 
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "station_id")
     private StationEntity station;
 
     @ToString.Exclude
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name = "track_id")
     private TrackEntity track;
 

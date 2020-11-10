@@ -54,30 +54,35 @@
     </c:if>
     <h2 class="form-heading text-center">Edit station data:</h2>
     <div class="jumbotron">
-        <form action="${var}" method="POST" class="col-sm-4 offset-sm-4">
+        <form action="${var}" method="POST" class="needs-validation col-sm-4 offset-sm-4" novalidate>
             <c:if test="${!empty station.name}">
                 <input type="hidden" name="id" value="${station.id}">
             </c:if>
             <div style="height: 100px">
                 <label for="name">Name</label>
                 <c:if test="${empty station.name}">
-                    <input type="text" class="form-control" name="name" id="name" autofocus="true"/>
+                    <input type="text" class="form-control" name="name" id="name" pattern="^[a-zA-Z]+" autofocus="true"
+                           required/>
+                    <div class="invalid-feedback">Please enter a single-word name for the station.</div>
                 </c:if>
                 <c:if test="${!empty station.name}">
-                    <input type="text" class="form-control" name="name" id="name" value="${station.name}"
-                           autofocus="true"/>
+                    <input type="text" class="form-control" name="name" id="name" pattern="^[a-zA-Z]+" value="${station.name}"
+                           autofocus="true" required/>
+                    <div class="invalid-feedback">Please enter a single-word name for the station.</div>
                 </c:if>
             </div>
             <div style="height: 100px">
                 <c:if test="${empty station.name}">
                     <label for="track">Track</label>
-                    <input type="text" class="form-control" name="track" id="track"/>
+                    <input type="number" class="form-control" name="track" id="track" min="1" max="5" required/>
+                    <div class="invalid-feedback">Please enter a number from 1 to 5.</div>
                 </c:if>
             </div>
             <div style="height: 100px">
                 <c:if test="${empty station.name}">
                     <label for="length">Distance from nearest station</label>
-                    <input type="text" class="form-control" name="length" id="length"/>
+                    <input type="number" class="form-control" name="length" id="length" min="20" max="200" required/>
+                    <div class="invalid-feedback">Please enter a number from 20 to 200.</div>
                 </c:if>
             </div>
             <div class="text-center">
@@ -92,6 +97,24 @@
         <a href="#">JavaSchool</a>
     </div>
 </footer>
+
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            let forms = document.getElementsByClassName('needs-validation');
+            let validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>

@@ -44,19 +44,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserDto findUserByUsername(String username) {
         return userMapper.toDto(userDao.findUserByUsername(username));
     }
 
     @Override
-    @Transactional
     public UserDto findUserByEmail(String email) {
         return userMapper.toDto(userDao.findUserByEmail(email));
     }
 
     @Override
-    @Transactional
     public String getCurrentUserName() {
         String currentUserName = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

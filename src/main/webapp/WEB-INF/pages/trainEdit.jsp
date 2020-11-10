@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,46 +48,66 @@
 <div class="container">
     <h2 class="form-heading text-center">Edit train data:</h2>
     <div class="jumbotron">
-        <c:if test="${empty train.name}">
+        <c:if test="${empty train.track.id || empty train.name || empty train.capacity}">
             <c:url value="/trains/add" var="var"/>
         </c:if>
-        <c:if test="${!empty train.name}">
+        <c:if test="${!empty train.track.id && !empty train.name && !empty train.capacity}">
             <c:url value="/trains/edit" var="var"/>
         </c:if>
-        <form:form action="${var}" modelAttribute="train" method="POST" class="col-sm-10 offset-1">
+        <form:form action="${var}" modelAttribute="train" method="POST" class="needs-validation col-sm-10 offset-1"
+                   novalidate="true">
             <c:if test="${!empty train.name}">
                 <input type="hidden" name="id" value="${train.id}">
             </c:if>
-            <div class="form-group col-sm-4 offset-sm-4">
-                <c:if test="${empty train.name}">
-                    <label for="track">Track</label>
-                    <form:input path="track.id" type="text" class="form-control" id="track" autofocus="true"/>
-                </c:if>
-                <c:if test="${!empty train.name}">
-                    <form:input path="track.id" type="hidden" class="form-control"
-                                id="track" value="${train.track.id}" autofocus="true"/>
-                </c:if>
-            </div>
-            <div class="form-group col-sm-4 offset-sm-4">
-                <label for="name">Name</label>
-                <c:if test="${empty train.name}">
-                    <form:input path="name" type="text" class="form-control" id="name"/>
-                </c:if>
-                <c:if test="${!empty train.name}">
-                    <form:input path="name" type="text" class="form-control"
-                                id="name" value="${train.name}"/>
-                </c:if>
-            </div>
-            <div class="form-group col-sm-4 offset-sm-4">
-                <label for="capacity">Capacity</label>
-                <c:if test="${empty train.capacity}">
-                    <form:input path="capacity" type="text" class="form-control" id="capacity"/>
-                </c:if>
-                <c:if test="${!empty train.capacity}">
-                    <form:input path="capacity" type="text" class="form-control" id="capacity"
-                                value="${train.capacity}"/>
-                </c:if>
-            </div>
+            <spring:bind path="track.id">
+                <div class="form-group col-sm-4 offset-sm-4">
+                    <c:if test="${empty train.track.id || empty train.name || empty train.capacity}">
+                        <label for="track">Track</label>
+                        <form:input path="track.id" type="number"
+                                    class="form-control"
+                                    id="track" autofocus="true" min="1" max="5" required="true"/>
+                    </c:if>
+                    <c:if test="${!empty train.track.id && !empty train.name && !empty train.capacity}}">
+                        <form:input path="track.id" type="hidden"
+                                    class="form-control"
+                                    id="track" value="${train.track.id}"/>
+                    </c:if>
+                    <div class="invalid-feedback">Please enter a number from 1 to 5.<form:errors path="track.id"/></div>
+                </div>
+            </spring:bind>
+            <spring:bind path="name">
+                <div class="form-group col-sm-4 offset-sm-4">
+                    <label for="name">Name</label>
+                    <c:if test="${empty train.name}">
+                        <form:input path="name" type="text" class="form-control"
+                                    id="name" pattern="^[a-zA-Z]+ [MDCLXVI]+$" required="true"/>
+                    </c:if>
+                    <c:if test="${!empty train.name}">
+                        <form:input path="name" type="text" class="form-control"
+                                    id="name" value="${train.name}" autofocus="true"
+                                    pattern="^[a-zA-Z]+ [MDCLXVI]+$" required="true"/>
+                    </c:if>
+                    <div class="invalid-feedback">Train name should consist of a Latin word and a Roman numeral
+                        separated by space.<form:errors path="name"/></div>
+                </div>
+            </spring:bind>
+            <spring:bind path="capacity">
+                <div class="form-group col-sm-4 offset-sm-4">
+                    <label for="capacity">Capacity</label>
+                    <c:if test="${empty train.capacity}">
+                        <form:input path="capacity" type="number"
+                                    class="form-control"
+                                    id="capacity" min="10" max="50" required="true"/>
+                    </c:if>
+                    <c:if test="${!empty train.capacity}">
+                        <form:input path="capacity" type="number"
+                                    class="form-control"
+                                    id="capacity" value="${train.capacity}" min="10" max="50" required="true"/>
+                    </c:if>
+                    <div class="invalid-feedback">Please enter a number from 10 to 50.<form:errors
+                            path="capacity"/></div>
+                </div>
+            </spring:bind>
             <div style="height: 30px"></div>
             <div class="text-center">
                 <button class="btn btn-outline-info btn-center" type="submit">Submit and proceed to Schedule
@@ -101,6 +122,24 @@
         <a href="#">JavaSchool</a>
     </div>
 </footer>
+
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            let forms = document.getElementsByClassName('needs-validation');
+            let validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
