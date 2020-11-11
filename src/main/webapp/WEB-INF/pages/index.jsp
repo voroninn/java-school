@@ -66,9 +66,9 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="departureStation">From</label>
                         </div>
-                        <form:select class="custom-select ${status.error ? 'is-invalid' : ''}" path="departureStation" name="departureStation"
-                                     id="departureStation">
-                            <option selected value="">Select Station</option>
+                        <form:select class="custom-select ${status.error ? 'is-invalid' : ''}" path="departureStation"
+                                     name="departureStation" id="departureStation">
+                            <option value="">Select Station</option>
                             <c:forEach var="station" items="${stationsList}">
                                 <option value="${station.name}">${station.name}</option>
                             </c:forEach>
@@ -83,8 +83,8 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="arrivalStation">To</label>
                         </div>
-                        <form:select class="custom-select ${status.error ? 'is-invalid' : ''}" path="arrivalStation" name="arrivalStation"
-                                     id="arrivalStation">
+                        <form:select class="custom-select ${status.error ? 'is-invalid' : ''}" path="arrivalStation"
+                                     name="arrivalStation" id="arrivalStation">
                             <option selected value="">Select Station</option>
                             <c:forEach var="station" items="${stationsList}">
                                 <option value="${station.name}">${station.name}</option>
@@ -97,7 +97,8 @@
             <spring:bind path="date">
                 <div class="form-group row">
                     <div class="col-sm-11 offset-sm-1">
-                        <form:input class="form-control ${status.error ? 'is-invalid' : ''}" path="date" name="date" id="date" placeholder="DD.MM.YYYY"/>
+                        <form:input class="form-control ${status.error ? 'is-invalid' : ''}" path="date" name="date"
+                                    id="date" placeholder="DD.MM.YYYY"/>
                         <div class="invalid-feedback"><form:errors path="date"/></div>
                     </div>
                 </div>

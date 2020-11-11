@@ -2,13 +2,18 @@ package org.javaschool.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.javaschool.dao.interfaces.PassengerDao;
 import org.javaschool.dao.interfaces.TrainDao;
+import org.javaschool.dto.PassengerDto;
 import org.javaschool.dto.ScheduleDto;
 import org.javaschool.dto.TrackDto;
 import org.javaschool.dto.TrainDto;
+import org.javaschool.exception.IllegalOperationException;
+import org.javaschool.mapper.PassengerMapper;
 import org.javaschool.mapper.TrackMapper;
 import org.javaschool.mapper.TrainMapper;
 import org.javaschool.services.interfaces.MessagingService;
+import org.javaschool.services.interfaces.PassengerService;
 import org.javaschool.services.interfaces.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +29,8 @@ public class TrainServiceImpl implements TrainService {
     private final TrainDao trainDao;
     private final TrainMapper trainMapper;
     private final TrackMapper trackMapper;
+    private final PassengerDao passengerDao;
+    private final PassengerMapper passengerMapper;
     private final MessagingService messagingService;
 
     @Override
@@ -58,6 +65,9 @@ public class TrainServiceImpl implements TrainService {
     @Override
     @Transactional
     public void deleteTrain(TrainDto trainDto) {
+        if (!getPassengersByTrainId(trainDto.getId()).isEmpty()) {
+            throw new IllegalOperationException("Attempted to delete a train with passengers.");
+        }
         trainDao.deleteTrain(trainMapper.toEntity(trainDto));
         log.info("Deleted train " + trainDto.getName());
         messagingService.sendMessage();
@@ -80,6 +90,11 @@ public class TrainServiceImpl implements TrainService {
     @Override
     public List<TrainDto> getTrainsByTrack(TrackDto trackDto) {
         return trainMapper.toDtoList(trainDao.getTrainsByTrack(trackMapper.toEntity(trackDto)));
+    }
+
+    @Override
+    public List<PassengerDto> getPassengersByTrainId(int trainId) {
+        return passengerMapper.toDtoList(passengerDao.getPassengersByTrain(trainMapper.toEntity(getTrain(trainId))));
     }
 
     @Override

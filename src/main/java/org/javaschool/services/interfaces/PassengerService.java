@@ -11,8 +11,6 @@ public interface PassengerService {
 
     List<PassengerDto> getAllPassengers();
 
-    List<PassengerDto> getPassengersByTrainId(int trainId);
-
     PassengerDto getPassengerByUser(UserDto userDto);
 
     void addPassenger(PassengerDto passengerDto);

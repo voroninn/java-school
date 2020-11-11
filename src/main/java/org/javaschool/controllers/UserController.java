@@ -85,7 +85,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("personalEdit");
         } else {
-            modelAndView.setViewName("redirect:/myaccount/" + userDto.getUsername());
+            modelAndView.setViewName("redirect:/");
             passengerDto.setUser(userDto);
             if (passengerService.getPassenger(passengerDto.getId()) != null) {
                 passengerService.editPassenger(passengerDto);

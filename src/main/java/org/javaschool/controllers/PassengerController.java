@@ -3,6 +3,7 @@ package org.javaschool.controllers;
 import lombok.RequiredArgsConstructor;
 import org.javaschool.dto.PassengerDto;
 import org.javaschool.services.interfaces.PassengerService;
+import org.javaschool.services.interfaces.TrainService;
 import org.javaschool.validation.PassengerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class PassengerController {
 
     private final PassengerService passengerService;
+    private final TrainService trainService;
     private final PassengerValidator passengerValidator;
 
     @GetMapping(value = "/passengers")
@@ -32,7 +34,7 @@ public class PassengerController {
     public ModelAndView passengersByTrain(@PathVariable("trainId") int trainId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("passengers");
-        modelAndView.addObject("passengersList", passengerService.getPassengersByTrainId(trainId));
+        modelAndView.addObject("passengersList", trainService.getPassengersByTrainId(trainId));
         return modelAndView;
     }
 

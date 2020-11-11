@@ -32,7 +32,7 @@ public class PassengerDaoImpl implements PassengerDao {
     @SuppressWarnings("unchecked")
     public List<PassengerEntity> getPassengersByTrain(TrainEntity train) {
         Query query = entityManager.createQuery("SELECT DISTINCT t.passenger FROM TicketEntity t " +
-                "WHERE :train member of t.trains");
+                "WHERE :train member of t.trains AND t.date <= CURRENT_DATE");
         query.setParameter("train", train);
         return query.getResultList();
     }

@@ -23,9 +23,14 @@ public class StationDaoImpl implements StationDao {
 
     @Override
     public StationEntity getStationByName(String name) {
-        Query query = entityManager.createQuery("SELECT s FROM StationEntity s WHERE s.name = :name");
-        query.setParameter("name", name);
-        return (StationEntity) query.getSingleResult();
+        StationEntity station;
+        try {
+            station = (StationEntity) entityManager.createQuery("SELECT s FROM StationEntity s " +
+                    "WHERE s.name = :name").setParameter("name", name).getSingleResult();
+        } catch (NoResultException e) {
+            station = null;
+        }
+        return station;
     }
 
     @Override
@@ -58,4 +63,3 @@ public class StationDaoImpl implements StationDao {
         return query.getResultList();
     }
 }
-

@@ -280,7 +280,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 }
             }
         }
-        if (schedules.size() < route.size()) {
+        if (schedules.isEmpty()) {
             throw new TrainsNotFoundException("No trains found for route " + route);
         }
         return schedules;

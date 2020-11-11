@@ -1,5 +1,6 @@
 package org.javaschool.services.interfaces;
 
+import org.javaschool.dto.PassengerDto;
 import org.javaschool.dto.ScheduleDto;
 import org.javaschool.dto.TrackDto;
 import org.javaschool.dto.TrainDto;
@@ -24,6 +25,8 @@ public interface TrainService {
     Set<TrainDto> getTrainsBySchedule(List<ScheduleDto> scheduleDtoList);
 
     List<TrainDto> getTrainsByTrack(TrackDto trackDto);
+
+    List<PassengerDto> getPassengersByTrainId(int trainId);
 
     TrainDto updateTrainDto(TrainDto trainDto);
 }

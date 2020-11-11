@@ -1,7 +1,6 @@
 package org.javaschool.dao.impl;
 
 import org.javaschool.dao.interfaces.TrainDao;
-import org.javaschool.entities.StationEntity;
 import org.javaschool.entities.TrackEntity;
 import org.javaschool.entities.TrainEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +23,14 @@ public class TrainDaoImpl implements TrainDao {
 
     @Override
     public TrainEntity getTrainByName(String name) {
-        Query query = entityManager.createQuery("SELECT t FROM TrainEntity t WHERE t.name = :name");
-        query.setParameter("name", name);
-        return (TrainEntity) query.getSingleResult();
+        TrainEntity train;
+        try {
+            train = (TrainEntity) entityManager.createQuery("SELECT t FROM TrainEntity t " +
+                    "WHERE t.name = :name").setParameter("name", name).getSingleResult();
+        } catch (NoResultException e) {
+            train = null;
+        }
+        return train;
     }
 
     @Override

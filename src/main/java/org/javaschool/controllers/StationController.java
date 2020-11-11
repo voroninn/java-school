@@ -6,8 +6,10 @@ import org.javaschool.services.interfaces.MappingService;
 import org.javaschool.services.interfaces.ScheduleService;
 import org.javaschool.services.interfaces.SectionService;
 import org.javaschool.services.interfaces.StationService;
+import org.javaschool.validation.StationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +25,7 @@ public class StationController {
     private final MappingService mappingService;
     private final SectionService sectionService;
     private final ScheduleService scheduleService;
+    private final StationValidator stationValidator;
 
     @GetMapping(value = "/stations")
     public ModelAndView allStations() {
@@ -41,11 +44,19 @@ public class StationController {
     }
 
     @PostMapping(value = "/stations/edit")
-    public ModelAndView editStation(@ModelAttribute("station") StationDto stationDto, @RequestParam String name) {
+    public ModelAndView editStation(@ModelAttribute("station") StationDto stationDto,
+                                    BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/stations");
-        stationDto.setName(name);
-        stationService.editStation(stationDto);
+        stationValidator.validate(stationDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("stationEdit");
+            stationDto.setName("");
+        } else {
+            modelAndView.setViewName("redirect:/stations");
+            //@RequestParam String name
+            //stationDto.setName(name);
+            stationService.editStation(stationDto);
+        }
         return modelAndView;
     }
 
@@ -60,12 +71,19 @@ public class StationController {
     @PostMapping(value = "/stations/add")
     public ModelAndView addStation(@ModelAttribute("station") StationDto stationDto,
                                    @RequestParam Map<String, String> requestParams,
-                                   RedirectAttributes redirectAttributes) {
+                                   RedirectAttributes redirectAttributes,
+                                   BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        stationDto.setName(requestParams.get("name"));
-        modelAndView.setViewName("redirect:/stations/edit/" + stationDto.getId() + "/track");
-        redirectAttributes.addAttribute("track", requestParams.get("track"));
-        redirectAttributes.addAttribute("length", requestParams.get("length"));
+        stationValidator.validate(stationDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("stationEdit");
+            stationDto.setName("");
+        } else {
+            //stationDto.setName(requestParams.get("name"));
+            modelAndView.setViewName("redirect:/stations/edit/" + stationDto.getId() + "/track");
+            redirectAttributes.addAttribute("track", requestParams.get("track"));
+            redirectAttributes.addAttribute("length", requestParams.get("length"));
+        }
         return modelAndView;
     }
 

@@ -21,6 +21,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -94,7 +95,14 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketDto> getTicketsByPassenger(PassengerDto passengerDto) {
-        return ticketMapper.toDtoList(ticketDao.getTicketsByPassenger(passengerMapper.toEntity(passengerDto)));
+        List<TicketDto> ticketDtoList =
+                ticketMapper.toDtoList(ticketDao.getTicketsByPassenger(passengerMapper.toEntity(passengerDto)));
+        ticketDtoList.removeIf(this::isExpired);
+        return ticketDtoList;
+    }
+
+    public boolean isExpired(TicketDto ticketDto) {
+        return scheduleService.convertStringtoDate(ticketDto.getDate()).before(new Date());
     }
 
     @Override

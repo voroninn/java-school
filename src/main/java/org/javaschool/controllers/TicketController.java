@@ -55,11 +55,11 @@ public class TicketController {
             LinkedList<StationDto> route = stationService.getRoute(ticketDto.getDepartureStation(), ticketDto.getArrivalStation());
             modelAndView.addObject("route", route);
             modelAndView.addObject("numberOfChanges", stationService.countTrackChanges(route));
-            List<ScheduleDto> schedule = scheduleService.buildSchedule(route,
+            List<ScheduleDto> scheduleDtoList = scheduleService.buildSchedule(route,
                     DateUtils.isSameDay(scheduleService.convertStringtoDate(ticketDto.getDate()), new Date())
                             ? new Date() : scheduleService.convertStringtoDate("00:00"));
-            modelAndView.addObject("schedule", schedule);
-            ticketDto.setTrains(trainService.getTrainsBySchedule(schedule));
+            modelAndView.addObject("schedules", scheduleDtoList);
+            ticketDto.setTrains(trainService.getTrainsBySchedule(scheduleDtoList));
             ticketDto.setPrice(ticketService.calculateTicketPrice(route));
         }
         return modelAndView;
@@ -87,9 +87,8 @@ public class TicketController {
         List<String> validationMessages = ticketService.validateTicket(ticketDto);
         if (validationMessages.get(0).equals("success")) {
             modelAndView.setViewName("ticketBuy");
-            List<TrainDto> trainDtoList = new ArrayList<>(ticketDto.getTrains());
             modelAndView.addObject("passenger", ticketDto.getPassenger());
-            modelAndView.addObject("trainsList", trainDtoList);
+            modelAndView.addObject("trainsList", new ArrayList<>(ticketDto.getTrains()));
             ticketDto.setNumber(ticketService.generateTicketNumber(ticketDto));
             ticketService.addTicket(ticketDto);
         } else {

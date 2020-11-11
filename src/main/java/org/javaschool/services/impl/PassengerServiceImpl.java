@@ -22,9 +22,7 @@ import java.util.List;
 public class PassengerServiceImpl implements PassengerService {
 
     private final PassengerDao passengerDao;
-    private final TrainService trainService;
     private final PassengerMapper passengerMapper;
-    private final TrainMapper trainMapper;
     private final UserMapper userMapper;
 
     @Override
@@ -35,11 +33,6 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     public List<PassengerDto> getAllPassengers() {
         return passengerMapper.toDtoList(passengerDao.getAllPassengers());
-    }
-
-    @Override
-    public List<PassengerDto> getPassengersByTrainId(int trainId) {
-        return passengerMapper.toDtoList(passengerDao.getPassengersByTrain(trainMapper.toEntity(trainService.getTrain(trainId))));
     }
 
     @Override

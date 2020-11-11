@@ -30,11 +30,11 @@ public interface TicketService {
 
     List<TicketDto> getTicketsByTrainAndDate(TrainDto trainDto, Date date);
 
-    public boolean areTicketsAvailable(TicketDto ticketDto);
+    boolean areTicketsAvailable(TicketDto ticketDto);
 
-    public boolean isPassengerNotPresentOnTrain(TicketDto ticketDto);
+    boolean isPassengerNotPresentOnTrain(TicketDto ticketDto);
 
-    public boolean isEnoughTimeToDeparture(TicketDto ticketDto);
+    boolean isEnoughTimeToDeparture(TicketDto ticketDto);
 
-    public List<String> validateTicket(TicketDto ticketDto);
+    List<String> validateTicket(TicketDto ticketDto);
 }

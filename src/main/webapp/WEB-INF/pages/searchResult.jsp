@@ -58,17 +58,17 @@
 <div style="height: 100px"></div>
 
 <div class="container">
-    <h2 class="text-center">Your route from ${route[0].name}
+    <h2 class="text-center">Your best route from ${route[0].name}
         to ${route[route.size() - 1].name} on ${ticketForm.date}</h2>
     <div class="jumbotron">
         <div class="text-center">
             <div style="height: 50px">
-                <strong>${schedule[0].departureTime} ${route[0].name}</strong>
+                <strong>${schedules[0].departureTime} ${route[0].name}</strong>
                 &LongRightArrow;
                 <c:forEach var="station" items="${route}" begin="1" end="${route.size() - 2}">
                     ${station.name} &LongRightArrow;
                 </c:forEach>
-                <strong>${route[route.size() - 1].name} ${schedule[schedule.size() - 1].arrivalTime}</strong>
+                <strong>${route[route.size() - 1].name} ${schedules[schedules.size() - 1].arrivalTime}</strong>
             </div>
             <div style="height: 50px">
                 <p>Number of changes: ${numberOfChanges}</p>
@@ -77,9 +77,9 @@
                 <p>Price: ₪ <strong>${ticketForm.price}</strong></p>
             </div>
             <form:form action="/ticket/verify" modelAttribute="ticketForm" method="POST">
-            <form:hidden path="departureTime" name="departureTime" value="${schedule.get(0).departureTime}"/>
+            <form:hidden path="departureTime" name="departureTime" value="${schedules.get(0).departureTime}"/>
             <form:hidden path="arrivalTime" name="arrivalTime"
-                         value="${schedule.get(schedule.size() - 1).arrivalTime}"/>
+                         value="${schedules.get(schedules.size() - 1).arrivalTime}"/>
             <div style="height: 50px">
                 <button type="submit" class="btn btn-primary">Get a Ticket</button>
             </div>

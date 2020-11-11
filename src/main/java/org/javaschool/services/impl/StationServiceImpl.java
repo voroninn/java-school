@@ -6,6 +6,7 @@ import org.javaschool.dao.interfaces.StationDao;
 import org.javaschool.dto.SectionDto;
 import org.javaschool.dto.StationDto;
 import org.javaschool.dto.TrainDto;
+import org.javaschool.exception.IllegalOperationException;
 import org.javaschool.mapper.StationMapper;
 import org.javaschool.mapper.TrainMapper;
 import org.javaschool.services.interfaces.MessagingService;
@@ -38,8 +39,8 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public StationDto getStationByName(String username) {
-        return stationMapper.toDto(stationDao.getStationByName(username));
+    public StationDto getStationByName(String name) {
+        return stationMapper.toDto(stationDao.getStationByName(name));
     }
 
     @Override
@@ -65,7 +66,7 @@ public class StationServiceImpl implements StationService {
     @Transactional
     public void deleteStation(StationDto stationDto) {
         if (stationDto.getId() <= 18) {
-            return;
+            throw new IllegalOperationException("Attempted to delete a core station.");
         }
         stationDao.deleteStation(stationMapper.toEntity(stationDto));
         log.info("Deleted station " + stationDto.getName());

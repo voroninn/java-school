@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,31 +55,40 @@
     </c:if>
     <h2 class="form-heading text-center">Edit station data:</h2>
     <div class="jumbotron">
-        <form action="${var}" method="POST" class="needs-validation col-sm-4 offset-sm-4" novalidate>
+        <form:form action="${var}" modelAttribute="station" method="POST"
+                   class="needs-validation col-sm-10 offset-1" novalidate="true">
             <c:if test="${!empty station.name}">
                 <input type="hidden" name="id" value="${station.id}">
             </c:if>
-            <div style="height: 100px">
-                <label for="name">Name</label>
-                <c:if test="${empty station.name}">
-                    <input type="text" class="form-control" name="name" id="name" pattern="^[a-zA-Z]+" autofocus="true"
-                           required/>
-                    <div class="invalid-feedback">Please enter a single-word name for the station.</div>
-                </c:if>
-                <c:if test="${!empty station.name}">
-                    <input type="text" class="form-control" name="name" id="name" pattern="^[a-zA-Z]+" value="${station.name}"
-                           autofocus="true" required/>
-                    <div class="invalid-feedback">Please enter a single-word name for the station.</div>
-                </c:if>
-            </div>
-            <div style="height: 100px">
+            <div class="form-group col-sm-4 offset-sm-4">
                 <c:if test="${empty station.name}">
                     <label for="track">Track</label>
                     <input type="number" class="form-control" name="track" id="track" min="1" max="5" required/>
                     <div class="invalid-feedback">Please enter a number from 1 to 5.</div>
                 </c:if>
             </div>
-            <div style="height: 100px">
+            <spring:bind path="name">
+                <div class="form-group col-sm-4 offset-sm-4">
+                    <label for="name">Name</label>
+                    <c:if test="${empty station.name}">
+                        <form:input path="name" type="text" class="form-control ${status.error ? 'is-invalid' : ''}"
+                                    id="name" pattern="^[a-zA-Z]+" autofocus="true" required="true"/>
+                    </c:if>
+                    <c:if test="${!empty station.name}">
+                        <form:input path="name" type="text" class="form-control ${status.error ? 'is-invalid' : ''}"
+                                    id="name" pattern="^[a-zA-Z]+" value="${station.name}"
+                                    autofocus="true" required="true"/>
+                    </c:if>
+                    <div class="invalid-feedback">
+                        <c:set var="nameError"><form:errors path="name"/></c:set>
+                        <c:if test="${!empty nameError}">${nameError}</c:if>
+                        <c:if test="${empty nameError}">
+                            Please enter a single-word name for the station.
+                        </c:if>
+                    </div>
+                </div>
+            </spring:bind>
+            <div class="form-group col-sm-4 offset-sm-4">
                 <c:if test="${empty station.name}">
                     <label for="length">Distance from nearest station</label>
                     <input type="number" class="form-control" name="length" id="length" min="20" max="200" required/>
@@ -88,7 +98,7 @@
             <div class="text-center">
                 <button class="btn btn-outline-info btn-center" type="submit">Submit</button>
             </div>
-        </form>
+        </form:form>
     </div>
 </div>
 

@@ -10,7 +10,7 @@ public interface StationService {
 
     StationDto getStation(int id);
 
-    StationDto getStationByName(String username);
+    StationDto getStationByName(String name);
 
     List<StationDto> getAllStations();
 

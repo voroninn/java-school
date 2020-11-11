@@ -1,8 +1,5 @@
 package org.javaschool;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dao.interfaces.TicketDao;
 import org.javaschool.dto.PassengerDto;
@@ -22,6 +19,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.time.Instant;
 import java.util.*;
@@ -43,6 +43,7 @@ public class TicketServiceTest {
     private TrainMapper trainMapper;
     @Mock
     private TicketDao ticketDao;
+
 
     private static final Date DATE_TODAY = new Date();
     private static final Date DATE_TOMORROW = DateUtils.addDays(new Date(), 1);
@@ -85,6 +86,18 @@ public class TicketServiceTest {
     @Test
     public void testGenerateTicketNumber() {
         assertNotNull(ticketService.generateTicketNumber(ticketDto));
+    }
+
+    @Test
+    public void testIsExpiredFalse() {
+        when(scheduleService.convertStringtoDate(any())).thenReturn(CURRENT_TIME_PLUS_5_MINUTES);
+        assertFalse(ticketService.isExpired(ticketDto));
+    }
+
+    @Test
+    public void testIsExpiredTrue() {
+        when(scheduleService.convertStringtoDate(any())).thenReturn(DateUtils.setYears(DATE_TODAY, 2015));
+        assertTrue(ticketService.isExpired(ticketDto));
     }
 
     @Test

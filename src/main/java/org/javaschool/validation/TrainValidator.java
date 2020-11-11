@@ -1,13 +1,19 @@
 package org.javaschool.validation;
 
+import lombok.RequiredArgsConstructor;
 import org.javaschool.dto.TrainDto;
+import org.javaschool.services.interfaces.TrainService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 @Component
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TrainValidator implements Validator {
+
+    private final TrainService trainService;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -39,6 +45,10 @@ public class TrainValidator implements Validator {
             if (train.getName().length() > 20) {
                 errors.rejectValue("name", "Size.trainForm.name");
             }
+        }
+        if (trainService.getTrainByName(train.getName()) != null &&
+                trainService.getTrainByName(train.getName()).getId() != train.getId()) {
+            errors.rejectValue("name", "Duplicate.trainForm.name");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "capacity", "NotEmpty");

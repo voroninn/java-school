@@ -5,8 +5,10 @@ import org.javaschool.dto.ScheduleDto;
 import org.javaschool.dto.StationDto;
 import org.javaschool.dto.TrainDto;
 import org.javaschool.services.interfaces.*;
+import org.javaschool.validation.TrainValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,6 +23,7 @@ import java.util.Map;
 public class TrainController {
 
     private final TrainService trainService;
+    private final TrainValidator trainValidator;
     private final StationService stationService;
     private final MappingService mappingService;
     private final ScheduleService scheduleService;
@@ -34,7 +37,8 @@ public class TrainController {
         List<List<StationDto>> endpointsList = new ArrayList<>();
         for (TrainDto trainDto : trainDtoList) {
             List<StationDto> stationDtoList = mappingService.getOrderedStationsByTrack(trainDto.getTrack());
-            if (!scheduleService.getSchedulesByTrain(trainDto).get(0).isDirection()) {
+            List<ScheduleDto> scheduleDtoList = scheduleService.getSchedulesByTrain(trainDto);
+            if (!scheduleDtoList.isEmpty() && !scheduleDtoList.get(0).isDirection()) {
                 Collections.reverse(stationDtoList);
             }
             if (!stationDtoList.isEmpty()) {
@@ -58,10 +62,17 @@ public class TrainController {
     }
 
     @PostMapping(value = "/trains/edit")
-    public ModelAndView editTrain(@ModelAttribute("train") TrainDto trainDto) {
+    public ModelAndView editTrain(@ModelAttribute("train") TrainDto trainDto,
+                                  BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/trains/edit/" + trainDto.getId() + "/schedule");
-        trainService.editTrain(trainDto);
+        trainValidator.validate(trainDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("trainEdit");
+            trainDto.setName("");
+        } else {
+            modelAndView.setViewName("redirect:/trains/edit/" + trainDto.getId() + "/schedule");
+            trainService.editTrain(trainDto);
+        }
         return modelAndView;
     }
 
@@ -74,10 +85,17 @@ public class TrainController {
     }
 
     @PostMapping(value = "/trains/add")
-    public ModelAndView addTrain(@ModelAttribute("train") TrainDto trainDto) {
+    public ModelAndView addTrain(@ModelAttribute("train") TrainDto trainDto,
+                                 BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/trains/edit/" + trainDto.getId() + "/schedule");
-        trainService.addTrain(trainDto);
+        trainValidator.validate(trainDto, bindingResult);
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("trainEdit");
+            trainDto.setName("");
+        } else {
+            modelAndView.setViewName("redirect:/trains/edit/" + trainDto.getId() + "/schedule");
+            trainService.addTrain(trainDto);
+        }
         return modelAndView;
     }
 
@@ -114,7 +132,7 @@ public class TrainController {
     public ModelAndView editTrainSchedule(@RequestParam Map<String, String> requestParams,
                                           @ModelAttribute("train") TrainDto trainDto) {
         ModelAndView modelAndView = new ModelAndView();
-        for (int i = 0; i < requestParams.size() / 3 - 1; i++) {
+        for (int i = 0; i < scheduleService.getSchedulesByTrain(trainDto).size(); i++) {
             ScheduleDto scheduleDto = new ScheduleDto();
             scheduleDto.setId(Integer.parseInt(requestParams.get("id" + i)));
             scheduleDto.setStation(stationService.getStationByName(requestParams.get("station" + i)));
