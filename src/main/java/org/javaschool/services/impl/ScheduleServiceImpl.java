@@ -148,11 +148,14 @@ public class ScheduleServiceImpl implements ScheduleService {
         Collections.sort(afterMidnightTimes);
         arrivalTimes.addAll(afterMidnightTimes);
 
+        String trainName = "";
         for (Date time : arrivalTimes) {
             for (ScheduleDto schedule : scheduleDtoList) {
                 scheduleDepartureTime = convertStringtoDate(schedule.getDepartureTime());
-                if (scheduleDepartureTime != null && scheduleDepartureTime.equals(time)) {
+                if (scheduleDepartureTime != null && scheduleDepartureTime.equals(time) &&
+                        !schedule.getTrain().getName().equals(trainName)) {
                     orderedSchedules.add(schedule);
+                    trainName = schedule.getTrain().getName();
                     break;
                 }
             }

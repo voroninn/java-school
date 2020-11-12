@@ -46,10 +46,14 @@
     <p class="text-center">You can view all your tickets under My Tickets tab.</p>
     <div class="jumbotron">
         <div class="text-center">
-            <p>Ticket No. ${ticketForm.number}</p>
-            <p>Date: ${ticketForm.date}</p>
-            <p>From ${ticketForm.departureStation} at ${ticketForm.departureTime}</p>
-            <p>To ${ticketForm.arrivalStation} at ${ticketForm.arrivalTime}</p>
+            <p>Ticket No. <strong>${ticketForm.number}</strong></p>
+            <div style="height: 10px"></div>
+            <p>Date: <strong>${ticketForm.date}</strong></p>
+            <div style="height: 10px"></div>
+            <p>From <strong>${ticketForm.departureStation}</strong> at <strong>${ticketForm.departureTime}</strong></p>
+            <div style="height: 10px"></div>
+            <p>To <strong>${ticketForm.arrivalStation}</strong> at <strong>${ticketForm.arrivalTime}</strong></p>
+            <div style="height: 10px"></div>
             <c:if test="${trainsList.size() == 1}">
                 <p>Train: <strong>${trainsList.get(0).name}</strong></p>
             </c:if>
@@ -60,20 +64,21 @@
                     </c:forEach>
                 </p>
             </c:if>
+            <div style="height: 10px"></div>
             <c:if test="${!empty passenger.id}">
-                <p>Passenger Info: ${passenger.firstName} ${passenger.lastName}
-                    ${passenger.birthDate} ${passenger.passportNumber}</p>
+                <p>Passenger Info: <strong>${passenger.firstName} ${passenger.lastName}
+                    ${passenger.birthDate} ${passenger.passportNumber}</strong></p>
             </c:if>
-            <p>Price: ₪ ${ticketForm.price}</p>
+            <div style="height: 10px"></div>
+            <p>Price: ₪ <strong>${ticketForm.price}</strong></p>
         </div>
+        <div style="height: 10px"></div>
         <div class="text-center">
             <a href="${pageContext.request.contextPath}/"
                class="btn btn-warning" role="button">Go Back</a>
         </div>
     </div>
 </div>
-
-<div style="height: 100px"></div>
 
 <footer class="page-footer font-small">
     <div class="footer-copyright text-center py-3">© 2020 Copyright:
