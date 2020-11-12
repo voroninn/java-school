@@ -3,7 +3,6 @@ package org.javaschool;
 import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dto.ScheduleDto;
 import org.javaschool.services.impl.ScheduleServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,10 +27,6 @@ class ScheduleServiceTest {
     private static final String DATE = "11.11.2020";
     private static final String DATE_INVALID = "11112020";
     private static final String TIME_FORMAT = "HH:mm";
-
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
     void testOrderSchedulesByTime() {

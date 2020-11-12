@@ -44,7 +44,6 @@ public class TicketServiceTest {
     @Mock
     private TicketDao ticketDao;
 
-
     private static final Date DATE_TODAY = new Date();
     private static final Date DATE_TOMORROW = DateUtils.addDays(new Date(), 1);
     private static final Date CURRENT_TIME_PLUS_15_MINUTES = Date.from(Instant.now().plusSeconds(900));

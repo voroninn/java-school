@@ -64,4 +64,17 @@ public class PassengerDaoImpl implements PassengerDao {
         }
         return passenger;
     }
+
+    @Override
+    public PassengerEntity getPassengerByPassportNumber(int passportNumber) {
+        PassengerEntity passenger = null;
+        try {
+            Query query = entityManager.createQuery("SELECT p FROM PassengerEntity p where p.passportNumber = :passportNumber");
+            query.setParameter("passportNumber", passportNumber);
+            passenger = (PassengerEntity) query.getSingleResult();
+        } catch (NoResultException e) {
+            e.printStackTrace();
+        }
+        return passenger;
+    }
 }

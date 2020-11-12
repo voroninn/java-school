@@ -13,6 +13,8 @@ public interface PassengerService {
 
     PassengerDto getPassengerByUser(UserDto userDto);
 
+    PassengerDto getPassengerByPassportNumber(int passportNumber);
+
     void addPassenger(PassengerDto passengerDto);
 
     void editPassenger(PassengerDto passengerDto);

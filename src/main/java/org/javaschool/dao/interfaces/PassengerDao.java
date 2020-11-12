@@ -21,4 +21,6 @@ public interface PassengerDao {
     void deletePassenger(PassengerEntity passenger);
 
     PassengerEntity getPassengerByUser(UserEntity user);
+
+    PassengerEntity getPassengerByPassportNumber(int passportNumber);
 }

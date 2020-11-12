@@ -27,14 +27,13 @@ public class StationValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty");
 
-        if (!station.getName().trim().equals("")) {
-            if (!station.getName().matches("^[a-zA-Z]+")) {
-                errors.rejectValue("name", "Format.stationForm.name");
-            }
-            if (station.getName().length() > 20) {
-                errors.rejectValue("name", "Size.stationForm.name");
-            }
+        if (!station.getName().matches("^[a-zA-Z]+")) {
+            errors.rejectValue("name", "Format.stationForm.name");
         }
+        if (station.getName().length() > 20) {
+            errors.rejectValue("name", "Size.stationForm.name");
+        }
+
         if (stationService.getStationByName(station.getName()) != null &&
                 stationService.getStationByName(station.getName()).getId() != station.getId()) {
             errors.rejectValue("name", "Duplicate.stationForm.name");

@@ -27,25 +27,22 @@ public class TrainValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "track.id", "NotEmpty");
 
-        if (!String.valueOf(train.getTrack().getId()).trim().equals("")) {
-            if (!String.valueOf(train.getTrack().getId()).matches("\\d")) {
-                errors.rejectValue("track.id", "Format.trainForm.track.id");
-            }
-            if (train.getTrack().getId() < 1 || train.getTrack().getId() > 5) {
-                errors.rejectValue("track.id", "Range.trainForm.track.id");
-            }
+        if (!String.valueOf(train.getTrack().getId()).matches("\\d")) {
+            errors.rejectValue("track.id", "Format.trainForm.track.id");
+        }
+        if (train.getTrack().getId() < 1 || train.getTrack().getId() > 5) {
+            errors.rejectValue("track.id", "Range.trainForm.track.id");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "NotEmpty");
 
-        if (!train.getName().trim().equals("")) {
-            if (!train.getName().matches("^[a-zA-Z]+ [MDCLXVI]+$")) {
-                errors.rejectValue("name", "Format.trainForm.name");
-            }
-            if (train.getName().length() > 20) {
-                errors.rejectValue("name", "Size.trainForm.name");
-            }
+        if (!train.getName().matches("^[a-zA-Z]+ [MDCLXVI]+$")) {
+            errors.rejectValue("name", "Format.trainForm.name");
         }
+        if (train.getName().length() > 20) {
+            errors.rejectValue("name", "Size.trainForm.name");
+        }
+
         if (trainService.getTrainByName(train.getName()) != null &&
                 trainService.getTrainByName(train.getName()).getId() != train.getId()) {
             errors.rejectValue("name", "Duplicate.trainForm.name");
@@ -53,13 +50,11 @@ public class TrainValidator implements Validator {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "capacity", "NotEmpty");
 
-        if (!String.valueOf(train.getCapacity()).trim().equals("")) {
-            if (!String.valueOf(train.getCapacity()).matches("\\d+")) {
-                errors.rejectValue("capacity", "Format.trainForm.capacity");
-            }
-            if (train.getCapacity() < 10 || train.getCapacity() > 50) {
-                errors.rejectValue("capacity", "Range.trainForm.capacity");
-            }
+        if (!String.valueOf(train.getCapacity()).matches("\\d+")) {
+            errors.rejectValue("capacity", "Format.trainForm.capacity");
+        }
+        if (train.getCapacity() < 10 || train.getCapacity() > 50) {
+            errors.rejectValue("capacity", "Range.trainForm.capacity");
         }
     }
 }

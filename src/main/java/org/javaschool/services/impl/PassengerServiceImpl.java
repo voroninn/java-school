@@ -6,10 +6,8 @@ import org.javaschool.dao.interfaces.PassengerDao;
 import org.javaschool.dto.PassengerDto;
 import org.javaschool.dto.UserDto;
 import org.javaschool.mapper.PassengerMapper;
-import org.javaschool.mapper.TrainMapper;
 import org.javaschool.mapper.UserMapper;
 import org.javaschool.services.interfaces.PassengerService;
-import org.javaschool.services.interfaces.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +36,11 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     public PassengerDto getPassengerByUser(UserDto userDto) {
         return passengerMapper.toDto(passengerDao.getPassengerByUser(userMapper.toEntity(userDto)));
+    }
+
+    @Override
+    public PassengerDto getPassengerByPassportNumber(int passportNumber) {
+        return passengerMapper.toDto(passengerDao.getPassengerByPassportNumber(passportNumber));
     }
 
     @Override
