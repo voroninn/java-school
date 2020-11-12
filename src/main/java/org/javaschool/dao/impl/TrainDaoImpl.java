@@ -42,7 +42,7 @@ public class TrainDaoImpl implements TrainDao {
 
     @Override
     public void addTrain(TrainEntity train) {
-        entityManager.persist(train);
+        entityManager.persist(entityManager.merge(train));
     }
 
     @Override

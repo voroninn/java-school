@@ -132,7 +132,7 @@ public class TrainController {
     public ModelAndView editTrainSchedule(@RequestParam Map<String, String> requestParams,
                                           @ModelAttribute("train") TrainDto trainDto) {
         ModelAndView modelAndView = new ModelAndView();
-        for (int i = 0; i < scheduleService.getSchedulesByTrain(trainDto).size(); i++) {
+        for (int i = 0; i < mappingService.getOrderedStationsByTrack(trainDto.getTrack()).size(); i++) {
             ScheduleDto scheduleDto = new ScheduleDto();
             scheduleDto.setId(Integer.parseInt(requestParams.get("id" + i)));
             scheduleDto.setStation(stationService.getStationByName(requestParams.get("station" + i)));
@@ -140,7 +140,7 @@ public class TrainController {
             scheduleDto.setTrainStatus("On Schedule");
             scheduleDto.setArrivalTime(requestParams.get("arrivalTime" + i));
             scheduleDto.setDepartureTime(requestParams.get("departureTime" + i));
-            scheduleDto.setDirection(!Boolean.parseBoolean(requestParams.get("isReversed")));
+                scheduleDto.setDirection(!Boolean.parseBoolean(requestParams.get("isReversed")));
             scheduleService.editSchedule(scheduleDto);
         }
         modelAndView.setViewName("redirect:/trains");

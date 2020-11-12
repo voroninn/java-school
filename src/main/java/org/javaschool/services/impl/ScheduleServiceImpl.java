@@ -129,18 +129,18 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<Date> arrivalTimes = new ArrayList<>();
         List<ScheduleDto> orderedSchedules = new ArrayList<>();
         List<Date> afterMidnightTimes = new ArrayList<>();
-        Date ScheduleArrivalTime;
+        Date scheduleDepartureTime;
 
         for (ScheduleDto schedule : scheduleDtoList) {
-            ScheduleArrivalTime = convertStringtoDate(schedule.getArrivalTime());
-            if (ScheduleArrivalTime == null) {
+            scheduleDepartureTime = convertStringtoDate(schedule.getDepartureTime());
+            if (scheduleDepartureTime == null) {
                 orderedSchedules.add(schedule);
-            } else if (ScheduleArrivalTime.equals(convertStringtoDate(MIDNIGHT)) ||
-                    (ScheduleArrivalTime.after(convertStringtoDate(MIDNIGHT)) &&
-                            ScheduleArrivalTime.before(convertStringtoDate(MORNING)))) {
-                afterMidnightTimes.add(ScheduleArrivalTime);
+            } else if (scheduleDepartureTime.equals(convertStringtoDate(MIDNIGHT)) ||
+                    (scheduleDepartureTime.after(convertStringtoDate(MIDNIGHT)) &&
+                            scheduleDepartureTime.before(convertStringtoDate(MORNING)))) {
+                afterMidnightTimes.add(scheduleDepartureTime);
             } else {
-                arrivalTimes.add(ScheduleArrivalTime);
+                arrivalTimes.add(scheduleDepartureTime);
             }
         }
 
@@ -150,8 +150,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         for (Date time : arrivalTimes) {
             for (ScheduleDto schedule : scheduleDtoList) {
-                ScheduleArrivalTime = convertStringtoDate(schedule.getArrivalTime());
-                if (ScheduleArrivalTime != null && ScheduleArrivalTime.equals(time)) {
+                scheduleDepartureTime = convertStringtoDate(schedule.getDepartureTime());
+                if (scheduleDepartureTime != null && scheduleDepartureTime.equals(time)) {
                     orderedSchedules.add(schedule);
                     break;
                 }

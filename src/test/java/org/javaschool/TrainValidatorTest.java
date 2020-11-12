@@ -51,7 +51,7 @@ public class TrainValidatorTest {
     }
 
     @Test
-    public void validateTrainEmptyTrackId() {
+    public void validateTrainTrackIdEmpty() {
         trainDto.getTrack().setId(0);
         trainValidator.validate(trainDto, errors);
         assertTrue(errors.hasErrors());
@@ -59,7 +59,7 @@ public class TrainValidatorTest {
     }
 
     @Test
-    public void validateTrainLongTrackId() {
+    public void validateTrainTrackIdLong() {
         trainDto.getTrack().setId(13);
         trainValidator.validate(trainDto, errors);
         assertTrue(errors.hasErrors());
@@ -67,7 +67,7 @@ public class TrainValidatorTest {
     }
 
     @Test
-    public void validateTrainInvalidTrackId() {
+    public void validateTrainTrackIdInvalid() {
         trainDto.getTrack().setId(6);
         trainValidator.validate(trainDto, errors);
         assertTrue(errors.hasErrors());
@@ -75,7 +75,7 @@ public class TrainValidatorTest {
     }
 
     @Test
-    public void validateTrainEmptyName() {
+    public void validateTrainNameEmpty() {
         trainDto.setName(EMPTY_STRING);
         trainValidator.validate(trainDto, errors);
         assertTrue(errors.hasErrors());
@@ -83,7 +83,7 @@ public class TrainValidatorTest {
     }
 
     @Test
-    public void validateTrainInvalidName() {
+    public void validateTrainNameInvalid() {
         trainDto.setName(NAME_INVALID);
         trainValidator.validate(trainDto, errors);
         assertTrue(errors.hasErrors());
@@ -91,7 +91,7 @@ public class TrainValidatorTest {
     }
 
     @Test
-    public void validateTrainLongName() {
+    public void validateTrainNameLong() {
         trainDto.setName(NAME_LONG);
         trainValidator.validate(trainDto, errors);
         assertTrue(errors.hasErrors());
@@ -99,7 +99,7 @@ public class TrainValidatorTest {
     }
 
     @Test
-    public void validateTrainDuplicateName() {
+    public void validateTrainNameDuplicate() {
         trainDto.setId(1);
         when(trainService.getTrainByName(anyString())).thenReturn(new TrainDto());
         trainValidator.validate(trainDto, errors);
@@ -108,7 +108,7 @@ public class TrainValidatorTest {
     }
 
     @Test
-    public void validateTrainEmptyCapacity() {
+    public void validateTrainCapacityEmpty() {
         trainDto.setCapacity(0);
         trainValidator.validate(trainDto, errors);
         assertTrue(errors.hasErrors());
@@ -116,7 +116,7 @@ public class TrainValidatorTest {
     }
 
     @Test
-    public void validateStationInvalidCapacity() {
+    public void validateStationCapacityInvalid() {
         trainDto.setCapacity(100);
         trainValidator.validate(trainDto, errors);
         assertTrue(errors.hasErrors());

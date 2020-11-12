@@ -53,7 +53,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserEmptyName() {
+    public void validateUserNameEmpty() {
         userDto.setUsername(EMPTY_STRING);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -61,7 +61,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserShortName() {
+    public void validateUserNameShort() {
         userDto.setUsername(STRING_SHORT);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -69,7 +69,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserLongName() {
+    public void validateUserNameLong() {
         userDto.setUsername(STRING_LONG);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -77,7 +77,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserDuplicateName() {
+    public void validateUserNameDuplicate() {
         when(userService.findUserByUsername(anyString())).thenReturn(new UserDto());
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -85,7 +85,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserEmptyEmail() {
+    public void validateUserEmailEmpty() {
         userDto.setEmail(EMPTY_STRING);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -93,7 +93,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserShortEmail() {
+    public void validateUserEmailShort() {
         userDto.setEmail(STRING_SHORT);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -101,7 +101,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserLongEmail() {
+    public void validateUserEmailLong() {
         userDto.setEmail(STRING_LONG);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -109,7 +109,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserDuplicateEmail() {
+    public void validateUserEmailDuplicate() {
         when(userService.findUserByEmail(anyString())).thenReturn(new UserDto());
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -117,7 +117,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserEmptyPassword() {
+    public void validateUserPasswordEmpty() {
         userDto.setPassword(EMPTY_STRING);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -125,7 +125,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserShortPassword() {
+    public void validateUserPasswordShort() {
         userDto.setPassword(STRING_SHORT);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -133,7 +133,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserLongPassword() {
+    public void validateUserPasswordLong() {
         userDto.setPassword(STRING_LONG);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -141,7 +141,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserEmptyPasswordConfirm() {
+    public void validateUserPasswordConfirmEmpty() {
         userDto.setPasswordConfirm(EMPTY_STRING);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -149,7 +149,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserDifferentPassword() {
+    public void validateUserPasswordDifferent() {
         userDto.setPassword(USERNAME_VALID);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());
@@ -157,7 +157,7 @@ public class UserValidatorTest {
     }
 
     @Test
-    public void validateUserDifferentPasswordConfirm() {
+    public void validateUserPasswordConfirmDifferent() {
         userDto.setPasswordConfirm(USERNAME_VALID);
         userValidator.validate(userDto, errors);
         assertTrue(errors.hasErrors());

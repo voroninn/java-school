@@ -73,11 +73,12 @@
                     <td>
                         <c:if test="${empty schedulesList[0].departureTime}">
                             <input type="text" class="form-control" name="departureTime0"
-                                   placeholder="HH:MM" required/>
+                                   placeholder="HH:MM" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" required/>
                         </c:if>
                         <c:if test="${!empty schedulesList[0].departureTime}">
                             <input type="text" class="form-control" name="departureTime0"
-                                   value="${schedulesList[0].departureTime}" required/>
+                                   value="${schedulesList[0].departureTime}"
+                                   pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" required/>
                         </c:if>
                     </td>
                 </tr>
@@ -93,24 +94,26 @@
                             <c:if test="${empty schedule.arrivalTime}">
                                 <input type="text" class="form-control"
                                        name="arrivalTime${schedulesList.indexOf(schedule)}"
-                                       placeholder="HH:MM" required/>
+                                       placeholder="HH:MM" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" required/>
                             </c:if>
                             <c:if test="${!empty schedule.arrivalTime}">
                                 <input type="text" class="form-control"
                                        name="arrivalTime${schedulesList.indexOf(schedule)}"
-                                       value="${schedule.arrivalTime}" required/>
+                                       value="${schedule.arrivalTime}"
+                                       pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" required/>
                             </c:if>
                         </td>
                         <td>
                             <c:if test="${empty schedule.departureTime}">
                                 <input type="text" class="form-control"
                                        name="departureTime${schedulesList.indexOf(schedule)}"
-                                       placeholder="HH:MM" required/>
+                                       placeholder="HH:MM" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" required/>
                             </c:if>
                             <c:if test="${!empty schedule.departureTime}">
                                 <input type="text" class="form-control"
                                        name="departureTime${schedulesList.indexOf(schedule)}"
-                                       value="${schedule.departureTime}" required/>
+                                       value="${schedule.departureTime}"
+                                       pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" required/>
                             </c:if>
                         </td>
                     </tr>
@@ -126,11 +129,12 @@
                     <td>
                         <c:if test="${empty schedulesList[schedulesList.size() - 1].arrivalTime}">
                             <input type="text" class="form-control" name="arrivalTime${schedulesList.size() - 1}"
-                                   placeholder="HH:MM" required/>
+                                   placeholder="HH:MM" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" required/>
                         </c:if>
                         <c:if test="${!empty schedulesList[schedulesList.size() - 1].arrivalTime}">
                             <input type="text" class="form-control" name="arrivalTime${schedulesList.size() - 1}"
-                                   value="${schedulesList[schedulesList.size() - 1].arrivalTime}" required/>
+                                   value="${schedulesList[schedulesList.size() - 1].arrivalTime}"
+                                   pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" required/>
                         </c:if>
                     </td>
                     <td>

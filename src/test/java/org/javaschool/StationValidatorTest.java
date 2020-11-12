@@ -45,7 +45,7 @@ public class StationValidatorTest {
     }
 
     @Test
-    public void validateStationEmptyName() {
+    public void validateStationNameEmpty() {
         stationDto.setName(EMPTY_STRING);
         stationValidator.validate(stationDto, errors);
         assertTrue(errors.hasErrors());
@@ -53,7 +53,7 @@ public class StationValidatorTest {
     }
 
     @Test
-    public void validateStationInvalidName() {
+    public void validateStationNameInvalid() {
         stationDto.setName(NAME_INVALID);
         stationValidator.validate(stationDto, errors);
         assertTrue(errors.hasErrors());
@@ -61,7 +61,7 @@ public class StationValidatorTest {
     }
 
     @Test
-    public void validateStationLongName() {
+    public void validateStationNameLong() {
         stationDto.setName(STRING_LONG);
         stationValidator.validate(stationDto, errors);
         assertTrue(errors.hasErrors());
@@ -69,7 +69,7 @@ public class StationValidatorTest {
     }
 
     @Test
-    public void validateStationDuplicateName() {
+    public void validateStationNameDuplicate() {
         stationDto.setId(1);
         when(stationService.getStationByName(anyString())).thenReturn(new StationDto());
         stationValidator.validate(stationDto, errors);
