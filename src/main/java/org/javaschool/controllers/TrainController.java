@@ -140,7 +140,7 @@ public class TrainController {
             scheduleDto.setTrainStatus("On Schedule");
             scheduleDto.setArrivalTime(requestParams.get("arrivalTime" + i));
             scheduleDto.setDepartureTime(requestParams.get("departureTime" + i));
-                scheduleDto.setDirection(!Boolean.parseBoolean(requestParams.get("isReversed")));
+            scheduleDto.setDirection(!Boolean.parseBoolean(requestParams.get("isReversed")));
             scheduleService.editSchedule(scheduleDto);
         }
         modelAndView.setViewName("redirect:/trains");

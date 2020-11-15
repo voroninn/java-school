@@ -53,8 +53,6 @@ public class StationController {
             stationDto.setName("");
         } else {
             modelAndView.setViewName("redirect:/stations");
-            //@RequestParam String name
-            //stationDto.setName(name);
             stationService.editStation(stationDto);
         }
         return modelAndView;
@@ -79,7 +77,6 @@ public class StationController {
             modelAndView.setViewName("stationEdit");
             stationDto.setName("");
         } else {
-            //stationDto.setName(requestParams.get("name"));
             modelAndView.setViewName("redirect:/stations/edit/" + stationDto.getId() + "/track");
             redirectAttributes.addAttribute("track", requestParams.get("track"));
             redirectAttributes.addAttribute("length", requestParams.get("length"));

@@ -80,14 +80,14 @@ public class SectionServiceImpl implements SectionService {
             nearestStation = mappingService.getStationByOrder(trackDto, 2);
             sectionDao.addSection(new SectionEntity(stationMapper.toEntity(stationDto),
                     stationMapper.toEntity(nearestStation), length, trackMapper.toEntity(trackDto), true));
-            sectionDao.addSection(new SectionEntity(stationMapper.toEntity(stationDto),
-                    stationMapper.toEntity(nearestStation), length, trackMapper.toEntity(trackDto), false));
+            sectionDao.addSection(new SectionEntity(stationMapper.toEntity(nearestStation),
+                    stationMapper.toEntity(stationDto), length, trackMapper.toEntity(trackDto), false));
         } else {
             nearestStation = mappingService.getStationByOrder(trackDto, stationOrder - 1);
             sectionDao.addSection(new SectionEntity(stationMapper.toEntity(stationDto),
                     stationMapper.toEntity(nearestStation), length, trackMapper.toEntity(trackDto), false));
-            sectionDao.addSection(new SectionEntity(stationMapper.toEntity(stationDto),
-                    stationMapper.toEntity(nearestStation), length, trackMapper.toEntity(trackDto), true));
+            sectionDao.addSection(new SectionEntity(stationMapper.toEntity(nearestStation),
+                    stationMapper.toEntity(stationDto), length, trackMapper.toEntity(trackDto), true));
         }
     }
 }

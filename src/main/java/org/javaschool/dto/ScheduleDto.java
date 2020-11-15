@@ -26,7 +26,7 @@ public class ScheduleDto implements Serializable {
 
     private String endStation;
 
-    public ScheduleDto(String arrivalTime) {
-        this.arrivalTime = arrivalTime;
+    public ScheduleDto(String departureTime) {
+        this.departureTime = departureTime;
     }
 }
