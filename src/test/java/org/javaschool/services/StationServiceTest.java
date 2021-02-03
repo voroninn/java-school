@@ -1,4 +1,4 @@
-package org.javaschool;
+package org.javaschool.services;
 
 import org.javaschool.dto.StationDto;
 import org.javaschool.exception.IllegalOperationException;
@@ -21,8 +21,6 @@ public class StationServiceTest {
         StationDto stationDto = new StationDto();
         stationDto.setId(18);
 
-        assertThrows(IllegalOperationException.class, () -> {
-            stationService.deleteStation(stationDto);
-        });
+        assertThrows(IllegalOperationException.class, () -> stationService.deleteStation(stationDto));
     }
 }

@@ -1,4 +1,4 @@
-package org.javaschool;
+package org.javaschool.validation;
 
 import org.javaschool.dto.TrackDto;
 import org.javaschool.dto.TrainDto;

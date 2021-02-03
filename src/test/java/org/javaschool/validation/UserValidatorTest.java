@@ -1,4 +1,4 @@
-package org.javaschool;
+package org.javaschool.validation;
 
 import org.javaschool.dto.UserDto;
 import org.javaschool.services.interfaces.UserService;

@@ -1,4 +1,4 @@
-package org.javaschool;
+package org.javaschool.services;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dto.ScheduleDto;
@@ -45,17 +45,17 @@ class ScheduleServiceTest {
     }
 
     @Test
-    void testConvertStringtoTime() {
+    void testConvertStringToTime() {
         assertNotNull(scheduleService.convertStringtoDate(TIME_NOON));
     }
 
     @Test
-    void testConvertStringtoDate() {
+    void testConvertStringToDate() {
         assertNotNull(scheduleService.convertStringtoDate(DATE));
     }
 
     @Test
-    void testConvertInvalidStringtoDate() {
+    void testConvertInvalidStringToDate() {
         assertNull(scheduleService.convertStringtoDate(DATE_INVALID));
     }
 

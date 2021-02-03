@@ -1,4 +1,4 @@
-package org.javaschool;
+package org.javaschool.services;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dao.interfaces.TicketDao;

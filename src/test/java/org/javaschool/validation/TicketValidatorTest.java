@@ -1,4 +1,4 @@
-package org.javaschool;
+package org.javaschool.validation;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.javaschool.dto.TicketDto;
